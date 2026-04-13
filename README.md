@@ -183,8 +183,8 @@ Label: feature / fix
 
 						├── LoginPage
 
-						├── SignPage
-									├── SignForm
+						├── SignupPage
+									├── SignupForm
 
 			├── Footer
 ```
@@ -202,6 +202,7 @@ Label: feature / fix
 							├── userItem.jsx
 							├── PortfolioItem.jsx
 				├──[auth]
+                            ├── SignupForm.jsx
 				├──[lecture]
 							├── LectureItem.jsx
 				├──[project]
@@ -258,22 +259,22 @@ Label: feature / fix
               ├── UserManagePage.jsx
               ├── LectureManagePage.jsx
               ├── DataManagePage.jsx
-        ├──[Info]
+        ├──[auth]
               ├── LoginPage.jsx
-              ├── SignUpPage.js
+              ├── SignUpPage.jsx
 	├──[services]
 				├── cartService.js
-				├── LectureService.js
-				├── ProjectService.js
-				├── InterviewService.js
-				├── AuthService.js
-				├── UserService.js ?
+				├── lectureService.js
+				├── projectService.js
+				├── interviewService.js
+				├── authService.js
+				├── userService.js
 	├──[store]
 				├── store.js
 				├── cartSlice.js
-				├── LectureSlice.js
-				├── ProjectSlice.js
-				├── InterviewSlice.js
-				├── AuthSlice.js
-				├── UserSlice.js ?
+				├── lectureSlice.js
+				├── projectSlice.js
+				├── interviewSlice.js
+				├── authSlice.js
+				├── userSlice.js
 ```
