@@ -1,0 +1,5 @@
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 45 920;
+    src: url('../src/assets/font/PretendardVariable.woff2') format('woff2-variations');
+}
