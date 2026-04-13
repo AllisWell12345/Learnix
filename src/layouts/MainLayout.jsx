@@ -1,7 +1,16 @@
 import React from "react";
 
 function MainLayout() {
-  return <div></div>;
+  return (
+    <>
+      <Header />
+      <MainNavbar />
+      <main className="content">
+        <HomePage />
+      </main>
+      <Footer />
+    </>
+  )
 }
 
 export default MainLayout;
