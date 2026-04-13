@@ -1,7 +1,19 @@
 import React from "react";
 
 function ManagerLayout() {
-  return <div></div>;
+  return (
+    <>
+      <Header />
+      <ManagerSidebar />
+      <main className="content">
+        <ManagerDashboardPage />
+        <LectureManagerPage />
+        <UserManagerPage />
+        <DataManagerPage />
+      </main>
+      <Footer />
+    </>
+  );
 }
 
 export default ManagerLayout;
