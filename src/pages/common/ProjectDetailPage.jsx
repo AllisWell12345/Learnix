@@ -1,7 +1,7 @@
 import React from "react";
 
 function ProjectDetailPage() {
-  return <div></div>;
+  return <div>ProjectDetailPage</div>;
 }
 
 export default ProjectDetailPage;

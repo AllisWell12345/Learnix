@@ -1,7 +1,7 @@
 import React from "react";
 
 function InterviewNoticePage() {
-  return <div></div>;
+  return <div>InterviewNoticePage</div>;
 }
 
 export default InterviewNoticePage;

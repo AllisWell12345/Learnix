@@ -1,7 +1,8 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 
 function LectureDetailPage() {
-  return <div></div>;
+  return <div>LectureDetailPage <Outlet/> </div>;
 }
 
 export default LectureDetailPage;

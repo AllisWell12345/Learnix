@@ -1,7 +1,7 @@
 import React from "react";
 
 function LectureEditPage() {
-  return <div></div>;
+  return <div>LectureEditPage</div>;
 }
 
 export default LectureEditPage;

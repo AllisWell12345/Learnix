@@ -118,6 +118,7 @@ Label: feature / fix
 
 ```bash
 ([App]
+([App]
 	├──MainLayOut
 			├── Header
 			├── Nav
@@ -141,34 +142,34 @@ Label: feature / fix
 									├── ProjectItem (mode=detail | mode=myDetail)
 						├── InterviewDetailPage (모의면접 상세 조회)
 									├── interviewItem (mode=detail)
-
+						
 						├── CartPage (수강생-장바구니)
 									├── CartItem
 						├── ProjectPage (수강생-프로젝트 제출)
-									├── ProjectTemplate
+									├── Template
 									├── Project
-						├── ProjectWritePage (수강생-프로젝트 작성)
-									├── ProjectForm
+						├── ProjectRegistPage (수강생-프로젝트 작성)
+									├── ProjectForm (mode=regist)
+						├── ProjectEditPage (수강생-프로젝트 수정)
+									├── ProjectForm (mode=edit)
 						├── InterviewNoticePage (수강생-모의면접안내)
 						├── InterVIewPracticePage (수강생-모의면접진행)
 									├── InterviewQuestion
-
+											
 						├── LectureRegistPage (강사-강의등록)
 									├── LectureForm (mode=regist)
 						├── LectureEditPage (강의수정)
 									├── LectureForm (mode=edit)
-						├── ProjectRegistPage (강사-프로젝트등록)
-									├── ProjectTemplateForm (mode=regist)
-						├── ProjectEditPage (강사-프로젝트수정)
-									├── ProjectTemplateForm (mode=edit)
+						├── TemplateRegistPage (강사-프로젝트템플릿등록)
+									├── TemplateForm (mode=regist)
+						├── TemplateEditPage (강사-프로젝트템플릿수정)
+									├── TemplateForm (mode=edit)
 						├── InterviewRegistPage (강사-모의면접등록)
-									├── InterviewForm (mode=regist)
-						├── InterviewEditPage (강사-모의면접수정)
-									├── InterviewForm (mode=edit)
+									├── InterviewForm
 						├── InterviewTotalPage (강사-모의면접 전체 조회)
 									├── interviewItem (mode=list)
-
-
+						
+						
 						├── ManagerDashboardPage (관리자-대시보드)
 									├── userItem(mode=latest)
 						├── UserManagePage (관리자-회원관리)
@@ -180,13 +181,14 @@ Label: feature / fix
 						├── DataManagePage (관리자-자료관리)
 									├── SearchBar (검색창)
 									├── PotfolioItem
-
+						
 						├── LoginPage
-
-						├── SignupPage
-									├── SignupForm
-
+						
+						├── SignPage
+									├── SignForm
+									
 			├── Footer
+
 ```
 
 ## 파일 구조 설계
@@ -197,12 +199,13 @@ Label: feature / fix
 [src]
 	├──[assets]
 				├──[img]
+				├──[font]
 	├──[components]
 				├──[manager]
 							├── userItem.jsx
 							├── PortfolioItem.jsx
 				├──[auth]
-                            ├── SignupForm.jsx
+							├── SignForm.jsx
 				├──[lecture]
 							├── LectureItem.jsx
 				├──[project]
@@ -225,11 +228,11 @@ Label: feature / fix
 				├── useModal.js
 	├──[layouts]
 				├── MainLayout.jsx
-				├── MainLayout.css
-				├── PortfolioLayout.jsx
-				├── PortfolioLayout.css
+				├── StudentLayout.jsx
+				├── StudentPortfolioLayout.jsx
+				├── TeacherLayout.jsx
+				├── TeacherPortfolioLayout.jsx
 				├── ManagerLayout.jsx
-				├── ManagerLayout.css
 	├──[pages]
 				├──[common]
 							├── HomePage.jsx
@@ -243,16 +246,16 @@ Label: feature / fix
 				├──[student]
 							├── CartPage.jsx
 							├── ProjectPage.jsx
-							├── ProjectWritePage.jsx
+							├── ProjectRegistPage.jsx
+							├── ProjectEditPage.jsx
 							├── InterviewNoticePage.jsx
 							├── InterviewPracticePage.jsx
 				├──[teacher]
 							├── LectureRegistPage.jsx
 							├── LectureEditPage.jsx
-							├── PrjectRegistPage.jsx
-							├── PrjectEditPage.jsx
+							├── TemplateRegistPage.jsx
+							├── TemplateEditPage.jsx
 							├── InterviewRegistPage.jsx
-							├── InterviewEditPage.jsx
 							├── InterviewTotalPage.jsx
 				├──[manager]
               ├── ManagerDashboardPage.jsx
@@ -277,4 +280,5 @@ Label: feature / fix
 				├── interviewSlice.js
 				├── authSlice.js
 				├── userSlice.js
+
 ```
