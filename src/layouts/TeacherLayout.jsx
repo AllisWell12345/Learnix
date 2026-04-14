@@ -9,7 +9,7 @@ function TeacherLayout() {
     <>
       <UserHeader />
       <TeacherNavbar />
-      <main className="content">
+      <main className="container">
         <Outlet />
       </main>
       <Footer />

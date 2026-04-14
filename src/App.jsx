@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import './App.css'
 import MainLayout from "./layouts/MainLayout";
 import StudentLayout from "./layouts/StudentLayout";
 import StudentPortfolioLayout from "./layouts/StudentPortfolioLayout";

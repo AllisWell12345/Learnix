@@ -1,16 +1,16 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
-import StudentSidebar from '../components/layout/StudentSidebar'
+import React from "react";
+import { Outlet } from "react-router-dom";
+import StudentSidebar from "../components/layout/StudentSidebar";
 
 function StudentPortfolioLayout() {
   return (
     <>
-      <StudentSidebar />
-      <main className="content">
-        <Outlet />
-      </main>
+        <StudentSidebar />
+        <div className="content">
+          <Outlet />
+        </div>
     </>
-  )
+  );
 }
 
-export default StudentPortfolioLayout
+export default StudentPortfolioLayout;

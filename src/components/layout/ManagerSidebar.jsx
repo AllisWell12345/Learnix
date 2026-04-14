@@ -1,51 +1,92 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React from "react";
+import { NavLink } from "react-router-dom";
+import "../layout/sidebar.css";
+import DashboardIcon from "../../assets/img/managerhomeIcon.svg";
+import DashboardSelectIcon from "../../assets/img/managerhomeselectIcon.svg";
+import UserIcon from "../../assets/img/manageruserIcon.svg";
+import UserSelectIcon from "../../assets/img/manageruserselectIcon.svg";
+import LectureIcon from "../../assets/img/managerlectureIcon.svg";
+import LectureSelectIcon from "../../assets/img/managerlectureselectIcon.svg";
+import DataIcon from "../../assets/img/managerdataIcon.svg";
+import DataSelectIcon from "../../assets/img/managerdataselectIcon.svg";
 
 function ManagerSidebar() {
   return (
     <aside className="sidebar">
-      <h2 className="sidebar-title">관리자 메뉴</h2>
+      <div className="sidebar-content">
+        <h2 className="sidebar-title">관리자 메뉴</h2>
 
-      <ul className="sidebar-list">
-        <li>
-          <NavLink
-            to="/manager"
-            className={({ isActive }) => (isActive ? "active" : "")}
-            end
-          >
-            대시보드
-          </NavLink>
-        </li>
+        <ul className="sidebar-list">
+          <li>
+            <NavLink to="/manager" end>
+              {({ isActive }) => (
+                <div
+                  className={isActive ? "sidebar-item active" : "sidebar-item"}
+                >
+                  <img
+                    src={isActive ? DashboardSelectIcon : DashboardIcon}
+                    alt="대시보드 아이콘"
+                    className="sidebar-icon"
+                  />
+                  <span>대시보드</span>
+                </div>
+              )}
+            </NavLink>
+          </li>
 
-        <li>
-          <NavLink
-            to="/manager/user"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            회원 관리
-          </NavLink>
-        </li>
+          <li>
+            <NavLink to="/manager/user">
+              {({ isActive }) => (
+                <div
+                  className={isActive ? "sidebar-item active" : "sidebar-item"}
+                >
+                  <img
+                    src={isActive ? UserSelectIcon : UserIcon}
+                    alt="회원 관리 아이콘"
+                    className="sidebar-icon"
+                  />
+                  <span>회원 관리</span>
+                </div>
+              )}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/manager/lecture">
+              {({ isActive }) => (
+                <div
+                  className={isActive ? "sidebar-item active" : "sidebar-item"}
+                >
+                  <img
+                    src={isActive ? LectureSelectIcon : LectureIcon}
+                    alt="강의 관리 아이콘"
+                    className="sidebar-icon"
+                  />
+                  <span>강의 관리</span>
+                </div>
+              )}
+            </NavLink>
+          </li>
 
-        <li>
-          <NavLink
-            to="/manager/lecture"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            강의 관리
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink
-            to="/manager/data"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            자료 관리
-          </NavLink>
-        </li>
-      </ul>
+          <li>
+            <NavLink to="/manager/data">
+              {({ isActive }) => (
+                <div
+                  className={isActive ? "sidebar-item active" : "sidebar-item"}
+                >
+                  <img
+                    src={isActive ? DataSelectIcon : DataIcon}
+                    alt="자료 관리 아이콘"
+                    className="sidebar-icon"
+                  />
+                  <span>자료 관리</span>
+                </div>
+              )}
+            </NavLink>
+          </li>
+        </ul>
+      </div>
     </aside>
-  )
+  );
 }
 
-export default ManagerSidebar
+export default ManagerSidebar;
