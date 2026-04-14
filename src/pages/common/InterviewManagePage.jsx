@@ -1,7 +1,7 @@
 import React from "react";
 
 function InterviewManagePage() {
-  return <div></div>;
+  return <div>InterviewManagePage</div>;
 }
 
 export default InterviewManagePage;

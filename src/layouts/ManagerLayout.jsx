@@ -1,15 +1,16 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
+import UserHeader from "../components/layout/UserHeader";
+import ManagerSidebar from "../components/layout/ManagerSidebar";
+import Footer from "../components/layout/Footer";
 
 function ManagerLayout() {
   return (
     <>
-      <Header />
+      <UserHeader />
       <ManagerSidebar />
       <main className="content">
-        <ManagerDashboardPage />
-        <LectureManagerPage />
-        <UserManagerPage />
-        <DataManagerPage />
+        <Outlet />
       </main>
       <Footer />
     </>

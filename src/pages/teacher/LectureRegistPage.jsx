@@ -1,7 +1,7 @@
 import React from "react";
 
 function LectureRegistPage() {
-  return <div></div>;
+  return <div>LectureRegistPage</div>;
 }
 
 export default LectureRegistPage;

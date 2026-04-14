@@ -1,7 +1,7 @@
 import React from "react";
 
 function UserManagePage() {
-  return <div></div>;
+  return <div>UserManagePage</div>;
 }
 
 export default UserManagePage;

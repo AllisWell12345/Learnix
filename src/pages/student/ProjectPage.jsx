@@ -1,7 +1,8 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 
 function ProjectPage() {
-  return <div></div>;
+  return <div>ProjectPage</div>;
 }
 
 export default ProjectPage;

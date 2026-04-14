@@ -1,7 +1,7 @@
 import React from "react";
 
 function InterviewEditPage() {
-  return <div></div>;
+  return <div>InterviewEditPage</div>;
 }
 
 export default InterviewEditPage;
