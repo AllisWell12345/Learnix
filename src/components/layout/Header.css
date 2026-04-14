@@ -1,0 +1,93 @@
+/* ===== Reset ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Header ===== */
+.header {
+  background-color: #3e5f44;
+  height: 54px;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 200;
+}
+
+.inner {
+  height: 100%;
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ===== 헤더 왼쪽 ===== */
+.header-left {
+  flex: 1;
+}
+
+/* ===== 헤더 중앙(로고) ===== */
+.header-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-logo-img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* ===== 헤더 오른쪽 ===== */
+.header-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.header-nav-text {
+  color: white;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: "Inter";
+  cursor: pointer;
+  padding: 6px 0;
+  text-decoration: none;
+}
+
+.header-nav-btn:hover {
+  text-decoration: underline;
+  text-decoration-color: white;
+  text-underline-offset: 4px;
+}
+
+.header-nav-divider {
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  opacity: 80%;
+  user-select: none;
+  padding: 0 10px;
+}
+
+.header-mypage-img,
+.header-logout-img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.header-nav-icon {
+  width: 16px;
+  height: 16px;
+  color: white;
+  flex-shrink: 0;
+}
