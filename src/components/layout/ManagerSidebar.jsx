@@ -1,14 +1,14 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import "../layout/Sidebar.css";
-import DashboardIcon from "../../assets/img/managerhomeIcon.svg";
-import DashboardSelectIcon from "../../assets/img/managerhomeselectIcon.svg";
-import UserIcon from "../../assets/img/manageruserIcon.svg";
-import UserSelectIcon from "../../assets/img/manageruserselectIcon.svg";
-import LectureIcon from "../../assets/img/managerlectureIcon.svg";
-import LectureSelectIcon from "../../assets/img/managerlectureselectIcon.svg";
-import DataIcon from "../../assets/img/managerdataIcon.svg";
-import DataSelectIcon from "../../assets/img/managerdataselectIcon.svg";
+import DashboardIcon from "../../assets/img/Sidebar/managerhomeIcon.svg";
+import DashboardSelectIcon from "../../assets/img/Sidebar/managerhomeselectIcon.svg";
+import UserIcon from "../../assets/img/Sidebar/manageruserIcon.svg";
+import UserSelectIcon from "../../assets/img/Sidebar/manageruserselectIcon.svg";
+import LectureIcon from "../../assets/img/Sidebar/managerlectureIcon.svg";
+import LectureSelectIcon from "../../assets/img/Sidebar/managerlectureselectIcon.svg";
+import DataIcon from "../../assets/img/Sidebar/managerdataIcon.svg";
+import DataSelectIcon from "../../assets/img/Sidebar/managerdataselectIcon.svg";
 
 function ManagerSidebar() {
   return (

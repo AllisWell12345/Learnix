@@ -1,7 +1,7 @@
 import React from "react";
 import "./Header.css";
-import logo from "../../assets/img/Learnix-logo.png";
-import loginIcon from "../../assets/img/login-icon.png"; // 로그인 아이콘 이미지 경로
+import logo from "../../assets/img/Header/Learnix-logo.png";
+import loginIcon from "../../assets/img/Header/loginIcon.svg";
 
 function MainHeader() {
   return (
@@ -15,10 +15,10 @@ function MainHeader() {
           </div>
 
           <div className="header-right">
-            <button className="header-nav-btn">
+            <div className="header-nav-btn">
               <img src={loginIcon} alt="로그인" className="header-login-img" />
               <span className="header-nav-text">로그인</span>
-            </button>
+            </div>
           </div>
         </div>
       </header>
