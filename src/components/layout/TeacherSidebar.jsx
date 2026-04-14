@@ -1,10 +1,10 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import "../layout/Sidebar.css";
-import interviewIcon from "../../assets/img/interviewicon.svg";
-import interviewSelectIcon from "../../assets/img/interviewselecticon.svg";
-import projectIcon from "../../assets/img/projecticon.svg";
-import projectSelectIcon from "../../assets/img/projectselecticon.svg";
+import interviewIcon from "../../assets/img/Sidebar/interviewicon.svg";
+import interviewSelectIcon from "../../assets/img/Sidebar/interviewselecticon.svg";
+import projectIcon from "../../assets/img/Sidebar/projecticon.svg";
+import projectSelectIcon from "../../assets/img/Sidebar/projectselecticon.svg";
 
 function TeacherSidebar() {
   return (
@@ -12,16 +12,16 @@ function TeacherSidebar() {
           <div className="sidebar-content">
             <h2 className="sidebar-title">포트폴리오 메뉴</h2>
     
-            <ul className="tsidebar-list">
+            <ul className="sidebar-list">
               <li>
                 <NavLink
                   to="/teacher/portfolio/project">
                     {({ isActive }) => (
-                    <div className={isActive ? "tsidebar-item active" : "tsidebar-item"}>
+                    <div className={isActive ? "sidebar-item active" : "sidebar-item"}>
                       <img
                         src={isActive ? projectSelectIcon : projectIcon}
                         alt="프로젝트 아이콘"
-                        className="tsidebar-icon"
+                        className="sidebar-icon"
                       />
                       <span>프로젝트 관리</span>
                     </div>
@@ -32,11 +32,11 @@ function TeacherSidebar() {
               <li>
                 <NavLink to="/teacher/portfolio/interview">
                   {({ isActive }) => (
-                    <div className={isActive ? "tsidebar-item active" : "tsidebar-item"}>
+                    <div className={isActive ? "sidebar-item active" : "sidebar-item"}>
                       <img
                         src={isActive ? interviewSelectIcon : interviewIcon}
                         alt="모의 면접 아이콘"
-                        className="tsidebar-icon"
+                        className="sidebar-icon"
                       />
                       <span>모의 면접 관리</span>
                     </div>

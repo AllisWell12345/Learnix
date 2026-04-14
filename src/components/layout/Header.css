@@ -63,6 +63,13 @@
   text-decoration: none;
 }
 
+.header-nav-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
 .header-nav-btn:hover {
   text-decoration: underline;
   text-decoration-color: white;

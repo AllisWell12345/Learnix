@@ -1,13 +1,13 @@
 import React from "react";
 import "./Header.css";
-import logo from "../../assets/img/Learnix-logo.png";
-import mypageIcon from "../../assets/img/mypage-icon.png";
-import logoutIcon from "../../assets/img/logout-icon.png";
+import logo from "../../assets/img/Header/Learnix-logo.png";
+import mypageIcon from "../../assets/img/Header/mypageIcon.svg";
+import logoutIcon from "../../assets/img/Header/logoutIcon.svg";
 
 function UserHeader() {
   return (
     <>
-      <header header className="header">
+      <header className="header">
         <div className="inner">
 
           <div className="header-left" />
@@ -17,17 +17,17 @@ function UserHeader() {
           </div>
 
           <div className="header-right">
-            <button className="header-nav-btn">
+            <div className="header-nav-btn">
             <img src={mypageIcon} alt="마이페이지" className="header-mypage-img" />
             <span className="header-nav-text">마이페이지</span>
-            </button>
+            </div>
 
             <div className="header-nav-divider">|</div>
 
-            <button className="header-nav-btn" onClick={handleLogout}>
+            <div className="header-nav-btn">
             <img src={logoutIcon} alt="로그아웃" className="header-logout-img" />
             <span className="header-nav-text">로그아웃</span>
-            </button>
+            </div>
           </div>
         </div>
       </header>
