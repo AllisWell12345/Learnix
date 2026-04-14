@@ -1,32 +1,52 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React from "react";
+import { NavLink } from "react-router-dom";
+import "../layout/sidebar.css";
+import interviewIcon from "../../assets/img/interviewicon.svg";
+import interviewSelectIcon from "../../assets/img/interviewselecticon.svg";
+import projectIcon from "../../assets/img/projecticon.svg";
+import projectSelectIcon from "../../assets/img/projectselecticon.svg";
 
 function StudentSidebar() {
   return (
     <aside className="sidebar">
-      <h2 className="sidebar-title">포트폴리오 메뉴</h2>
+      <div className="sidebar-content">
+        <h2 className="sidebar-title">포트폴리오 메뉴</h2>
 
-      <ul className="sidebar-list">
-        <li>
-          <NavLink
-            to="/student/portfolio/project"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            프로젝트
-          </NavLink>
-        </li>
+        <ul className="sidebar-list">
+          <li>
+            <NavLink
+              to="/student/portfolio/project">
+                {({ isActive }) => (
+                <div className={isActive ? "sidebar-item active" : "sidebar-item"}>
+                  <img
+                    src={isActive ? projectSelectIcon : projectIcon}
+                    alt="프로젝트 아이콘"
+                    className="sidebar-icon"
+                  />
+                  <span>프로젝트</span>
+                </div>
+              )}
+            </NavLink>
+          </li>
 
-        <li>
-          <NavLink
-            to="/student/portfolio/interview"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            모의 면접
-          </NavLink>
-        </li>
-      </ul>
+          <li>
+            <NavLink to="/student/portfolio/interview">
+              {({ isActive }) => (
+                <div className={isActive ? "sidebar-item active" : "sidebar-item"}>
+                  <img
+                    src={isActive ? interviewSelectIcon : interviewIcon}
+                    alt="모의 면접 아이콘"
+                    className="sidebar-icon"
+                  />
+                  <span>모의 면접</span>
+                </div>
+              )}
+            </NavLink>
+          </li>
+        </ul>
+      </div>
     </aside>
-  )
+  );
 }
 
-export default StudentSidebar
+export default StudentSidebar;

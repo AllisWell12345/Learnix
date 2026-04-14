@@ -9,7 +9,7 @@ function StudentLayout() {
     <>
       <UserHeader />
       <StudentNavbar />
-      <main className="content">
+      <main className="container">
         <Outlet />
       </main>
       <Footer />

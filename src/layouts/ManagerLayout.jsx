@@ -8,10 +8,12 @@ function ManagerLayout() {
   return (
     <>
       <UserHeader />
+      <div className="container">
       <ManagerSidebar />
       <main className="content">
         <Outlet />
       </main>
+      </div>
       <Footer />
     </>
   );

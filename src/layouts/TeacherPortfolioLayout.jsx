@@ -6,9 +6,9 @@ function TeacherPortfolioLayout() {
   return (
     <>
       <TeacherSidebar />
-      <main className="content">
+      <div className="content">
         <Outlet/>
-      </main>
+      </div>
     </>
   )
 }
