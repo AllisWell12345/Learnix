@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import "../layout/sidebar.css";
+import "../layout/Sidebar.css";
 import DashboardIcon from "../../assets/img/managerhomeIcon.svg";
 import DashboardSelectIcon from "../../assets/img/managerhomeselectIcon.svg";
 import UserIcon from "../../assets/img/manageruserIcon.svg";
