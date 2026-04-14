@@ -224,9 +224,10 @@ Label: feature / fix
 							├── TeacherSidebar.jsx
 							├── ManagerSidebar.jsx
 							├── Footer.jsx
-				├──[modal]
+				├──[common]
 							├── TwoButtonModal.jsx
 							├── OneButtonModal.jsx
+							├── Searchbar.jsx
 	├──[firebase]
 				├── config.js
 	├──[hooks]
@@ -240,7 +241,6 @@ Label: feature / fix
 				├── ManagerLayout.jsx
 	├──[pages]
 				├──[common]
-							├── Searchbar.jsx
 							├── HomePage.jsx
 							├── LectureDetailPage.jsx   
 							├── MyLecturePage.jsx
