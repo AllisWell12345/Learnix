@@ -1,7 +1,7 @@
 import React from "react";
 
-function SignForm() {
+function SignupForm() {
   return <div></div>;
 }
 
-export default SignForm;
+export default SignupForm;

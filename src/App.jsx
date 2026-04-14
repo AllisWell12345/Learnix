@@ -13,10 +13,8 @@ import CartPage from "./pages/student/CartPage";
 import ProjectPage from "./pages/student/ProjectPage";
 import ProjectRegistPage from "./pages/student/ProjectRegistPage";
 import ProjectEditPage from "./pages/student/ProjectEditPage";
-import ProjectManagePage from "./pages/common/ProjectManagePage";
 import ProjectTotalPage from "./pages/common/ProjectTotalPage";
 import ProjectDetailPage from "./pages/common/ProjectDetailPage";
-import InterviewManagePage from "./pages/common/InterviewManagePage";
 import InterviewDetailPage from "./pages/common/InterviewDetailPage";
 import InterviewNoticePage from "./pages/student/InterviewNoticePage";
 import InterviewPracticePage from "./pages/student/InterviewPracticePage";
@@ -31,7 +29,8 @@ import UserManagePage from "./pages/manager/UserManagePage";
 import LectureManagePage from "./pages/manager/LectureManagePage";
 import DataManagePage from "./pages/manager/DataManagePage";
 import LoginPage from "./pages/auth/LoginPage";
-import SignUpPage from "./pages/auth/SignUpPage";
+import SignupPage from "./pages/auth/SignupPage";
+import PortfolioPage from "./pages/common/PortfolioPage";
 
 function App() {
   return (
@@ -41,7 +40,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path=":lectureid" element={<LectureDetailPage />} />
           <Route path="login" element={<LoginPage />} />
-          <Route path="signup" element={<SignUpPage />} />
+          <Route path="signup" element={<SignupPage />} />
         </Route>
 
         <Route path="/student" element={<StudentLayout />}>
@@ -64,14 +63,14 @@ function App() {
             <Route index element={<Navigate to="project" replace />} />
 
             <Route path="project">
-              <Route index element={<ProjectManagePage />} />
+              <Route index element={<PortfolioPage />} />
               <Route path=":lectureid" element={<ProjectTotalPage />}>
                 <Route path=":projectid" element={<ProjectDetailPage />} />
               </Route>
             </Route>
 
             <Route path="interview">
-              <Route index element={<InterviewManagePage />} />
+              <Route index element={<PortfolioPage />} />
               <Route path=":lectureid" element={<InterviewDetailPage />} />
               <Route path=":lectureid/notice" element={<InterviewNoticePage />} />
               <Route path=":lectureid/practice" element={<InterviewPracticePage />} />
@@ -94,7 +93,7 @@ function App() {
             <Route index element={<Navigate to="project" replace />} />
 
             <Route path="project">
-              <Route index element={<ProjectManagePage />} />
+              <Route index element={<PortfolioPage />} />
               <Route
                 path=":lectureid/regist"
                 element={<TemplateRegistPage />}
@@ -106,7 +105,7 @@ function App() {
             </Route>
 
             <Route path="interview">
-              <Route index element={<InterviewManagePage />} />
+              <Route index element={<PortfolioPage />} />
               <Route path=":lectureid" element={<InterviewTotalPage />}>
                 <Route
                   path=":projectid/regist"
