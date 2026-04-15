@@ -51,11 +51,9 @@ function App() {
           <Route path="mylec">
             <Route index element={<MyLecturePage />} />
             <Route path=":lectureid" element={<LectureDetailPage />}>
-              <Route path="myproj">
-                <Route index element={<ProjectPage />} />
-                <Route path="regist" element={<ProjectRegistPage />} />
-                <Route path="edit" element={<ProjectEditPage />} />
-              </Route>
+            <Route path=":lectureid/myproj" element={<ProjectPage />} />
+            <Route path=":lectureid/myproj/regist" element={<ProjectRegistPage />} />
+            <Route path=":lectureid/myproj/edit" element={<ProjectEditPage />} />
             </Route>
           </Route>
 
