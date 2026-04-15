@@ -1,9 +1,77 @@
-.pt-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+.pt-main-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #101828;
 }
 
-.title {
-  font-weight: 700;
+.pt-section {
+  margin-bottom: 30px;
+}
+
+.pt-sub-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: #101828;
+}
+
+.pt-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pt-card {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 25px 25px;
+  cursor: pointer;
+}
+
+.pt-card:hover {
+  border: 1px solid #3e5f44;
+}
+
+.pt-card-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #101828;
+}
+
+.pt-card-lecture-name {
+  font-size: 14px;
+  color: #4a5565;
+  margin-bottom: 20px;
+}
+
+.pt-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.pt-info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  color: #101828;
+}
+
+.info-value {
+  font-size: 14px;
+  color: #101828;
+}
+
+.nav-icon {
+  width: 16px;
+  height: 16px;
 }
