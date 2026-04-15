@@ -98,3 +98,13 @@
   color: white;
   flex-shrink: 0;
 }
+
+@media (max-width: 768px) {
+    .header-nav-text {
+      font-size: 0;
+    }
+    .header-nav-btn:hover {
+      cursor: pointer;
+      transform: translateY(-2px);
+    }
+}

@@ -53,3 +53,23 @@
     width: 16px;
     height: 16px;
 }
+
+.sidebar-item.active:hover {
+    cursor: pointer;
+    border: none;
+}
+
+@media (max-width: 950px) {
+    .sidebar-item {
+        font-size: 12px;
+    }
+    .sidebar-title {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar-item, .sidebar-title {
+        font-size: 0;
+    }
+}

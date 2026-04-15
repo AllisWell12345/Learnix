@@ -9,7 +9,6 @@ function UserHeader() {
     <>
       <header className="header">
         <div className="inner">
-
           <div className="header-left" />
 
           <div className="header-logo">
@@ -18,15 +17,23 @@ function UserHeader() {
 
           <div className="header-right">
             <div className="header-nav-btn">
-            <img src={mypageIcon} alt="마이페이지" className="header-mypage-img" />
-            <span className="header-nav-text">마이페이지</span>
+              <img
+                src={mypageIcon}
+                alt="마이페이지"
+                className="header-mypage-img"
+              />
+              <span className="header-nav-text">마이페이지</span>
             </div>
 
             <div className="header-nav-divider">|</div>
 
             <div className="header-nav-btn">
-            <img src={logoutIcon} alt="로그아웃" className="header-logout-img" />
-            <span className="header-nav-text">로그아웃</span>
+              <img
+                src={logoutIcon}
+                alt="로그아웃"
+                className="header-logout-img"
+              />
+              <span className="header-nav-text">로그아웃</span>
             </div>
           </div>
         </div>

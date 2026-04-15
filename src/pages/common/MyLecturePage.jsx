@@ -24,7 +24,7 @@ function MyLecturePage() {
             <div className="mylec-title-bar"></div>
             <p className="mylec-title">내 강의</p>
           </div>
-          <button className="lec-regist-btn">+ 강의 등록</button>
+          <button className="mylec-regist-btn">+ 강의 등록</button>
         </div>
         <div className="mylec-lec-container">
           <div className="mylec-sub-title-area">
