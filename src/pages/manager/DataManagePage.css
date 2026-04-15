@@ -1,0 +1,205 @@
+/* ===== 페이지 ===== */
+.datamanage-page {
+  box-sizing: border-box;
+}
+
+/* ===== 타이틀 ===== */
+.datamanage-title-area {
+  margin-bottom: 30px;
+}
+
+.datamanage-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #101828;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.datamanage-title-bar {
+  display: inline-block;
+  width: 8px;
+  height: 30px;
+  background-color: #5e936c;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+/* ===== 검색 ===== */
+
+.datamanage-search-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding-bottom: 20px;
+}
+
+.datamanage-filter-btn {
+  width: 100px;
+  height: 40px;
+  background-color: #ffffff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  flex-shrink: 0;
+  color: #4a5565;
+}
+
+.datamanage-filter-btn:hover {
+  border-color: #5e936c;
+  color: #5e936c;
+}
+
+/* ===== 유저 블록 ===== */
+.datamanage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.datamanage-user-block {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 2px solid #e5e7eb;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 24px 28px;
+}
+
+/* 유저 정보 */
+.datamanage-user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.datamanage-avatar img {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.datamanage-user-role {
+  font-size: 12px;
+  color: #e5e7eb;
+  margin-bottom: 2px;
+}
+
+.datamanage-user-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #101828;
+}
+
+/* ===== 프로젝트 + 모의면접 카드 ===== */
+.datamanage-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.datamanage-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 130px;
+  position: relative;
+}
+
+/* 카드 타입 레이블 */
+.datamanage-card-type {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4a5565;
+  margin-bottom: 4px;
+}
+
+.datamanage-card-type svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+.datamanage-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #101828;
+  line-height: 1.4;
+}
+
+.datamanage-card-meta {
+  font-size: 12px;
+  color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.datamanage-card-comments {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.datamanage-card-comments svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* 빈 상태 */
+.datamanage-empty {
+  font-size: 13px;
+  color: #e5e7eb;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+/* 삭제 버튼 */
+.datamanage-delete-btn {
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  background-color: #ffffff;
+  color: #fb2c36;
+  border: 1.5px solid #ffa2a2;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.datamanage-delete-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.datamanage-delete-btn:hover {
+  background-color: #f8fafc;
+  border: 1.5px solid #fb2c36;
+  color: #fb2c36;
+}
