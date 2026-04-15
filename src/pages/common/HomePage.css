@@ -1,0 +1,56 @@
+.home-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 50px;
+}
+
+.category-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    gap: 20px;
+}
+
+.lecture-list {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 43px;
+    row-gap: 30px;
+}
+
+.category-btn {
+    width: auto;
+    height: 45px;
+    padding: 0 30px;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #E5E7EB;
+    background: #FFF;
+    color: #6B7280;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.category-btn.active {
+    border: none;
+    color: #fff;
+    background: #5e936c;
+}
+
+.test-item {
+    width: 230px;
+    height: 300px;
+    border: 1px solid black;
+}
+
+@media (max-width: 768px) {
+    .category-container {
+        flex-wrap: wrap;
+    }
+}
