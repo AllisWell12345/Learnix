@@ -1,7 +1,11 @@
 import React from "react";
 
 function ManagerDashboardPage() {
-  return <div>ManagerDashboardPage</div>;
+  return (
+    <>
+      d
+    </>
+  );
 }
 
 export default ManagerDashboardPage;
