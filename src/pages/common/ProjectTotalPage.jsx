@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+// import { useSelector } from "react-redux";
 import "./ProjectTotalPage.css";
 import StudentIcon from "../../assets/img/Icon/StudentIcon.png";
 import CalendarIcon from "../../assets/img/Icon/CalendarIcon.png";
 
-const MOCK_PROJECTS = [
+const PRACTICE_DATA = [
   {
     projectId: 1,
     userid: 1,
@@ -54,12 +55,9 @@ function ProjectTotalPage() {
     role: pathname.includes("teacher") ? "teacher" : "student",
   };
 
-  const myProjects = MOCK_PROJECTS.filter((p) => p.userid === user.userid);
-  const otherProjects = MOCK_PROJECTS.filter((p) => p.userid !== user.userid);
-  const waitingProjects = MOCK_PROJECTS.filter((p) => p.status === "waiting");
-  const completedProjects = MOCK_PROJECTS.filter(
-    (p) => p.status === "completed",
-  );
+  const [projects, setProjects] = useState(PRACTICE_DATA);
+  // 추후 추가
+  // useEffect (setProjects)
 
   const renderCard = (proj) => (
     <div
@@ -80,11 +78,6 @@ function ProjectTotalPage() {
           <img src={CalendarIcon} alt="제출일" className="nav-icon" />
           <span className="info-value">{proj.date}</span>
         </div>
-        {user.role === "teacher" && (
-          <span className={`pt-badge ${proj.status}`}>
-            {proj.status === "waiting" ? "리뷰 대기" : "리뷰 완료"}
-          </span>
-        )}
       </div>
     </div>
   );
@@ -98,42 +91,43 @@ function ProjectTotalPage() {
       <main className="pt-content">
         {user.role === "student" ? (
           <>
-            <ProjectSection
-              title="내 프로젝트"
-              list={myProjects}
-              render={renderCard}
-            />
-            <ProjectSection
-              title="다른 수강생의 프로젝트"
-              list={otherProjects}
-              render={renderCard}
-            />
+            <section className="pt-section">
+              <p className="pt-sub-title">내 프로젝트</p>
+              <div className="pt-list">
+                {projects
+                  .filter((p) => p.userid === user.userid)
+                  .map(renderCard)}
+              </div>
+            </section>
+            <section className="pt-section">
+              <p className="pt-sub-title">다른 수강생의 프로젝트</p>
+              <div className="pt-list">
+                {projects
+                  .filter((p) => p.userid !== user.userid)
+                  .map(renderCard)}
+              </div>
+            </section>
           </>
         ) : (
           <>
-            <ProjectSection
-              title="리뷰 대기 중"
-              list={waitingProjects}
-              render={renderCard}
-            />
-            <ProjectSection
-              title="리뷰 완료"
-              list={completedProjects}
-              render={renderCard}
-            />
+            <section className="pt-section">
+              <p className="pt-sub-title">리뷰 대기 중</p>
+              <div className="pt-list">
+                {projects.filter((p) => p.status === "waiting").map(renderCard)}
+              </div>
+            </section>
+            <section className="pt-section">
+              <p className="pt-sub-title">리뷰 완료</p>
+              <div className="pt-list">
+                {projects
+                  .filter((p) => p.status === "completed")
+                  .map(renderCard)}
+              </div>
+            </section>
           </>
         )}
       </main>
     </div>
-  );
-}
-
-function ProjectSection({ title, list, render }) {
-  return (
-    <section className="pt-section">
-      <p className="pt-sub-title">{title}</p>
-      <div className="pt-list">{list.map(render)}</div>
-    </section>
   );
 }
 
