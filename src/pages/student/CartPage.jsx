@@ -103,7 +103,7 @@ function CartPage() {
                 {item.price.toLocaleString()}원
               </span>
               <div className="cart-action-btns">
-                <button className="cart-btn-apply">신청</button>
+                <button className="cart-apply-btn">신청</button>
                 <button className="cart-btn-del">
                   <img src={TrashIcon} alt="삭제" className="cart-trash-img" />
                 </button>

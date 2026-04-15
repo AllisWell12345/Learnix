@@ -134,7 +134,7 @@
   color: #101828;
 }
 
-/* 가격, 신청, 삭제 */
+/* 가격, 개별 신청, 삭제 */
 .cart-card-right {
   flex: 2;
   display: flex;
@@ -155,7 +155,7 @@
   align-items: center;
 }
 
-.cart-btn-apply {
+.cart-apply-btn {
   background: #5e936c;
   color: #ffffff;
   border: none;
@@ -165,9 +165,13 @@
   cursor: pointer;
 }
 
+.cart-apply-btn:hover {
+  background: #3e5f44;
+}
+
 .cart-btn-del {
   background: #ffffff;
-  border: 1px solid #ffcccc;
+  border: 1px solid #ffa2a2;
   padding: 9px;
   border-radius: 12px;
   cursor: pointer;
@@ -176,12 +180,17 @@
   justify-content: center;
 }
 
+.cart-btn-del:hover {
+  border: 1px solid #fb2c36;
+  background-color: #f8fafc;
+}
+
 .cart-trash-img {
   width: 20px;
   height: 20px;
 }
 
-/* 총 가격 및 신청 */
+/* 총 가격 및 한번에 신청 */
 .cart-total-section {
   display: flex;
   justify-content: flex-end;
@@ -191,7 +200,7 @@
 .cart-total-box {
   width: 450px;
   height: 100px;
-  background: white;
+  background: #ffffff;
   border: 1px solid #5e936c;
   border-radius: 12px;
   display: flex;
@@ -218,6 +227,6 @@
   cursor: pointer;
 }
 
-.cart-fianl-bun:hover {
+.cart-final-btn:hover {
   background: #3e5f44;
 }
