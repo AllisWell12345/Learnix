@@ -1,0 +1,232 @@
+.cart-container {
+  width: 100%;
+  margin: 50px auto;
+  padding: 0 50px;
+  box-sizing: border-box;
+}
+
+/* 장바구니 헤더 */
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.cart-title-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cart-title-bar {
+  display: inline-block;
+  width: 8px;
+  height: 30px;
+  background-color: #5e936c;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.cart-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #101828;
+}
+
+.cart-clear-all-btn {
+  width: 120px;
+  height: 40px;
+  border: 1px solid #ffa2a2;
+  color: #fb2c36;
+  background-color: #ffffff;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+.cart-clear-all-btn:hover {
+  border: 1px solid #fb2c36;
+  color: #fb2c36;
+  background-color: #f8fafc;
+}
+
+/* 강의 리스트 */
+.cart-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 25px 25px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+/* 제목, 설명, 카테고리 */
+.cart-card-left {
+  flex: 3;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.cart-item-img {
+  width: 150px;
+  height: 100px;
+  background: #000000;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.cart-category-badge {
+  display: inline-block;
+  color: #3e5f44;
+  background: #e8ffd7;
+  padding: 3px 10px;
+  margin-bottom: 3px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+.cart-item-name {
+  font-size: 20px;
+  margin: 8px 0 5px;
+  color: #101828;
+  font-weight: 700;
+}
+
+.cart-item-sub {
+  font-size: 15px;
+  color: #4a5565;
+}
+
+/* 모집 기간, 모집 인원, 학습 기간 */
+.cart-card-center {
+  flex: 2;
+  display: flex;
+  justify-content: space-around;
+}
+
+.cart-info-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+
+.cart-info-label {
+  font-size: 13px;
+  color: #4a5565;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cart-icon {
+  width: 13px;
+  height: 13px;
+}
+
+.cart-info-val {
+  font-size: 13px;
+  color: #101828;
+}
+
+/* 가격, 개별 신청, 삭제 */
+.cart-card-right {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 30px;
+}
+
+.cart-price-tag {
+  font-size: 24px;
+  font-weight: 700;
+  color: #101828;
+}
+
+.cart-action-btns {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.cart-apply-btn {
+  background: #5e936c;
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.cart-apply-btn:hover {
+  background: #3e5f44;
+}
+
+.cart-btn-del {
+  background: #ffffff;
+  border: 1px solid #ffa2a2;
+  padding: 9px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-btn-del:hover {
+  border: 1px solid #fb2c36;
+  background-color: #f8fafc;
+}
+
+.cart-trash-img {
+  width: 20px;
+  height: 20px;
+}
+
+/* 총 가격 및 한번에 신청 */
+.cart-total-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 50px;
+}
+
+.cart-total-box {
+  width: 450px;
+  height: 100px;
+  background: #ffffff;
+  border: 1px solid #5e936c;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
+.cart-total-txt {
+  font-size: 20px;
+  font-weight: 700;
+  color: #5e936c;
+}
+
+.cart-final-btn {
+  width: 120px;
+  height: 40px;
+  background: #5e936c;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cart-final-btn:hover {
+  background: #3e5f44;
+}
