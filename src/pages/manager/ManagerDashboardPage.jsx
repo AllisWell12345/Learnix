@@ -4,7 +4,7 @@ import users from "../../assets/img/Sidebar/manageruserselectIcon.svg";
 import videos from "../../assets/img/Sidebar/managerlectureselectIcon.svg";
 import recent from "../../assets/img/ManagerPage/recentIcon.svg";
 import notice from "../../assets/img/ManagerPage/noticeIcon.svg";
-// import profile from "../../assets/img/profileIcon.svg";
+// import profile from "../../assets/img/common/profileIcon.svg";
 
 function ManagerDashboardPage() {
   return (

@@ -1,0 +1,229 @@
+/* ===== 페이지 ===== */
+.usermanage-page {
+  box-sizing: border-box;
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 768px) {
+  .usermanage-page {
+    padding: 24px 16px;
+  }
+
+  .usermanage-td-date {
+    display: none;
+  }
+}
+
+/* ===== 타이틀 ===== */
+.usermanage-title-area {
+  margin-bottom: 30px;
+}
+
+.usermanage-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #101828;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.usermanage-title-bar {
+  display: inline-block;
+  width: 8px;
+  height: 30px;
+  background-color: #5e936c;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+/* ===== 검색 ===== */
+
+.usermanage-search-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding-bottom: 20px;
+}
+
+.usermanage-filter-btn {
+  width: 100px;
+  height: 40px;
+  background-color: #ffffff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  flex-shrink: 0;
+  color: #4a5565;
+}
+
+.usermanage-filter-btn:hover {
+  border-color: #5e936c;
+  color: #5e936c;
+}
+
+/* ===== 테이블 ===== */
+.usermanage-table-wrap {
+  background: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.usermanage-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* 헤더 */
+.usermanage-thead-row {
+  background-color: #eef7e6;
+}
+
+.usermanage-th {
+  padding: 10px 40px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #101828;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.usermanage-th-name {
+  width: 200px;
+}
+
+.usermanage-th-status {
+  width: 100px;
+  text-align: center;
+}
+
+/* 바디 행 */
+.usermanage-tbody-row {
+  border-bottom: 1px solid #ffffff;
+  transition: background-color 0.15s;
+}
+
+.usermanage-tbody-row:last-child {
+  border-bottom: none;
+}
+
+.usermanage-td {
+  padding: 14px 20px;
+  font-size: 14px;
+  color: #101828;
+  vertical-align: middle;
+}
+
+.usermanage-td-email {
+  color: #4a5565;
+}
+
+.usermanage-td-date {
+  color: #4a5565;
+}
+
+.usermanage-td-status {
+  text-align: center;
+}
+
+/* 유저 정보 (아바타 + 이름) */
+.usermanage-user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.usermanage-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #4a5565;
+}
+
+.usermanage-avatar svg {
+  width: 20px;
+  height: 20px;
+}
+
+.usermanage-name {
+  font-weight: 500;
+  color: #101828;
+}
+
+/* ===== 역할 뱃지 ===== */
+.usermanage-role-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.role-student {
+  background-color: #e8ffd7;
+  color: #3e5f44;
+}
+
+.role-teacher {
+  background-color: #3e5f44;
+  color: #ffffff;
+}
+
+/* ===== 상태 버튼 ===== */
+.usermanage-status-btn {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  border: 1.5px solid transparent;
+  min-width: 64px;
+}
+
+.usermanage-status-btn:hover {
+  opacity: 0.75;
+}
+
+/* 활성, 승인 */
+.status-active,
+.status-approved {
+  background-color: #ffffff;
+  color: #155dfc;
+  border-color: #dbeafe;
+}
+
+.status-active:hover,
+.status-approved:hover {
+  background-color: #ffffff;
+  color: #155dfc;
+  border-color: #155dfc;
+}
+
+/* 휴면, 미승인 */
+.status-dormant,
+.status-pending {
+  background-color: #ffffff;
+  color: #fb2c36;
+  border-color: #ffa2a2;
+}
+
+.status-dormant:hover,
+.status-pending:hover {
+  background-color: #ffffff;
+  color: #fb2c36;
+  border-color: #fb2c36;
+}
