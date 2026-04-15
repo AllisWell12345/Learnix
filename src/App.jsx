@@ -104,7 +104,7 @@ function App() {
               </Route>
             </Route>
 
-            <Route path="interview">
+            <Route path="project">
               <Route index element={<PortfolioPage />} />
               <Route path=":lectureid" element={<InterviewTotalPage />}>
                 <Route

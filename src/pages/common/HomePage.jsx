@@ -45,8 +45,9 @@ function HomePage() {
           ))}
         </div>
         <div className="lecture-list">
-          {testItems.map((item, index) => (
-            <div key={index} className="test-item">{item}</div>
+          {/* LectureItem 컴포넌트 들어갈 자리 */}
+          {testItems.map((item, index) => (  
+            <div key={index} className="test-item">{item}</div>   
           ))}
         </div>
       </div>
