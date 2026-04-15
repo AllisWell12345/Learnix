@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import "./ProjectTotalPage.css";
 import StudentIcon from "../../assets/img/Icon/StudentIcon.png";
 import CalendarIcon from "../../assets/img/Icon/CalendarIcon.png";
 
-// 임시 데이터 리스트
 const MOCK_PROJECTS = [
   {
     projectId: 1,
@@ -23,7 +21,7 @@ const MOCK_PROJECTS = [
     className: "React 마스터",
     author: "이철수",
     date: "2026.04.12",
-    status: "waiting",
+    status: "completed",
   },
   {
     projectId: 3,
@@ -49,11 +47,19 @@ function ProjectTotalPage() {
   const { lectureid } = useParams();
   const navigate = useNavigate();
 
-  const { user } = useSelector((state) => state.auth);
+  // 임시 경로 지정
+  const { pathname } = useLocation();
+  const user = {
+    userid: 1,
+    role: pathname.includes("teacher") ? "teacher" : "student",
+  };
 
-  const [projects, setProjects] = useState(MOCK_PROJECTS);
-
-  useEffect(() => {}, [lectureid]);
+  const myProjects = MOCK_PROJECTS.filter((p) => p.userid === user.userid);
+  const otherProjects = MOCK_PROJECTS.filter((p) => p.userid !== user.userid);
+  const waitingProjects = MOCK_PROJECTS.filter((p) => p.status === "waiting");
+  const completedProjects = MOCK_PROJECTS.filter(
+    (p) => p.status === "completed",
+  );
 
   const renderCard = (proj) => (
     <div
@@ -67,19 +73,18 @@ function ProjectTotalPage() {
       </div>
       <div className="pt-card-footer">
         <div className="pt-info-item">
-          <span className="info-label">
-            <img src={StudentIcon} alt="수강생" className="nav-icon" />
-            <span>수강생</span>
-          </span>
+          <img src={StudentIcon} alt="수강생" className="nav-icon" />
           <span className="info-value">{proj.author}</span>
         </div>
         <div className="pt-info-item">
-          <span className="info-label">
-            <img src={CalendarIcon} alt="제출일" className="nav-icon" />
-            <span>제출일</span>
-          </span>
+          <img src={CalendarIcon} alt="제출일" className="nav-icon" />
           <span className="info-value">{proj.date}</span>
         </div>
+        {user.role === "teacher" && (
+          <span className={`pt-badge ${proj.status}`}>
+            {proj.status === "waiting" ? "리뷰 대기" : "리뷰 완료"}
+          </span>
+        )}
       </div>
     </div>
   );
@@ -87,43 +92,48 @@ function ProjectTotalPage() {
   return (
     <div className="pt-container">
       <header className="pt-header">
-        <p className="pt-main-title">프로젝트 조회</p>
+        <h2 className="pt-main-title">프로젝트 조회</h2>
       </header>
+
       <main className="pt-content">
-        {user?.role === "student" ? (
+        {user.role === "student" ? (
           <>
-            <section className="pt-section">
-              <p className="pt-sub-title">내 프로젝트</p>
-              <div className="pt-list">
-                {projects
-                  .filter((p) => p.userid === user.userid)
-                  .map(renderCard)}
-              </div>
-            </section>
-            <section className="pt-section">
-              <p className="pt-sub-title">다른 수강생의 프로젝트</p>
-              <div className="pt-list">
-                {projects
-                  .filter((p) => p.userid !== user.userid)
-                  .map(renderCard)}
-              </div>
-            </section>
+            <ProjectSection
+              title="내 프로젝트"
+              list={myProjects}
+              render={renderCard}
+            />
+            <ProjectSection
+              title="다른 수강생의 프로젝트"
+              list={otherProjects}
+              render={renderCard}
+            />
           </>
         ) : (
           <>
-            <section className="pt-section">
-              <p className="pt-sub-title">리뷰 대기 중</p>
-              <div className="pt-list">
-                {projects.filter((p) => p.status === "waiting").map(renderCard)}
-              </div>
-            </section>
-            <section className="pt-section">
-              <p className="pt-sub-title">리뷰 완료</p>
-            </section>
+            <ProjectSection
+              title="리뷰 대기 중"
+              list={waitingProjects}
+              render={renderCard}
+            />
+            <ProjectSection
+              title="리뷰 완료"
+              list={completedProjects}
+              render={renderCard}
+            />
           </>
         )}
       </main>
     </div>
+  );
+}
+
+function ProjectSection({ title, list, render }) {
+  return (
+    <section className="pt-section">
+      <p className="pt-sub-title">{title}</p>
+      <div className="pt-list">{list.map(render)}</div>
+    </section>
   );
 }
 
