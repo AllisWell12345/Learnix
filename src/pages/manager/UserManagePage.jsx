@@ -54,6 +54,8 @@ function UserManagePage() {
 
   return (
     <div className="usermanage-page">
+
+      {/* 타이틀 */}
       <div className="usermanage-title-area">
         <h1 className="usermanage-title">
           <span className="usermanage-title-bar" />

@@ -151,11 +151,6 @@
   color: #4a5565;
 }
 
-.usermanage-avatar svg {
-  width: 20px;
-  height: 20px;
-}
-
 .usermanage-name {
   font-weight: 500;
   color: #101828;
@@ -208,7 +203,7 @@
 
 .status-active:hover,
 .status-approved:hover {
-  background-color: #ffffff;
+  background-color: #f8fafc;
   color: #155dfc;
   border-color: #155dfc;
 }
@@ -223,7 +218,7 @@
 
 .status-dormant:hover,
 .status-pending:hover {
-  background-color: #ffffff;
+  background-color: #f8fafc;
   color: #fb2c36;
   border-color: #fb2c36;
 }
