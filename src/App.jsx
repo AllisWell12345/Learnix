@@ -43,7 +43,7 @@ function App() {
           <Route path="signup" element={<SignupPage />} />
         </Route>
 
-        <Route path="/student" element={<StudentLayout />}>
+        <Route path="/:role" element={<StudentLayout />}>
           <Route index element={<HomePage />} />
           <Route path=":lectureid" element={<LectureDetailPage />} />
           <Route path="cart" element={<CartPage />} />
@@ -78,7 +78,7 @@ function App() {
           </Route>
         </Route>
 
-        <Route path="/teacher" element={<TeacherLayout />}>
+        <Route path="/:role" element={<TeacherLayout />}>
           <Route index element={<HomePage />} />
           <Route path=":lectureid" element={<LectureDetailPage />} />
 
@@ -104,7 +104,7 @@ function App() {
               </Route>
             </Route>
 
-            <Route path="interview">
+            <Route path=":role">
               <Route index element={<PortfolioPage />} />
               <Route path=":lectureid" element={<InterviewTotalPage />}>
                 <Route
