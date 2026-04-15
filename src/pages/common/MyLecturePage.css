@@ -1,0 +1,122 @@
+.mylec-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.mylec-top-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.mylec-title {
+    color: #101828;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.mylec-title-area {
+    width: 100px;
+    display: flex;
+    gap: 12px;
+}
+
+.mylec-title-bar {
+  width: 8px;
+  height: 30px;
+  background-color: #5e936c;
+  border-radius: 10px;
+}
+
+.lec-regist-btn {
+    width: 100px;
+    height: 30px;
+    color: #FFF;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    border-radius: 12px;
+    background: #5E936C;
+}
+
+.mylec-lec-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.mylec-sub-title-area {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.mylec-sub-title {
+    color: #101828;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.mylec-current-number {
+    width: 40px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #e8ffd7;
+    color: #3e5f44;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.mylec-end-number {
+    width: 40px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #F3F4F6;
+    color: #6B7280;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.mylec-lec-box {
+    width: 100%;
+    height: 120px;
+    border-radius: 14px;
+    border: 1px solid #E5E7EB;
+    background: #FFF;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.test-item2 {
+    width: 100%;
+    height: 100px;
+    border: 1px solid black;
+}
+
+.mylec-current-list {
+    width: 100%;
+    max-height: 30vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+.mylec-end-list {
+    width: 100%;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+}

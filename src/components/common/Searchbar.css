@@ -25,3 +25,8 @@
     border: none;
     border-radius: 12px;
 }
+
+.search-btn:hover {
+    cursor: pointer;
+    background: #3e5f44;
+}
