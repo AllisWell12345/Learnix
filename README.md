@@ -126,19 +126,16 @@ Label: feature / fix
 						├── HomePage
 									├── Searchbar (검색창)
 									├── LectureItem (mode=box)
-						├── LectureDetailPage (mode=box | mode=list) (강의상세조회)
-									├── LectureItem (mode=detail | mode=myDetail)
-						├── MyLecturePage (내 강의)
+						├── LectureDetailPage (강의상세조회) (role=student | role=teacher | role=manager)									├── LectureItem (mode=detail | mode=myDetail)
+						├── MyLecturePage (내 강의) (role=student | role=teacher)
 									├── LectureItem (mode=list)
-						├── ProjectManagePage (프로젝트관리)
-									├── LectureItem (mode=proList)
-						├── InterviewManagePage (모의면접관리)
-									├── LectureItem (mode=invList)
-						├── ProjectTotalPage (프로젝트 전체 조회)
+						├── PortfolioManagePage (프로젝트관리) (role=student | role=teacher)
+									├── LectureItem (mode=project | mode=interview)
+						├── ProjectTotalPage (프로젝트 전체 조회) (role=student | role=teacher)
 									├── ProjectItem (mode=list)
-						├── ProjectDetailPage (프로젝트 상세 조회)
+						├── ProjectDetailPage (프로젝트 상세 조회) (role=manager | ) ( currentUser )
 									├── ProjectItem (mode=detail)
-						├── InterviewDetailPage (모의면접 상세 조회)
+						├── InterviewDetailPage (모의면접 상세 조회) (role=manager | ) ( currentUser )
 									├── interviewItem (mode=detail)
 						
 						├── CartPage (수강생-장바구니)
@@ -186,6 +183,7 @@ Label: feature / fix
 									├── SignForm
 									
 			├── Footer
+
 ```
 
 ## 파일 구조 설계
@@ -201,8 +199,8 @@ Label: feature / fix
 				├──[manager]
 							├── userItem.jsx
 							├── PortfolioItem.jsx
-				├──[sign]
-							├── SignForm.jsx
+				├──[signup]
+							├── SignupForm.jsx
 				├──[lecture]
 							├── LectureItem.jsx
 				├──[project]
@@ -227,11 +225,12 @@ Label: feature / fix
 				├──[common]
 							├── TwoButtonModal.jsx
 							├── OneButtonModal.jsx
+							├── DeleteModal.jsx
 							├── Searchbar.jsx
 	├──[firebase]
 				├── config.js
 	├──[hooks]
-				├── useModal.js
+				├── useModal.jsx
 	├──[layouts]
 				├── MainLayout.jsx
 				├── StudentLayout.jsx
@@ -242,26 +241,25 @@ Label: feature / fix
 	├──[pages]
 				├──[common]
 							├── HomePage.jsx
-							├── LectureDetailPage.jsx   
+							├── LectureDetailPage.jsx 
 							├── MyLecturePage.jsx
-							├── ProjectManagePage.jsx
-							├── InterviewManagePage.jsx 
+							├── PortfolioPage.jsx /홍근
 							├── ProjectTotalPage.jsx
-							├── ProjectDetailPage.jsx   
-							├── InterviewDetailPage.jsx  
+							├── ProjectDetailPage.jsx 
+							├── InterviewDetailPage.jsx 
 				├──[student]
 							├── CartPage.jsx
 							├── ProjectPage.jsx
-							├── ProjectRegistPage.jsx 
+							├── ProjectRegistPage.jsx
 							├── ProjectEditPage.jsx 
 							├── InterviewNoticePage.jsx
 							├── InterviewPracticePage.jsx
 				├──[teacher]
-							├── LectureRegistPage.jsx  
+							├── LectureRegistPage.jsx 
 							├── LectureEditPage.jsx  
-							├── TemplateRegistPage.jsx  
+							├── TemplateRegistPage.jsx 
 							├── TemplateEditPage.jsx 
-							├── InterviewRegistPage.jsx  
+							├── InterviewRegistPage.jsx 
 							├── InterviewTotalPage.jsx 
 				├──[manager]
               ├── ManagerDashboardPage.jsx
@@ -270,14 +268,19 @@ Label: feature / fix
               ├── DataManagePage.jsx
         ├──[auth]
               ├── LoginPage.jsx
-              ├── SignUpPage.jsx   /가영
+              ├── SignupPage.jsx
 	├──[services]
 				├── cartService.js
+				├── attendingService.js
+				├── videoService.js
+				├── templateService.js
 				├── lectureService.js
 				├── projectService.js
-				├── interviewService.js
+				├── interviewQuestionService.js
+				├── interviewAnswerService.js
 				├── authService.js
 				├── userService.js
+				├── commentService.js
 	├──[store]
 				├── store.js
 				├── cartSlice.js
@@ -286,4 +289,6 @@ Label: feature / fix
 				├── interviewSlice.js
 				├── authSlice.js
 				├── userSlice.js
+				├── commentSlice.js
+
 ```
