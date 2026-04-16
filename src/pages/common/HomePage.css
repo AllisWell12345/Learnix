@@ -26,27 +26,22 @@
 
 .category-btn {
     width: auto;
-    height: 45px;
+    height: 40px;
     padding: 0 30px;
     background: #fff;
-    border-radius: 16px;
+    border-radius: 12px;
     border: 1px solid #E5E7EB;
     background: #FFF;
     color: #6B7280;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
+    cursor: pointer;
 }
 
 .category-btn.active {
     border: none;
     color: #fff;
     background: #5e936c;
-}
-
-.test-item {
-    width: 230px;
-    height: 300px;
-    border: 1px solid black;
 }
 
 @media (max-width: 768px) {
