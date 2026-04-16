@@ -1,7 +1,7 @@
 import "./InterviewNoticePage.css";
 
 function InterviewNoticePage() {
-  const projectTitle = "React 를 활용한 앱 구축";
+  const projectTitle = "React를 활용한 앱 구축";
 
   return (
     <div className="interview-notice-container">
