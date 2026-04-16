@@ -1,0 +1,49 @@
+.interview-notice-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 60px 40px;
+}
+
+.interview-project-title {
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  color: #101828;
+  margin-bottom: 50px;
+}
+
+.interview-guide-box {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 50px;
+  padding: 0 20px;
+}
+
+.interview-guide-box p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #4a5565;
+  margin: 0;
+}
+
+.interview-action-area {
+  display: flex;
+  justify-content: center;
+}
+
+.interview-start-btn {
+  width: 120px;
+  height: 45px;
+  background-color: #5e936c;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.interview-start-btn:hover {
+  background-color: #3e5f44;
+}
