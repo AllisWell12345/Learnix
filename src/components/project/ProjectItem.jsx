@@ -6,7 +6,7 @@ import CalendarIcon from "../../assets/img/Icon/CalendarIcon.png";
 function ProjectItem({ project, mode = "list", role = "student" }) {
   const navigate = useNavigate();
 
-  // 리스트 모드
+  // 모드 (리스트)
   if (mode === "list") {
     return (
       <div
