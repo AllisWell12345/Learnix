@@ -1,4 +1,3 @@
-import useModal from "../../hooks/useModal";
 import "./MyLecturePage.css";
 
 function MyLecturePage() {
