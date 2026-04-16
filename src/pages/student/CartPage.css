@@ -52,6 +52,16 @@
 }
 
 /* 강의 리스트 */
+.cart-empty {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 500;
+  color: #4a5565;
+}
+
 .cart-list {
   width: 100%;
   max-height: 70vh;
@@ -207,14 +217,15 @@
 
 .cart-total-box {
   width: 450px;
-  height: 100px;
+  height: 80px;
   background: #ffffff;
   border: 1px solid #5e936c;
   border-radius: 12px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 30px;
+  justify-content: end;
+  gap: 50px;
+  padding-right: 25px;
 }
 
 .cart-total-txt {
