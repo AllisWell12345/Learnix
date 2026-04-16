@@ -4,10 +4,10 @@ import "./LoginPage.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import eyeOn from "../../assets/img/Auth/eyeon.svg";
 import eyeOff from "../../assets/img/Auth/eyeoff.svg";
+import useModal from "../../hooks/useModal";
 
 function LoginPage() {
-
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,6 +15,8 @@ function LoginPage() {
   const [saveId, setSaveId] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const { modal, openModal } = useModal();
 
   const handleLogin = async () => {
     setError("");
@@ -40,7 +42,10 @@ function LoginPage() {
             "너무 많은 로그인 시도가 있습니다. 잠시 후 다시 시도해주세요.";
           break;
       }
-      alert(errorMsg);
+      openModal("CHECK", {
+        mainMsg: "로그인 실패",
+        subMsg: errorMsg,
+      });
     } finally {
       setLoading(false);
     }
@@ -130,13 +135,14 @@ function LoginPage() {
           >
             {loading ? "로그인 중..." : "로그인"}
           </button>
-
           {/* 회원가입 */}
           <div className="login-signup">
             <NavLink to="/signup">회원가입</NavLink>
           </div>
         </div>
       </div>
+
+      {modal}
     </div>
   );
 }

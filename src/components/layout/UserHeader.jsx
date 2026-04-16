@@ -3,8 +3,12 @@ import "./Header.css";
 import logo from "../../assets/img/Header/Learnix-logo.png";
 import mypageIcon from "../../assets/img/Header/mypageIcon.svg";
 import logoutIcon from "../../assets/img/Header/logoutIcon.svg";
+import { useNavigate } from "react-router-dom";
 
 function UserHeader() {
+  const navigate = useNavigate();
+  const handleLogoutClick = () => navigate("/");
+
   return (
     <>
       <header className="header">
@@ -27,7 +31,7 @@ function UserHeader() {
 
             <div className="header-nav-divider">|</div>
 
-            <div className="header-nav-btn">
+            <div className="header-nav-btn" onClick={handleLogoutClick}>
               <img
                 src={logoutIcon}
                 alt="로그아웃"
