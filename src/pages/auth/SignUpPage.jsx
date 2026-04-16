@@ -1,47 +1,56 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./SignupPage.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import eyeOn from "../../assets/img/Auth/eyeon.svg";
 import eyeOff from "../../assets/img/Auth/eyeoff.svg";
+import { logout, signUp } from "../../services/authService";
+import { createUser } from "../../services/userService";
+import useModal from "../../hooks/useModal";
+import { auth } from "../../firebase/config";
+import { useDispatch } from "react-redux";
 
 function SignupPage() {
   const navigate = useNavigate();
+  const { modal, openModal } = useModal();
+  const dispatch = useDispatch();
 
-  const [role, setRole] = useState("수강생");
-  const [name, setName] = useState("");
-  const [userId, setUserId] = useState("");
-  const [idChecked, setIdChecked] = useState(false);
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    birth: "",
+    phone: "",
+    gender: "",
+    active: true,
+  });
+
+  const [role, setRole] = useState("student");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-  const [email, setEmail] = useState("");
-  const [birth, setBirth] = useState("");
-  const [phone, setPhone] = useState("");
-  const [gender, setGender] = useState("");
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // TODO: 중복 확인 로직
-  const handleIdCheck = () => {
-    if (!userId) {
-      alert("아이디를 입력해주세요.");
-      return;
-    }
-    setIdChecked(true);
-    alert("사용 가능한 아이디입니다.");
+  const handleDataChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
   };
 
-  // authService와 연결
-  // TODO: signUp(email, password) 연결
+  // 회원가입 함수
   const handleSignup = async () => {
+    const { name, email, password, birth, phone, gender, active } = formData;
+
     setError("");
+
     if (
       !name ||
-      !userId ||
+      !email ||
       !password ||
       !passwordConfirm ||
-      !email ||
       !birth ||
       !phone ||
       !gender
@@ -49,30 +58,83 @@ function SignupPage() {
       setError("모든 항목을 입력해주세요.");
       return;
     }
-    if (!idChecked) {
-      setError("아이디 중복 확인을 해주세요.");
-      return;
-    }
+
     if (password !== passwordConfirm) {
       setError("비밀번호가 일치하지 않습니다.");
       return;
     }
+
     if (password.length < 8) {
       setError("비밀번호는 8자리 이상이어야 합니다.");
       return;
     }
+
     setLoading(true);
+
     try {
-      navigate("/login");
-    } catch (err) {
-      setError("회원가입 중 오류가 발생했습니다.");
+      const authUser = await signUp(email, password);
+      const userData = await getUserByUid(authUser.uid);
+
+      dispatch(setCurrentUser(userData));
+      console.log("회원가입 직후 currentUser:", auth.currentUser);
+      console.log("회원가입 반환 user:", authUser);
+
+      const newUser = {
+        role: role,
+        uid: authUser.uid,
+        name,
+        email,
+        password,
+        birth,
+        phone,
+        gender,
+        active: role === "student" ? true : false,
+      };
+
+      await createUser(newUser);
+
+      if (role === "student") {
+        await logout();
+        console.log("로그아웃 직후 currentUser:", auth.currentUser);
+        openModal("CHECK", {
+          mainMsg: "가입이 완료되었습니다!",
+          subMsg:
+            "환영합니다! 🎉 확인 버튼을 누르면 로그인 페이지로 이동합니다!",
+          onConfirm: () => navigate("/login"),
+        });
+        return;
+      }
+
+      if (role === "teacher") {
+        await logout();
+        console.log("로그아웃 직후 currentUser:", auth.currentUser);
+        openModal("CHECK", {
+          mainMsg: "가입이 완료되었습니다!",
+          subMsg: "강사는 관리자의 승인 후 이용이 가능합니다.",
+          onConfirm: () => navigate("/login"),
+        });
+        return;
+      }
+    } catch (error) {
+      let errorMsg = "회원가입 중 오류가 발생했습니다.";
+      switch (error.code) {
+        case "auth/invalid-email":
+          errorMsg = "올바른 이메일 형식이 아닙니다.";
+          break;
+        case "auth/email-already-in-use":
+          errorMsg = "이미 사용 중인 이메일입니다.";
+          break;
+        case "auth/weak-password":
+          errorMsg = "비밀번호가 너무 약합니다.";
+          break;
+      }
+      openModal("WARNING", {
+        mainMsg: "회원가입 실패!",
+        subMsg: errorMsg,
+      });
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") handleSignup();
   };
 
   return (
@@ -80,17 +142,16 @@ function SignupPage() {
       <div className="signup-card">
         <h1 className="signup-title">회원가입</h1>
 
-        {/* 역할 탭 */}
         <div className="signup-tab">
           <button
-            className={`signup-tab-btn${role === "수강생" ? " active" : ""}`}
-            onClick={() => setRole("수강생")}
+            className={`signup-tab-btn${role === "student" ? " active" : ""}`}
+            onClick={() => setRole("student")}
           >
             수강생
           </button>
           <button
-            className={`signup-tab-btn${role === "강사" ? " active" : ""}`}
-            onClick={() => setRole("강사")}
+            className={`signup-tab-btn${role === "teacher" ? " active" : ""}`}
+            onClick={() => setRole("teacher")}
           >
             강사
           </button>
@@ -99,88 +160,73 @@ function SignupPage() {
         <div className="signup-form">
           {/* 이름 */}
           <div className="signup-field">
-            <label className="signup-label">
+            <label className="signup-label" htmlFor="name">
               이름 <span className="signup-required">*</span>
             </label>
             <input
               className="signup-input"
+              id="name"
               type="text"
               placeholder="이름을 입력하세요"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={formData.name}
+              onChange={handleDataChange}
             />
           </div>
 
-          {/* 아이디 */}
+          {/* 이메일 */}
           <div className="signup-field">
-            <label className="signup-label">
-              아이디 <span className="signup-required">*</span>
+            <label className="signup-label" htmlFor="email">
+              이메일 <span className="signup-required">*</span>
             </label>
-            <div className="signup-input-row">
-              <input
-                className="signup-input"
-                type="text"
-                placeholder="아이디를 입력하세요"
-                value={userId}
-                onChange={(e) => {
-                  setUserId(e.target.value);
-                  setIdChecked(false);
-                }}
-              />
-              <button className="signup-check-btn" onClick={handleIdCheck}>
-                중복 확인
-              </button>
-            </div>
+            <input
+              className="signup-input"
+              id="email"
+              type="email"
+              placeholder="example@email.com"
+              value={formData.email}
+              onChange={handleDataChange}
+            />
           </div>
 
           {/* 비밀번호 */}
           <div className="signup-field">
-            <label className="signup-label">
+            <label className="signup-label" htmlFor="password">
               비밀번호 <span className="signup-required">*</span>
             </label>
             <div className="signup-input-wrap">
               <input
                 className="signup-input"
+                id="password"
                 type={showPassword ? "text" : "password"}
-                placeholder="비밀번호를 입력하세요"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onKeyDown={handleKeyDown}
+                placeholder="비밀번호 입력"
+                value={formData.password}
+                onChange={handleDataChange}
               />
               <button
                 type="button"
                 className="signup-eye-btn"
                 onClick={() => setShowPassword((v) => !v)}
-                aria-label="비밀번호 보기"
               >
-                {showPassword ? (
-                  <img
-                    src={eyeOff}
-                    alt="비밀번호 숨기기"
-                    className="signup-eye-icon"
-                  />
-                ) : (
-                  <img
-                    src={eyeOn}
-                    alt="비밀번호 보기"
-                    className="signup-eye-icon"
-                  />
-                )}
+                <img
+                  src={showPassword ? eyeOff : eyeOn}
+                  alt=""
+                  className="signup-eye-icon"
+                />
               </button>
             </div>
-            <p className="signup-hint">영문과 숫자를 조합한 8자리 이상</p>
           </div>
 
           {/* 비밀번호 확인 */}
           <div className="signup-field">
-            <label className="signup-label">
+            <label className="signup-label" htmlFor="passwordConfirm">
               비밀번호 확인 <span className="signup-required">*</span>
             </label>
             <div className="signup-input-wrap">
               <input
                 className="signup-input"
+                id="passwordConfirm"
                 type={showPasswordConfirm ? "text" : "password"}
-                placeholder="비밀번호를 다시 입력하세요"
+                placeholder="비밀번호 확인"
                 value={passwordConfirm}
                 onChange={(e) => setPasswordConfirm(e.target.value)}
               />
@@ -188,64 +234,43 @@ function SignupPage() {
                 type="button"
                 className="signup-eye-btn"
                 onClick={() => setShowPasswordConfirm((v) => !v)}
-                aria-label="비밀번호 보기"
               >
-                {showPasswordConfirm ? (
-                  <img
-                    src={eyeOff}
-                    alt="비밀번호 숨기기"
-                    className="signup-eye-icon"
-                  />
-                ) : (
-                  <img
-                    src={eyeOn}
-                    alt="비밀번호 보기"
-                    className="signup-eye-icon"
-                  />
-                )}
+                <img
+                  src={showPasswordConfirm ? eyeOff : eyeOn}
+                  alt=""
+                  className="signup-eye-icon"
+                />
               </button>
             </div>
           </div>
 
-          {/* 이메일 */}
-          <div className="signup-field">
-            <label className="signup-label">
-              이메일 <span className="signup-required">*</span>
-            </label>
-            <input
-              className="signup-input"
-              type="email"
-              placeholder="example@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-
           {/* 생년월일 */}
           <div className="signup-field">
-            <label className="signup-label">
+            <label className="signup-label" htmlFor="birth">
               생년월일 <span className="signup-required">*</span>
             </label>
             <input
               className="signup-input"
+              id="birth"
               type="date"
-              value={birth}
-              onChange={(e) => setBirth(e.target.value)}
+              value={formData.birth}
+              onChange={handleDataChange}
               onClick={(e) => e.target.showPicker()}
             />
           </div>
 
-          {/* 핸드폰 번호 */}
+          {/* 전화번호 */}
           <div className="signup-field">
-            <label className="signup-label">
+            <label className="signup-label" htmlFor="phone">
               핸드폰 번호 <span className="signup-required">*</span>
             </label>
             <input
               className="signup-input"
+              id="phone"
               type="tel"
               placeholder="010-0000-0000"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              value={formData.phone}
+              onChange={handleDataChange}
             />
           </div>
 
@@ -259,9 +284,10 @@ function SignupPage() {
                 <input
                   type="radio"
                   name="gender"
-                  value="남성"
-                  checked={gender === "남성"}
-                  onChange={(e) => setGender(e.target.value)}
+                  id="gender"
+                  value="M"
+                  checked={formData.gender === "M"}
+                  onChange={handleDataChange}
                   className="signup-radio"
                 />
                 남성
@@ -270,9 +296,10 @@ function SignupPage() {
                 <input
                   type="radio"
                   name="gender"
-                  value="여성"
-                  checked={gender === "여성"}
-                  onChange={(e) => setGender(e.target.value)}
+                  id="gender"
+                  value="F"
+                  checked={formData.gender === "F"}
+                  onChange={handleDataChange}
                   className="signup-radio"
                 />
                 여성
@@ -280,10 +307,10 @@ function SignupPage() {
             </div>
           </div>
 
-          {/* 에러 메시지 */}
+          {/* 에러 */}
           {error && <p className="signup-error">{error}</p>}
 
-          {/* 가입하기 버튼 */}
+          {/* 버튼 */}
           <button
             className={`signup-btn${loading ? " loading" : ""}`}
             onClick={handleSignup}
@@ -292,7 +319,6 @@ function SignupPage() {
             {loading ? "처리 중..." : "가입하기"}
           </button>
 
-          {/* 로그인 페이지로 */}
           <div className="signup-login-row">
             <NavLink to="/login" className="signup-login-link">
               로그인 페이지로 돌아가기
@@ -300,6 +326,7 @@ function SignupPage() {
           </div>
         </div>
       </div>
+      {modal}
     </div>
   );
 }

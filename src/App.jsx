@@ -35,6 +35,7 @@ import PortfolioPage from "./pages/common/PortfolioPage";
 function App() {
   return (
     <>
+    <AuthInitializer />
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
