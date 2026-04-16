@@ -1,33 +1,70 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./LoginPage.css";
-// import { login } from "../../services/authService.js";
 import { NavLink, useNavigate } from "react-router-dom";
 import eyeOn from "../../assets/img/Auth/eyeon.svg";
 import eyeOff from "../../assets/img/Auth/eyeoff.svg";
 import useModal from "../../hooks/useModal";
+import { login, logout } from "../../services/authService";
+import { getUserByUid } from "../../services/userService";
 
 function LoginPage() {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [loginForm, setLoginForm] = useState({
+    email: "",
+    password: "",
+  });
+  const [isSaved, setIsSaved] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [saveId, setSaveId] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
   const { modal, openModal } = useModal();
 
-  const handleLogin = async () => {
+  const handleDataChange = (e) => {
+    setLoginForm({
+      ...loginForm,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  // 로그인 함수
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const { email, password } = loginForm;
+
     setError("");
+
     if (!email || !password) {
       setError("아이디와 비밀번호를 입력해주세요.");
       return;
     }
     setLoading(true);
     try {
-      await login(email, password);
-      navigate("/");
+      const authUser = await login(email, password);
+      const loginUser = await getUserByUid(authUser.uid);
+
+      if (loginUser.active === false) {
+        await logout();
+        openModal("CHECK", {
+          mainMsg: "가입 승인 대기중입니다.",
+          subMsg: "관리자의 승인을 기다려주세요.",
+          onConfirm: () => {
+            setLoginForm({
+              email: "",
+              password: "",
+            });
+            setError("");
+            setShowPassword(false);
+            setIsSaved(false);
+          },
+        });
+      } else {
+        openModal("CHECK", {
+          mainMsg: "로그인 성공!",
+          subMsg: "확인 버튼을 클릭하면 홈페이지로 이동합니다!",
+          onConfirm: () => navigate(`/${loginUser.role}`),
+        });
+      }
     } catch (error) {
       let errorMsg = "로그인 중 오류가 발생했습니다.";
       switch (error.code) {
@@ -42,17 +79,22 @@ function LoginPage() {
             "너무 많은 로그인 시도가 있습니다. 잠시 후 다시 시도해주세요.";
           break;
       }
-      openModal("CHECK", {
+      openModal("WARNING", {
         mainMsg: "로그인 실패",
         subMsg: errorMsg,
+        onConfirm: () => {
+          setLoginForm({
+            email: "",
+            password: "",
+          });
+          setError("");
+          setShowPassword(false);
+          setIsSaved(false);
+        },
       });
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") handleLogin();
   };
 
   return (
@@ -63,31 +105,35 @@ function LoginPage() {
           <p className="login-subtitle">Learnix에 오신 것을 환영합니다</p>
         </div>
 
-        <div className="login-form">
+        <form className="login-form" onSubmit={handleLogin}>
           {/* 아이디 */}
           <div className="login-field">
-            <label className="login-label">아이디</label>
+            <label className="login-label" htmlFor="email">
+              이메일
+            </label>
             <input
               className="login-input"
-              type="email"
-              placeholder="아이디를 입력하세요"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onKeyDown={handleKeyDown}
+              id="email"
+              type="text"
+              placeholder="이메일을 입력하세요"
+              value={loginForm.email}
+              onChange={handleDataChange}
             />
           </div>
 
           {/* 비밀번호 */}
           <div className="login-field">
-            <label className="login-label">비밀번호</label>
+            <label className="login-label" htmlFor="password">
+              비밀번호
+            </label>
             <div className="login-input-wrap">
               <input
                 className="login-input"
+                id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="비밀번호를 입력하세요"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onKeyDown={handleKeyDown}
+                value={loginForm.password}
+                onChange={handleDataChange}
               />
               <button
                 type="button"
@@ -115,22 +161,22 @@ function LoginPage() {
           {/* 에러 메시지 */}
           {error && <p className="login-error">{error}</p>}
 
-          {/* 아이디 저장 */}
+          {/* 이메일 저장 */}
           <label className="login-checkbox-label">
             <input
               type="checkbox"
               className="login-checkbox"
-              checked={saveId}
-              onChange={(e) => setSaveId(e.target.checked)}
+              checked={isSaved}
+              onChange={() => setIsSaved(!isSaved)}
             />
             <span className="login-checkbox-custom" />
-            아이디 저장
+            이메일 저장
           </label>
 
           {/* 로그인 버튼 */}
           <button
+            type="submit"
             className={`login-btn${loading ? " loading" : ""}`}
-            onClick={handleLogin}
             disabled={loading}
           >
             {loading ? "로그인 중..." : "로그인"}
@@ -139,7 +185,7 @@ function LoginPage() {
           <div className="login-signup">
             <NavLink to="/signup">회원가입</NavLink>
           </div>
-        </div>
+        </form>
       </div>
 
       {modal}

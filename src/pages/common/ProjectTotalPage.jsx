@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
-// import { useSelector } from "react-redux";
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
+import ProjectItem from "../../components/project/ProjectItem";
 import "./ProjectTotalPage.css";
-import StudentIcon from "../../assets/img/Icon/StudentIcon.png";
-import CalendarIcon from "../../assets/img/Icon/CalendarIcon.png";
 
+// 임시 데이터
 const PRACTICE_DATA = [
   {
     projectId: 1,
@@ -26,15 +25,6 @@ const PRACTICE_DATA = [
   },
   {
     projectId: 3,
-    userid: 2,
-    title: "Tailwind 포트폴리오",
-    className: "React 마스터",
-    author: "이철수",
-    date: "2026.04.12",
-    status: "completed",
-  },
-  {
-    projectId: 4,
     userid: 3,
     title: "Node.js 채팅 앱",
     className: "풀스택 캠프",
@@ -43,105 +33,112 @@ const PRACTICE_DATA = [
     status: "waiting",
   },
   {
-    projectId: 5,
-    userid: 1,
-    title: "Next.js 블로그",
+    projectId: 6,
+    userid: 6,
+    title: "Node.js 채팅 앱",
     className: "풀스택 캠프",
-    author: "김학생",
-    date: "2026.04.14",
+    author: "박지민",
+    date: "2026.04.13",
     status: "waiting",
   },
-   {
-    projectId: 6,
-    userid: 1,
-    title: "Next.js 블로그",
+  {
+    projectId: 5,
+    userid: 5,
+    title: "Node.js 채팅 앱",
     className: "풀스택 캠프",
-    author: "김학생",
-    date: "2026.04.14",
+    author: "박지민",
+    date: "2026.04.13",
+    status: "waiting",
+  },
+  {
+    projectId: 4,
+    userid: 4,
+    title: "Node.js 채팅 앱",
+    className: "풀스택 캠프",
+    author: "박지민",
+    date: "2026.04.13",
     status: "waiting",
   },
 ];
 
 function ProjectTotalPage() {
-  const { lectureid } = useParams();
-  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   // 임시 경로 지정
-  const { pathname } = useLocation();
   const user = {
     userid: 1,
     role: pathname.includes("teacher") ? "teacher" : "student",
   };
 
-  const [projects, setProjects] = useState(PRACTICE_DATA);
-  // 추후 추가
-  // useEffect (setProjects)
+  const [projects] = useState(PRACTICE_DATA);
 
-  const renderCard = (proj) => (
-    <div
-      key={proj.projectId}
-      className="pt-card"
-      onClick={() => navigate(`${proj.projectId}`)}
-    >
-      <div className="pt-card-header">
-        <h4 className="pt-card-title">{proj.title}</h4>
-        <p className="pt-card-lecture-name">{proj.className}</p>
-      </div>
-      <div className="pt-card-footer">
-        <div className="pt-info-item">
-          <img src={StudentIcon} alt="수강생" className="nav-icon" />
-          <span className="info-value">{proj.author}</span>
-        </div>
-        <div className="pt-info-item">
-          <img src={CalendarIcon} alt="제출일" className="nav-icon" />
-          <span className="info-value">{proj.date}</span>
-        </div>
-      </div>
-    </div>
-  );
+  const myProjects = projects.filter((p) => p.userid === user.userid);
+  const otherProjects = projects.filter((p) => p.userid !== user.userid);
+
+  const waitingProjects = projects.filter((p) => p.status === "waiting");
+  const completedProjects = projects.filter((p) => p.status === "completed");
 
   return (
     <div className="pt-container">
       <header className="pt-header">
-        <h2 className="pt-main-title">프로젝트 조회</h2>
+        <div className="cart-title-area">
+          <div className="cart-title-bar" />
+          <h2 className="pt-main-title">프로젝트 조회</h2>
+        </div>
       </header>
 
       <main className="pt-content">
         {user.role === "student" ? (
           <>
+            <div className="pt-section-header">
               <p className="pt-sub-title">내 프로젝트</p>
-            <section className="pt-section">
-              <div className="pt-list">
-                {projects
-                  .filter((p) => p.userid === user.userid)
-                  .map(renderCard)}
-              </div>
-            </section>
+              <span className="pt-count-badge badge-my">
+                {myProjects.length}
+              </span>
+            </div>
+            <div className="pt-list">
+              {myProjects.map((p) => (
+                <ProjectItem key={p.projectId} project={p} role={user.role} />
+              ))}
+            </div>
+
+            <div className="pt-section-header">
               <p className="pt-sub-title">다른 수강생의 프로젝트</p>
-            <section className="pt-section">
-              <div className="pt-list">
-                {projects
-                  .filter((p) => p.userid !== user.userid)
-                  .map(renderCard)}
-              </div>
-            </section>
+              <span className="pt-count-badge badge-other">
+                {otherProjects.length}
+              </span>
+            </div>
+            <div className="pt-list">
+              {otherProjects.map((p) => (
+                <ProjectItem key={p.projectId} project={p} role={user.role} />
+              ))}
+            </div>
           </>
         ) : (
           <>
+            <div className="pt-section-header">
               <p className="pt-sub-title">리뷰 대기 중</p>
-            <section className="pt-section">
-              <div className="pt-list">
-                {projects.filter((p) => p.status === "waiting").map(renderCard)}
-              </div>
-            </section>
+              <span className="pt-count-badge badge-waiting">
+                {waitingProjects.length}
+              </span>
+            </div>
+            <div className="pt-list">
+              {waitingProjects.map((p) => (
+                <ProjectItem key={p.projectId} project={p} role={user.role} />
+              ))}
+            </div>
+
+            <div className="pt-section-header">
               <p className="pt-sub-title">리뷰 완료</p>
-            <section className="pt-section">
-              <div className="pt-list">
-                {projects
-                  .filter((p) => p.status === "completed")
-                  .map(renderCard)}
-              </div>
-            </section>
+              <span className="pt-count-badge badge-completed">
+                {completedProjects.length}
+              </span>
+            </div>
+            <div className="pt-list">
+              {completedProjects.map((p) => (
+                <ProjectItem key={p.projectId} project={p} role={user.role} />
+              ))}
+            </div>
           </>
         )}
       </main>
