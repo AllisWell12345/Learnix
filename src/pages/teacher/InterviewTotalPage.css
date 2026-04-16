@@ -1,0 +1,83 @@
+.it-main-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #101828;
+}
+
+.it-sections-container {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.it-section-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.it-sub-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #101828;
+}
+
+.it-count-badge {
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.badge-waiting {
+  background-color: #dbeafe;
+  color: #155dfc;
+}
+
+.badge-reviewing {
+  background-color: #eef7e6;
+  color: #3e5f44;
+}
+
+.badge-completed {
+  background-color: #e5e7eb;
+  color: #4a5565;
+}
+
+.it-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.it-card {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.it-card-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #101828;
+}
+
+.it-register-btn {
+  background-color: #5e936c;
+  color: #ffffff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.it-register-btn:hover {
+  background-color: #3e5f44;
+}
