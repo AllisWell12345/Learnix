@@ -2,28 +2,30 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const dummyItems = [
   {
-    id: 1,
-    lectureId: 101,
+    userid: 1,
+    lectureId: 1,
+    title: "강의 제목",
+    subTitle: "강의 한줄 설명",
+    season: 1,
     category: "프론트엔드",
-    title: "React 기반 할 일 관리 앱",
-    subTitle: "체계적인 React 프로젝트 구축",
-    recruitEnd: "26.04.27",
-    members: 35,
-    studyStart: "26.05.05",
-    studyEnd: "26.07.05",
-    price: 125000,
+    price: 10000,
+    members: 50,
+    recruitEnd: "2026-04-25",
+    studyStart: "2026-04-26",
+    studyEnd: "2026-07-26",
   },
   {
-    id: 2,
-    lectureId: 102,
-    category: "백엔드",
-    title: "Node.js REST API 서버 구축",
-    subTitle: "실전 백엔드 개발 완성",
-    recruitEnd: "26.05.03",
+    userid: 1,
+    lectureId: 2,
+    title: "강의 제목",
+    subTitle: "강의 한줄 설명",
+    season: 3,
+    category: "프론트엔드",
+    price: 10000,
     members: 50,
-    studyStart: "26.05.10",
-    studyEnd: "26.08.10",
-    price: 155000,
+    recruitEnd: "2026-04-25",
+    studyStart: "2026-04-26",
+    studyEnd: "2026-07-26",
   },
 ];
 
@@ -45,9 +47,9 @@ const cartSlice = createSlice({
 
     removeFromCart: (state, action) => {
       const existingItem = state.items.find(
-        (item) => item.id === action.payload,
+        (item) => item.lectureId === action.payload,
       );
-      state.items = state.items.filter((item) => item.id !== action.payload);
+      state.items = state.items.filter((item) => item.lectureId !== action.payload);
       state.totalPrice -= existingItem.price;
     },
 

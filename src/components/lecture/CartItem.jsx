@@ -9,7 +9,7 @@ function CartItem({ item }) {
   const dispatch = useDispatch();
 
   const handleItemRemove = () => {
-    dispatch(removeFromCart(item.id));
+    dispatch(removeFromCart(item.lectureId));
   };
 
   return (
