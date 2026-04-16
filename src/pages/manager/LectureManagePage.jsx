@@ -1,23 +1,12 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import "./LectureManagePage.css";
 import Searchbar from "../../components/common/Searchbar";
 import filter from "../../assets/img/common/filterIcon.svg";
+import LectureItem from "../../components/lecture/LectureItem";
 
 function LectureManagePage() {
-  const testItems = [
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-  ];
-
+  const { lectures } = useSelector((state) => state.lecture);
   const [search, setSearch] = useState("");
 
   const handleSearch = () => {
@@ -50,12 +39,9 @@ function LectureManagePage() {
       {/* 강의 목록 */}
       <div className="lecmanage-lec-container">
         <div className="lecmanage-total-list">
-          {/* LectureItem 컴포넌트 들어갈 자리 */}
-          {testItems.map((item, index) => (
-            <div key={index} className="lecmanage-lec-box">
-              <div className="test-item2">
-                {item}
-              </div>
+          {lectures.map((item) => (
+            <div key={item.lectureId} className="lecmanage-lec-box">
+              <LectureItem item={item} mode="list" /> 
             </div>
           ))}
         </div>

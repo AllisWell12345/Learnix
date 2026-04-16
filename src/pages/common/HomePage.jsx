@@ -1,25 +1,19 @@
 import { useState } from "react";
-import Searchbar from "../../components/common/Searchbar";
+import { useSelector } from "react-redux";
 import "./HomePage.css";
+import Searchbar from "../../components/common/Searchbar";
+import LectureItem from "../../components/lecture/LectureItem";
 
 function HomePage() {
-  const testItems = [
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-    "강의아이템",
-  ];
-
+  const { lectures } = useSelector((state) => state.lecture);
   const [selectedCategory, setSelectedCategory] = useState("전체");
 
   const categories = ["전체", "프론트엔드", "백엔드", "UI/UX", "데이터 분석"];
+
+  const filtered =
+    selectedCategory === "전체"
+      ? lectures
+      : lectures.filter((l) => l.category === selectedCategory);
 
   return (
     <div className="content">
@@ -45,9 +39,8 @@ function HomePage() {
           ))}
         </div>
         <div className="lecture-list">
-          {/* LectureItem 컴포넌트 들어갈 자리 */}
-          {testItems.map((item, index) => (  
-            <div key={index} className="test-item">{item}</div>   
+          {filtered.map((item) => (
+            <LectureItem key={item.lectureId} item={item} mode="box" />
           ))}
         </div>
       </div>
