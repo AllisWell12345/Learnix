@@ -1,0 +1,67 @@
+.project-item-card {
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px 25px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 140px;
+}
+
+.project-item-card:hover {
+  border: 1px solid #5e936c;
+}
+
+.project-item-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+.project-item-card-lecture-name {
+  font-size: 15px;
+  color: #4a5565;
+  margin: 0;
+  font-weight: 500;
+}
+
+.project-item-info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.project-item-info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #101828;
+}
+
+.project-item-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.project-item-list-btn {
+  position: absolute;
+  right: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  background-color: #5e936c;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.project-item-list-btn:hover {
+  background-color: #3e5f44;
+}
