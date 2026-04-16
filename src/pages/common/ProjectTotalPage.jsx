@@ -26,6 +26,15 @@ const PRACTICE_DATA = [
   },
   {
     projectId: 3,
+    userid: 2,
+    title: "Tailwind 포트폴리오",
+    className: "React 마스터",
+    author: "이철수",
+    date: "2026.04.12",
+    status: "completed",
+  },
+  {
+    projectId: 4,
     userid: 3,
     title: "Node.js 채팅 앱",
     className: "풀스택 캠프",
@@ -34,7 +43,16 @@ const PRACTICE_DATA = [
     status: "waiting",
   },
   {
-    projectId: 4,
+    projectId: 5,
+    userid: 1,
+    title: "Next.js 블로그",
+    className: "풀스택 캠프",
+    author: "김학생",
+    date: "2026.04.14",
+    status: "waiting",
+  },
+   {
+    projectId: 6,
     userid: 1,
     title: "Next.js 블로그",
     className: "풀스택 캠프",
@@ -91,16 +109,16 @@ function ProjectTotalPage() {
       <main className="pt-content">
         {user.role === "student" ? (
           <>
-            <section className="pt-section">
               <p className="pt-sub-title">내 프로젝트</p>
+            <section className="pt-section">
               <div className="pt-list">
                 {projects
                   .filter((p) => p.userid === user.userid)
                   .map(renderCard)}
               </div>
             </section>
-            <section className="pt-section">
               <p className="pt-sub-title">다른 수강생의 프로젝트</p>
+            <section className="pt-section">
               <div className="pt-list">
                 {projects
                   .filter((p) => p.userid !== user.userid)
@@ -110,14 +128,14 @@ function ProjectTotalPage() {
           </>
         ) : (
           <>
-            <section className="pt-section">
               <p className="pt-sub-title">리뷰 대기 중</p>
+            <section className="pt-section">
               <div className="pt-list">
                 {projects.filter((p) => p.status === "waiting").map(renderCard)}
               </div>
             </section>
-            <section className="pt-section">
               <p className="pt-sub-title">리뷰 완료</p>
+            <section className="pt-section">
               <div className="pt-list">
                 {projects
                   .filter((p) => p.status === "completed")
