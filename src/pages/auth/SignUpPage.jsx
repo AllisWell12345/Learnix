@@ -4,10 +4,10 @@ import { NavLink, useNavigate } from "react-router-dom";
 import eyeOn from "../../assets/img/Auth/eyeon.svg";
 import eyeOff from "../../assets/img/Auth/eyeoff.svg";
 import { logout, signUp } from "../../services/authService";
-import { createUser } from "../../services/userService";
+import { createUser, getUserByUid } from "../../services/userService";
 import useModal from "../../hooks/useModal";
-import { auth } from "../../firebase/config";
 import { useDispatch } from "react-redux";
+import { setCurrentUser } from "../../store/userSlice";
 
 function SignupPage() {
   const navigate = useNavigate();
@@ -41,8 +41,9 @@ function SignupPage() {
   };
 
   // 회원가입 함수
-  const handleSignup = async () => {
-    const { name, email, password, birth, phone, gender, active } = formData;
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    const { name, email, password, birth, phone, gender } = formData;
 
     setError("");
 
@@ -73,11 +74,6 @@ function SignupPage() {
 
     try {
       const authUser = await signUp(email, password);
-      const userData = await getUserByUid(authUser.uid);
-
-      dispatch(setCurrentUser(userData));
-      console.log("회원가입 직후 currentUser:", auth.currentUser);
-      console.log("회원가입 반환 user:", authUser);
 
       const newUser = {
         role: role,
@@ -89,32 +85,24 @@ function SignupPage() {
         phone,
         gender,
         active: role === "student" ? true : false,
+        signupDate: new Date().toISOString().split("T")[0]
       };
 
       await createUser(newUser);
+      const userData = await getUserByUid(authUser.uid);
 
-      if (role === "student") {
-        await logout();
-        console.log("로그아웃 직후 currentUser:", auth.currentUser);
-        openModal("CHECK", {
-          mainMsg: "가입이 완료되었습니다!",
-          subMsg:
-            "환영합니다! 🎉 확인 버튼을 누르면 로그인 페이지로 이동합니다!",
-          onConfirm: () => navigate("/login"),
-        });
-        return;
-      }
+      dispatch(setCurrentUser(userData));
 
-      if (role === "teacher") {
-        await logout();
-        console.log("로그아웃 직후 currentUser:", auth.currentUser);
-        openModal("CHECK", {
-          mainMsg: "가입이 완료되었습니다!",
-          subMsg: "강사는 관리자의 승인 후 이용이 가능합니다.",
-          onConfirm: () => navigate("/login"),
-        });
-        return;
-      }
+      await logout();
+
+      openModal("CHECK", {
+        mainMsg: "가입이 완료되었습니다!",
+        subMsg:
+          role === "teacher"
+            ? "강사는 관리자의 승인 후 이용이 가능합니다."
+            : "환영합니다! 🎉 로그인 후 이용해주세요!",
+        onConfirm: () => navigate("/login"),
+      });
     } catch (error) {
       let errorMsg = "회원가입 중 오류가 발생했습니다.";
       switch (error.code) {
@@ -157,7 +145,7 @@ function SignupPage() {
           </button>
         </div>
 
-        <div className="signup-form">
+        <form className="signup-form" onSubmit={handleSignup}>
           {/* 이름 */}
           <div className="signup-field">
             <label className="signup-label" htmlFor="name">
@@ -181,7 +169,7 @@ function SignupPage() {
             <input
               className="signup-input"
               id="email"
-              type="email"
+              type="text"
               placeholder="example@email.com"
               value={formData.email}
               onChange={handleDataChange}
@@ -312,8 +300,8 @@ function SignupPage() {
 
           {/* 버튼 */}
           <button
+          type="submit"
             className={`signup-btn${loading ? " loading" : ""}`}
-            onClick={handleSignup}
             disabled={loading}
           >
             {loading ? "처리 중..." : "가입하기"}
@@ -324,7 +312,7 @@ function SignupPage() {
               로그인 페이지로 돌아가기
             </NavLink>
           </div>
-        </div>
+        </form>
       </div>
       {modal}
     </div>

@@ -4,13 +4,27 @@ import logo from "../../assets/img/Header/Learnix-logo.png";
 import mypageIcon from "../../assets/img/Header/mypageIcon.svg";
 import logoutIcon from "../../assets/img/Header/logoutIcon.svg";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../../services/authService";
+import useModal from "../../hooks/useModal";
 
 function UserHeader() {
   const navigate = useNavigate();
-  const handleLogoutClick = () => navigate("/");
+  const { modal, openModal } = useModal();
+
+  const handleLogoutClick = () => {
+    openModal("CONFIRM", {
+      mainMsg: "로그아웃 하시겠습니까?",
+      subMsg: "확인 버튼을 클릭하면 로그아웃됩니다.",
+      onConfirm: async () => {
+        await logout();
+        navigate("/");
+      },
+    });
+  };
 
   return (
-    <>
+    <div>
+      {modal}
       <header className="header">
         <div className="inner">
           <div className="header-left" />
@@ -42,7 +56,7 @@ function UserHeader() {
           </div>
         </div>
       </header>
-    </>
+    </div>
   );
 }
 

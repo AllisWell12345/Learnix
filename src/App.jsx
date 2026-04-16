@@ -31,6 +31,7 @@ import DataManagePage from "./pages/manager/DataManagePage";
 import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
 import PortfolioPage from "./pages/common/PortfolioPage";
+import AuthInitializer from "./components/AuthInitializer";
 
 function App() {
   return (
