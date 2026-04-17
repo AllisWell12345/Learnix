@@ -1,31 +1,30 @@
-/* ===== 반응형 ===== */
-@media (max-width: 768px) {
-  .usermanage-page {
-    padding: 24px 16px;
-  }
-
-  .usermanage-td-date {
-    display: none;
-  }
+.usermanage-page {
+  width: 100%;
+  min-width: 400px;
 }
 
+.usemanage-title-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 /* ===== 타이틀 ===== */
-.usermanage-title-area {
-  margin-bottom: 30px;
-}
+
 
 .usermanage-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: #101828;
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 8px;
 }
 
+.usermanage-title-text {
+  font-size: 24px;
+  font-weight: 700;
+  color: #101828;
+}
+
 .usermanage-title-bar {
-  display: inline-block;
   width: 8px;
   height: 30px;
   background-color: #5e936c;
@@ -50,12 +49,42 @@
   border: 1.5px solid #e5e7eb;
   border-radius: 12px;
   display: flex;
+  gap: 10px;
   align-items: center;
   padding-left: 10px;
   cursor: pointer;
-  transition: border-color 0.2s;
   flex-shrink: 0;
   color: #4a5565;
+}
+
+.um-filter-container {
+  position: relative;
+}
+
+.um-filter-choice {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 100px;
+  height: 120px;
+  border: none;
+  background-color: #fff;
+  z-index: 999;
+}
+
+.um-choice-btn {
+  flex: 1;
+  background-color: #fff;
+  border: none;
+  border-bottom: 1px solid #e5e7eb;
+  color: #4a5565;
+}
+
+.um-choice-btn:hover {
+  background-color: #f8fafc;
+  border-bottom: 0.5px solid #5e936c;
 }
 
 .usermanage-filter-btn:hover {
@@ -65,11 +94,14 @@
 }
 
 /* ===== 테이블 ===== */
-.usermanage-table-wrap {
+.usermanage-container {
+  width: 100%;
+  min-height: 100vh;
   background: #ffffff;
   border: 2px solid #e5e7eb;
   border-radius: 10px;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .usermanage-table {
@@ -78,33 +110,43 @@
 }
 
 /* 헤더 */
-.usermanage-thead-row {
+.usermanage-header {
+  width: 100%;
+  height: 50px;
   background-color: #eef7e6;
   border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
 }
 
 .usermanage-th {
-  padding: 10px 40px;
+  width: 100px;
   font-size: 14px;
   font-weight: 700;
   color: #101828;
-  text-align: left;
-  white-space: nowrap;
-}
-
-.usermanage-th-name {
-  width: 200px;
-}
-
-.usermanage-th-status {
-  width: 100px;
   text-align: center;
 }
 
 /* 바디 행 */
-.usermanage-tbody-row {
-  border-bottom: 1px solid #ffffff;
-  transition: background-color 0.15s;
+.usermanage-body {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 50px;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.usermanage-user {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 50px 10px 45px;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .usermanage-tbody-row:last-child {
@@ -112,41 +154,40 @@
 }
 
 .usermanage-td {
-  padding: 14px 20px;
   font-size: 14px;
   color: #101828;
-  vertical-align: middle;
 }
 
 .usermanage-td-email {
   color: #4a5565;
 }
 
-.usermanage-td-date {
+.usermanage-td-phone {
   color: #4a5565;
-}
-
-.usermanage-td-status {
-  text-align: center;
 }
 
 /* 유저 정보 (아바타 + 이름) */
 .usermanage-user-info {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  margin-right: 20px;
 }
 
 .usermanage-avatar {
   width: 36px;
   height: 36px;
-  border-radius: 50%;
-  background-color: #e5e7eb;
+  border-radius: 10px;
+  background-color: #eef7e6;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  color: #4a5565;
+  overflow: hidden;
+}
+
+.usermanage-profile-icon {
+  width: 40px;
+  height: 40px;
 }
 
 .usermanage-name {
@@ -157,7 +198,7 @@
 /* ===== 역할 뱃지 ===== */
 .usermanage-role-badge {
   display: inline-block;
-  padding: 4px 12px;
+  padding: 4px 10px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
@@ -173,50 +214,80 @@
   color: #ffffff;
 }
 
+.role-manager {
+  background-color: #fafafc;
+}
+
 /* ===== 상태 버튼 ===== */
 .usermanage-status-btn {
   display: inline-block;
-  padding: 5px 14px;
+  padding: 4px 10px;
   border-radius: 6px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  transition: opacity 0.2s;
-  border: 1.5px solid transparent;
-  min-width: 64px;
-}
-
-.usermanage-status-btn:hover {
-  opacity: 0.75;
 }
 
 /* 활성, 승인 */
-.status-active,
-.status-approved {
+.status-active {
   background-color: #ffffff;
   color: #155dfc;
-  border-color: #dbeafe;
+  border: 1px solid #dbeafe;
 }
 
-.status-active:hover,
-.status-approved:hover {
+.status-active:hover {
   background-color: #f8fafc;
   color: #155dfc;
-  border-color: #155dfc;
+  border: 1px solid #155dfc;
+  cursor: pointer;
 }
 
 /* 휴면, 미승인 */
-.status-dormant,
-.status-pending {
+.status-deactive {
   background-color: #ffffff;
   color: #fb2c36;
-  border-color: #ffa2a2;
+  border: 1px solid #ffa2a2;
 }
 
-.status-dormant:hover,
-.status-pending:hover {
+.status-deactive:hover {
   background-color: #f8fafc;
   color: #fb2c36;
-  border-color: #fb2c36;
+  border: 1px solid #fb2c36;
+  cursor: pointer;
+}
+
+.usermanage-loading {
+  width: 100%;
+  height: 100%;
+  font-size: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #4a5565;
+  padding-top: 300px;
+}
+
+/* ===== 반응형 ===== */
+
+@media (max-width: 1000px) {
+  .usermanage-td-phone {
+    display: none;
+  }
+
+  .usermanage-title {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .usermanage-page {
+    min-width: 400px;
+  }
+
+  .usermanage-td-phone {
+    display: none;
+  }
+
+  .usermanage-title {
+    display: none;
+  }
 }

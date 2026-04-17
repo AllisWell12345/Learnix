@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./LoginPage.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import eyeOn from "../../assets/img/Auth/eyeon.svg";
@@ -19,6 +19,12 @@ function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { modal, openModal } = useModal();
+
+  const inputRef = useRef();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [modal]);
 
   const handleDataChange = (e) => {
     setLoginForm({
@@ -115,6 +121,7 @@ function LoginPage() {
               className="login-input"
               id="email"
               type="text"
+              ref={inputRef}
               placeholder="이메일을 입력하세요"
               value={loginForm.email}
               onChange={handleDataChange}

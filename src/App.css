@@ -26,6 +26,7 @@ body {
     margin: 50px;
     width: 100%;
     flex: 1;
+    min-width: 0;
 }
 
 a {
