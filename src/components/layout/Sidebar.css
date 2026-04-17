@@ -5,12 +5,19 @@
     align-items: flex-start;
     justify-content: center;
     background-color: white;
+    flex-shrink: 0;
 }
 
 .sidebar-content {
     width: 80%;
     position: sticky;
     top: 50px;
+}
+
+.manager-sidebar-content {
+    width: 80%;
+    position: sticky;
+    top: 0;
 }
 
 .sidebar-title {

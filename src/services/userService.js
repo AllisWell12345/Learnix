@@ -1,5 +1,5 @@
 import { db } from "../firebase/config.js";
-import { doc, setDoc, getDoc, orderBy, getDocs, collection, query, where } from "firebase/firestore";
+import { doc, setDoc, getDoc, orderBy, getDocs, collection, query, where, updateDoc } from "firebase/firestore";
 import { getDataId } from "./getIdService.js";
 
 const COLLECTION_NAME = "users";
@@ -60,25 +60,15 @@ export const getUsersAll = async () => {
     }
 }
 
-// // 관리자가 회원 관리 탭에서 회원들을 role 값에 따라 필터하기 위함
-// export const getUsersByRole = async (role) => {
-//   try {
-//     const q = query(
-//       collection(db, COLLECTION_NAME),
-//       where("role", "==", role),
-//       orderBy('userId', 'desc')
-//     );
+// 관리자가 회원의 상태를 변경하는 함수
+export const updateUserActive = async (uid, nextActive) => {
+  try {
+    const userRef = doc(db, COLLECTION_NAME, uid);
 
-//     const querySnapshot = await getDocs(q);
-
-//     const users = querySnapshot.docs.map((doc) => ({
-//         id: doc.id,
-//         ...doc.data()
-//     }))
-
-//     return users;
-
-//   } catch (error) {
-//     throw error;
-//   }
-// };
+    await updateDoc(userRef, {
+      active: nextActive,
+    });
+  } catch (error) {
+    throw error;
+  }
+};

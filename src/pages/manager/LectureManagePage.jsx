@@ -16,24 +16,26 @@ function LectureManagePage() {
   return (
     <div className="lecmanage-page">
       {/* 타이틀 */}
-      <div className="lecmanage-title-area">
-        <h1 className="lecmanage-title">
-          <span className="lecmanage-title-bar" />
-          강의 관리
-        </h1>
-      </div>
+      <div className="lecmanage-title-container">
+        <div className="lecmanage-title-area">
+          <h1 className="lecmanage-title">
+            <span className="lecmanage-title-bar" />
+            강의 관리
+          </h1>
+        </div>
 
-      {/* 검색 바 */}
-      <div className="lecmanage-search-area">
-        <Searchbar
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onSearch={handleSearch}
-          placeholder="이름 또는 이메일로 검색..."
-        />
-        <button className="lecmanage-filter-btn">
-          <img src={filter} className="lecmanage-filter-icon" />
-        </button>
+        {/* 검색 바 */}
+        <div className="lecmanage-search-area">
+          <Searchbar
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onSearch={handleSearch}
+            placeholder="이름 또는 이메일로 검색..."
+          />
+          <button className="lecmanage-filter-btn">
+            <img src={filter} className="lecmanage-filter-icon" />
+          </button>
+        </div>
       </div>
 
       {/* 강의 목록 */}
@@ -41,7 +43,7 @@ function LectureManagePage() {
         <div className="lecmanage-total-list">
           {lectures.map((item) => (
             <div key={item.lectureId} className="lecmanage-lec-box">
-              <LectureItem item={item} mode="list" /> 
+              <LectureItem item={item} mode="list" />
             </div>
           ))}
         </div>
