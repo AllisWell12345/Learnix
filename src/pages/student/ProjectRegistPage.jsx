@@ -1,4 +1,3 @@
-import React from "react";
 import ProjectForm from "../../components/project/ProjectForm";
 
 function ProjectRegistPage() {

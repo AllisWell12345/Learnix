@@ -1,11 +1,11 @@
-import React from 'react'
+import ProjectForm from "../../components/project/ProjectForm";
 
 function ProjectEditPage() {
   return (
-    <div>
-      ProjectEditPage
-    </div>
-  )
+    <>
+      <ProjectForm />
+    </>
+  );
 }
 
-export default ProjectEditPage
+export default ProjectEditPage;
