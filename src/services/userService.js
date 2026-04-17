@@ -60,25 +60,25 @@ export const getUsersAll = async () => {
     }
 }
 
-// 관리자가 회원 관리 탭에서 회원들을 role 값에 따라 필터하기 위함
-export const getUsersByRole = async (role) => {
-  try {
-    const q = query(
-      collection(db, COLLECTION_NAME),
-      where("role", "==", role),
-      orderBy('userId', 'desc')
-    );
+// // 관리자가 회원 관리 탭에서 회원들을 role 값에 따라 필터하기 위함
+// export const getUsersByRole = async (role) => {
+//   try {
+//     const q = query(
+//       collection(db, COLLECTION_NAME),
+//       where("role", "==", role),
+//       orderBy('userId', 'desc')
+//     );
 
-    const querySnapshot = await getDocs(q);
+//     const querySnapshot = await getDocs(q);
 
-    const users = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data()
-    }))
+//     const users = querySnapshot.docs.map((doc) => ({
+//         id: doc.id,
+//         ...doc.data()
+//     }))
 
-    return users;
+//     return users;
 
-  } catch (error) {
-    throw error;
-  }
-};
+//   } catch (error) {
+//     throw error;
+//   }
+// };

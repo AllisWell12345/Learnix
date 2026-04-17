@@ -140,13 +140,18 @@
 .usermanage-avatar {
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  border-radius: 10px;
   background-color: #e5e7eb;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   color: #4a5565;
+}
+
+.usermanage-profile-icon {
+  width: 24px;
+  height: 24px;
 }
 
 .usermanage-name {
@@ -157,7 +162,7 @@
 /* ===== 역할 뱃지 ===== */
 .usermanage-role-badge {
   display: inline-block;
-  padding: 4px 12px;
+  padding: 4px 20px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
@@ -178,7 +183,7 @@
   display: inline-block;
   padding: 5px 14px;
   border-radius: 6px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
