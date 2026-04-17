@@ -1,0 +1,225 @@
+/* ===== 페이지 ===== */
+
+.lecdetail-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.lecdetail-thumbbox {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  margin-bottom: 16px;
+}
+
+/* ===== 썸네일 ===== */
+.lecdetail-thumb {
+  height: 250px;
+  width: 100%;
+  object-fit: cover;
+  object-position: 0px -140px;
+  background-color: #101828;
+}
+
+/* ===== 강의 정보 카드 ===== */
+.lecdetail-info-card {
+  background: #ffffff;
+  padding: 20px 24px 24px;
+}
+
+.lecdetail-info-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.lecdetail-category {
+  background-color: #e8ffd7;
+  color: #3e5f44;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.lecdetail-cart-icon {
+  width: 20px;
+  height: 20px;
+  padding-right: 2px;
+  filter: brightness(0) invert(1);
+}
+
+.lecdetail-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.lecdetail-cart-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background-color: #5e936c;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.lecdetail-cart-btn:hover {
+  background-color: #3e5f44;
+}
+
+.lecdetail-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #101828;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.lecdetail-subtitle {
+  font-size: 14px;
+  color: #4a5565;
+  margin-bottom: 20px;
+}
+
+.lecdetail-meta {
+  display: flex;
+  gap: 32px;
+}
+
+.lecdetail-meta-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lecdetail-meta-label {
+  font-size: 12px;
+  color: #4a5565;
+}
+
+.lecdetail-meta-val {
+  font-size: 14px;
+  font-weight: 500;
+  color: #101828;
+}
+
+.lecdetail-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: #101828;
+}
+
+/* ===== 기간 + 수강인원 박스 ===== */
+.lecdetail-stat-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.lecdetail-stat-box {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 18px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lecdetail-stat-label {
+  font-size: 12px;
+  color: #4a5565;
+}
+
+.lecdetail-stat-val {
+  font-size: 14px;
+  font-weight: 600;
+  color: #101828;
+  line-height: 1.6;
+}
+
+/* ===== 강의 목차 ===== */
+.lecdetail-video-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.lecdetail-video-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #101828;
+  margin-bottom: 16px;
+}
+
+.lecdetail-video-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lecdetail-video-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  transition: background-color 0.15s;
+  cursor: pointer;
+}
+
+.lecdetail-video-item:hover {
+  background-color: #f8fafc;
+}
+
+.lecdetail-video-no {
+  width: 28px;
+  height: 28px;
+  background-color: #e8ffd7;
+  color: #3e5f44;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.lecdetail-video-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.lecdetail-video-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #101828;
+}
+
+.lecdetail-video-desc {
+  font-size: 12px;
+  color: #4a5565;
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 520px) {
+  .lecdetail-stat-row {
+    grid-template-columns: 1fr;
+  }
+
+  .lecdetail-title {
+    font-size: 18px;
+  }
+}

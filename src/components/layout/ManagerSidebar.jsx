@@ -13,7 +13,7 @@ import DataSelectIcon from "../../assets/img/Sidebar/managerdataselectIcon.svg";
 function ManagerSidebar() {
   return (
     <aside className="sidebar">
-      <div className="sidebar-content">
+      <div className="manager-sidebar-content">
         <h2 className="sidebar-title">관리자 메뉴</h2>
 
         <ul className="sidebar-list">

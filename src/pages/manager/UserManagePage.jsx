@@ -1,139 +1,167 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./UserManagePage.css";
 import Searchbar from "../../components/common/Searchbar";
 import filter from "../../assets/img/common/filterIcon.svg";
-// import profile from "../../assets/img/common/profileIcon.svg";
+import { getUsersAll, updateUserActive } from "../../services/userService";
+import UserItem from "../../components/manager/UserItem";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearch, setKeyword } from "../../store/searchbarSlice";
+import useModal from "../../hooks/useModal";
 
 function UserManagePage() {
+  const [users, setUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [isFilterClick, setIsFilterClick] = useState(false);
+  const { search, keyword } = useSelector((state) => state.searchbar);
+  const dispatch = useDispatch();
+  const { modal, openModal } = useModal();
 
-  // 수강생 상태 토글 순서
-  const studentStatusCycle = ["활성", "휴면"];
-  // 강사 상태 토글 순서
-  const insrtructoStatusCycle = ["승인", "미승인"];
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setLoading(true);
+      try {
+        const userdata = await getUsersAll();
+        setAllUsers(userdata);
+        setUsers(userdata);
+        console.log(userdata);
+      } catch (error) {
+        console.error("회원 조회 실패:", error);
+        openModal("WARNING", {
+          mainMsg: "회원 조회 실패!",
+          subMsg: "유저 정보를 불러올 수 없습니다.",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const [users, setUsers] = useState("회원이 없습니다");
-  const [search, setSearch] = useState("");
+    fetchUsers();
+  }, []);
+
+  const handleFilterAll = () => {
+    setUsers(allUsers);
+    setIsFilterClick(false);
+  };
+
+  const handleFilterStudent = () => {
+    const filtered = allUsers.filter((user) => user.role === "student");
+    setUsers(filtered);
+    setIsFilterClick(false);
+  };
+
+  const handleFilterTeacher = () => {
+    const filtered = allUsers.filter((user) => user.role === "teacher");
+    setUsers(filtered);
+    setIsFilterClick(false);
+  };
 
   const handleSearch = () => {
-    // 검색은 실시간 필터로 처리
-  };
+    dispatch(setKeyword(search));
 
-  const handleStatusToggle = (id) => {
-    setUsers((prev) =>
-      prev.map((user) => {
-        if (user.id !== id) return user;
-        const cycle =
-          user.role === "강사" ? teacherStatusCycle : studentStatusCycle;
-        const currentIdx = cycle.indexOf(user.status);
-        const nextStatus = cycle[(currentIdx + 1) % cycle.length];
-        return { ...user, status: nextStatus };
-      }),
+    const filtered = allUsers.filter(
+      (user) =>
+        user.name.includes(search) ||
+        user.email.includes(search) ||
+        user.phone.includes(search),
     );
+
+    setUsers(filtered);
   };
 
-  // const filteredUsers = users.filter(
-  //   (u) => u.name.includes(search) || u.email.includes(search),
-  // );
+  const handleActiveChange = (user) => {
+    openModal("CONFIRM", {
+      mainMsg: user.active
+        ? "회원 상태를 비활성으로 변경하시겠습니까?"
+        : "회원 상태를 활성으로 변경하시겠습니까?",
+      subMsg: "확인 버튼을 누르면 회원 상태가 변경됩니다.",
+      onConfirm: async () => {
+        try {
+          await updateUserActive(user.id, !user.active);
 
-  const getStatusClass = (status) => {
-    switch (status) {
-      case "활성":
-        return "status-active";
-      case "비활성":
-        return "status-inactive";
-      case "휴면":
-        return "status-dormant";
-      case "승인":
-        return "status-approved";
-      case "미승인":
-        return "status-pending";
-      default:
-        return "";
-    }
+          setUsers((prev) =>
+            prev.map((item) =>
+              item.id === user.id ? { ...item, active: !item.active } : item,
+            ),
+          );
+
+          setAllUsers((prev) =>
+            prev.map((item) =>
+              item.id === user.id ? { ...item, active: !item.active } : item,
+            ),
+          );
+        } catch (error) {
+          console.error("회원 상태 변경 실패:", error);
+          openModal("WARNING", {
+            mainMsg: "변경 실패",
+            subMsg: "회원 상태를 변경하지 못했습니다.",
+          });
+        }
+      },
+    });
   };
 
   return (
     <div className="usermanage-page">
-
+      {modal}
       {/* 타이틀 */}
-      <div className="usermanage-title-area">
-        <h1 className="usermanage-title">
-          <span className="usermanage-title-bar" />
-          회원 관리
-        </h1>
-      </div>
+      <div className="usemanage-title-container">
+        <div className="usermanage-title-area">
+          <div className="usermanage-title">
+            <div className="usermanage-title-bar"></div>
+            <h1 className="usermanage-title-text">회원 관리</h1>
+          </div>
+        </div>
 
-      {/* 검색 바 */}
-      <div className="usermanage-search-area">
-        <Searchbar
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onSearch={handleSearch}
-          placeholder="이름 또는 이메일로 검색..."
-        />
-        <button className="usermanage-filter-btn">
-          <img src={filter} className="usermanage-filter-icon" />
-        </button>
+        {/* 검색 바 */}
+        <div className="usermanage-search-area">
+          <Searchbar
+            value={search}
+            onChange={(e) => dispatch(setSearch(e.target.value))}
+            onSearch={handleSearch}
+          />
+          <div className="um-filter-container">
+            <button
+              className="usermanage-filter-btn"
+              onClick={() => setIsFilterClick(!isFilterClick)}
+            >
+              <img src={filter} className="usermanage-filter-icon" /> 전체
+            </button>
+            {isFilterClick ? (
+              <div className="um-filter-choice">
+                <button className="um-choice-btn" onClick={handleFilterAll}>
+                  전체
+                </button>
+                <button className="um-choice-btn" onClick={handleFilterStudent}>
+                  수강생
+                </button>
+                <button className="um-choice-btn" onClick={handleFilterTeacher}>
+                  강사
+                </button>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
       </div>
 
       {/* 테이블 */}
-      <div className="usermanage-table-wrap">
-        <table className="usermanage-table">
-          <thead>
-            <tr className="usermanage-thead-row">
-              <th className="usermanage-th usermanage-th-name">이름</th>
-              <th className="usermanage-th">회원 구분</th>
-              <th className="usermanage-th">이메일</th>
-              <th className="usermanage-th">가입일</th>
-              <th className="usermanage-th usermanage-th-status">상태</th>
-            </tr>
-          </thead>
-          <tbody>
-            <div>더미</div>
-            {/*{filteredUsers.map((user) => (
-              <tr className="usermanage-tbody-row" key={user.id}>
-                // 이름
-                <td className="usermanage-td usermanage-td-name">
-                  <div className="usermanage-user-info">
-                    <div className="usermanage-avatar">
-                      <img src={profile} className="usermanage-profile-icon"></img>
-                    </div>
-                    <span className="usermanage-name">{user.name}</span>
-                  </div>
-                </td>
-
-                // 회원 구분
-                <td className="usermanage-td">
-                  <span
-                    className={`usermanage-role-badge ${user.role === "강사" ? "role-teacher" : "role-student"}`}
-                  >
-                    {user.role}
-                  </span>
-                </td>
-
-                이메일
-                <td className="usermanage-td usermanage-td-email">
-                  {user.email}
-                </td>
-
-                // 가입일
-                <td className="usermanage-td usermanage-td-date">
-                  {user.joinDate}
-                </td>
-
-                // 상태 버튼
-                <td className="usermanage-td usermanage-td-status">
-                  <button
-                    className={`usermanage-status-btn ${getStatusClass(user.status)}`}
-                    onClick={() => handleStatusToggle(user.id)}
-                  >
-                    {user.status}
-                  </button>
-                </td>
-              </tr>
-            ))}*/}
-          </tbody>
-        </table>
+      <div className="usermanage-container">
+        <div className="usermanage-header">
+          <div className="usermanage-th">이름</div>
+          <div className="usermanage-th">회원 구분</div>
+          <div className="usermanage-th">이메일</div>
+          <div className="usermanage-th usermanage-td-phone">전화번호</div>
+          <div className="usermanage-th">상태</div>
+        </div>
+        <div className="usermanage-body">
+          {loading ? (
+            <div className="usermanage-loading">잠시만 기다려주세요!</div>
+          ) : (
+            users.map((user) => <UserItem key={user.userId} user={user} onActiveChange={handleActiveChange}/>)
+          )}
+        </div>
       </div>
     </div>
   );
