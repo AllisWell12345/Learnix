@@ -4,6 +4,7 @@ import { removeFromCart } from "../../store/cartSlice";
 import StudentIcon from "../../assets/img/Icon/StudentIcon.png";
 import CalendarIcon from "../../assets/img/Icon/CalendarIcon.png";
 import TrashIcon from "../../assets/img/Icon/TrashIcon.png";
+import thumb from "../../assets/img/lectureThumb.png";
 
 function CartItem({ item }) {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ function CartItem({ item }) {
   return (
     <div className="cart-card">
       <div className="cart-card-left">
-        <div className="cart-item-img" />
+        <img src={thumb} alt="강의 썸네일" className="cart-item-thumb" />
         <div className="cart-item-text">
           <span className="cart-category-badge">{item.category}</span>
           <p className="cart-item-name">{item.title}</p>

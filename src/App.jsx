@@ -40,22 +40,22 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
-          <Route path=":lectureid" element={<LectureDetailPage />} />
+          <Route path=":lectureId" element={<LectureDetailPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="signup" element={<SignupPage />} />
         </Route>
 
         <Route path="/student" element={<StudentLayout />}>
           <Route index element={<HomePage />} />
-          <Route path=":lectureid" element={<LectureDetailPage />} />
+          <Route path=":lectureId" element={<LectureDetailPage />} />
           <Route path="cart" element={<CartPage />} />
 
           <Route path="mylec">
             <Route index element={<MyLecturePage />} />
-            <Route path=":lectureid" element={<LectureDetailPage />}/>
-            <Route path=":lectureid/myproj" element={<ProjectPage />} />
-            <Route path=":lectureid/myproj/regist" element={<ProjectRegistPage />} />
-            <Route path=":lectureid/myproj/edit" element={<ProjectEditPage />} />
+            <Route path=":lectureId" element={<LectureDetailPage />}/>
+            <Route path=":lectureId/myproj" element={<ProjectPage />} />
+            <Route path=":lectureId/myproj/regist" element={<ProjectRegistPage />} />
+            <Route path=":lectureId/myproj/edit" element={<ProjectEditPage />} />
           </Route>
 
           <Route path="portfolio" element={<StudentPortfolioLayout />}>
@@ -63,29 +63,29 @@ function App() {
 
             <Route path="project">
               <Route index element={<PortfolioPage />} />
-              <Route path=":lectureid" element={<ProjectTotalPage />}>
+              <Route path=":lectureId" element={<ProjectTotalPage />}>
                 <Route path=":projectid" element={<ProjectDetailPage />} />
               </Route>
             </Route>
 
             <Route path="interview">
               <Route index element={<PortfolioPage />} />
-              <Route path=":lectureid" element={<InterviewDetailPage />} />
-              <Route path=":lectureid/notice" element={<InterviewNoticePage />} />
-              <Route path=":lectureid/practice" element={<InterviewPracticePage />} />
+              <Route path=":lectureId" element={<InterviewDetailPage />} />
+              <Route path=":lectureId/notice" element={<InterviewNoticePage />} />
+              <Route path=":lectureId/practice" element={<InterviewPracticePage />} />
             </Route>
           </Route>
         </Route>
 
         <Route path="/teacher" element={<TeacherLayout />}>
           <Route index element={<HomePage />} />
-          <Route path=":lectureid" element={<LectureDetailPage />} />
+          <Route path=":lectureId" element={<LectureDetailPage />} />
 
           <Route path="mylec">
             <Route index element={<MyLecturePage />} />
             <Route path="regist" element={<LectureRegistPage />} />
-            <Route path=":lectureid" element={<LectureDetailPage />} />
-            <Route path=":lectureid/edit" element={<LectureEditPage />} />
+            <Route path=":lectureId" element={<LectureDetailPage />} />
+            <Route path=":lectureId/edit" element={<LectureEditPage />} />
           </Route>
 
           <Route path="portfolio" element={<TeacherPortfolioLayout />}>
@@ -94,18 +94,18 @@ function App() {
             <Route path="project">
               <Route index element={<PortfolioPage />} />
               <Route
-                path=":lectureid/regist"
+                path=":lectureId/regist"
                 element={<TemplateRegistPage />}
               />
-              <Route path=":lectureid/edit" element={<TemplateEditPage />} />
-              <Route path=":lectureid" element={<ProjectTotalPage />}>
+              <Route path=":lectureId/edit" element={<TemplateEditPage />} />
+              <Route path=":lectureId" element={<ProjectTotalPage />}>
                 <Route path=":projectid" element={<ProjectDetailPage />} />
               </Route>
             </Route>
 
             <Route path="interview">
               <Route index element={<PortfolioPage />} />
-              <Route path=":lectureid" element={<InterviewTotalPage />}>
+              <Route path=":lectureId" element={<InterviewTotalPage />}>
                 <Route
                   path=":projectid/regist"
                   element={<InterviewRegistPage />}
@@ -123,7 +123,7 @@ function App() {
           <Route index element={<ManagerDashboardPage />} />
           <Route path="user" element={<UserManagePage />} />
           <Route path="lecture" element={<LectureManagePage />}>
-            <Route path=":lectureid" element={<LectureDetailPage />} />
+            <Route path=":lectureId" element={<LectureDetailPage />} />
           </Route>
           <Route path="data" element={<DataManagePage />}>
             <Route path=":projectid/project" element={<ProjectDetailPage />} />
