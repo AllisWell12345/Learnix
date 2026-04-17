@@ -152,7 +152,7 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
         </section>
       </div>
 
-      // 댓글창 추가 구현 예정
+      // 댓글창 추가 구현
     );
   }
 
