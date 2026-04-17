@@ -50,10 +50,9 @@ function LoginPage() {
       const loginUser = await getUserByUid(authUser.uid);
 
       if (loginUser.active === false) {
-        await logout();
         openModal("CHECK", {
-          mainMsg: "가입 승인 대기중입니다.",
-          subMsg: "관리자의 승인을 기다려주세요.",
+          mainMsg: loginUser.role === "teacher"? "가입 승인 대기중입니다." :"휴면 상태입니다.",
+          subMsg: loginUser.role === "teacher"? "관리자의 승인을 기다려주세요." :"휴면 상태를 해제해주세요.",
           onConfirm: () => {
             setLoginForm({
               email: "",
@@ -64,6 +63,7 @@ function LoginPage() {
             setIsSaved(false);
           },
         });
+        await logout();
       } else {
         openModal("CHECK", {
           mainMsg: "로그인 성공!",
