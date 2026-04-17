@@ -1,10 +1,12 @@
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import "./MyLecturePage.css";
 import LectureItem from "../../components/lecture/LectureItem";
 
 // 강의 등록 버튼 롤값에 따라 유무 나눠야함
 
 function MyLecturePage() {
+  const navigate = useNavigate();
   const { lectures } = useSelector((state) => state.lecture);
 
   const waiting = lectures.filter((l) => l.status === "recruiting");
@@ -18,7 +20,12 @@ function MyLecturePage() {
             <div className="mylec-title-bar" />
             <p className="mylec-title">내 강의</p>
           </div>
-          <button className="mylec-regist-btn">+ 강의 등록</button>
+          <button
+            className="mylec-regist-btn"
+            onClick={() => navigate("/teacher/mylec/regist")}
+          >
+            + 강의 등록
+          </button>
         </div>
 
         {/* 대기 중인 강의 */}
