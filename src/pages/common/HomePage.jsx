@@ -1,24 +1,43 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearch, setKeyword } from "../../store/searchbarSlice";
 import "./HomePage.css";
 import Searchbar from "../../components/common/Searchbar";
 import LectureItem from "../../components/lecture/LectureItem";
 
 function HomePage() {
   const { lectures } = useSelector((state) => state.lecture);
+  const { search, keyword } = useSelector((state) => state.searchbar);
+  const dispatch = useDispatch();
   const [selectedCategory, setSelectedCategory] = useState("전체");
+
+  const handleSearch = () => {
+    dispatch(setKeyword(search));
+  };
 
   const categories = ["전체", "프론트엔드", "백엔드", "UI/UX", "데이터 분석"];
 
-  const filtered =
-    selectedCategory === "전체"
-      ? lectures
-      : lectures.filter((l) => l.category === selectedCategory);
+  const filtered = lectures
+    .filter(
+      (l) => selectedCategory === "전체" || l.category === selectedCategory,
+    )
+    .filter((l) => {
+      if (!keyword) return true;
+      const kw = keyword.toLowerCase();
+      return (
+        l.title.toLowerCase().includes(kw) ||
+        l.subTitle.toLowerCase().includes(kw)
+      );
+    });
 
   return (
     <div className="content">
       <div className="home-container">
-        <Searchbar />
+        <Searchbar
+          value={search}
+          onChange={(e) => dispatch(setSearch(e.target.value))}
+          onSearch={handleSearch}
+        />
         <div className="category-container">
           {categories.map((category) => (
             <button

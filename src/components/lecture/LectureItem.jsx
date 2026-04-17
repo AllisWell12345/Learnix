@@ -7,7 +7,7 @@ function LectureItem({ item, mode }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/:role/lecture/${item.lectureId}`); // 수정 필요
+    navigate(`/:role/${item.lectureId}`); // 수정 필요
   };
 
   // ===== box 모드 =====
@@ -62,7 +62,9 @@ function LectureItem({ item, mode }) {
             <img src={StudentIcon} alt="수강인원" className="lecitem-icon" />
             수강생
           </span>
-          <span className="lecitem-info-col-val">{item.members}/{item.members}명</span>
+          <span className="lecitem-info-col-val">
+            {item.members}/{item.members}명
+          </span>
         </div>
 
         {/* 학습 시작일 */}
@@ -80,10 +82,18 @@ function LectureItem({ item, mode }) {
             <img src={CalendarIcon} alt="학습종료일" className="lecitem-icon" />
             학습 종료일
           </span>
-          <span className="lecitem-info-col-val">{item.studyEnd.replace(/-/g, ".")}</span>
+          <span className="lecitem-info-col-val">
+            {item.studyEnd.replace(/-/g, ".")}
+          </span>
         </div>
       </div>
     );
+  }
+          // ===== list 모드 =====
+  if (mode === "detail") {
+    return (
+      d
+    )
   }
 }
 
