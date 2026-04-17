@@ -90,12 +90,13 @@
   align-items: center;
 }
 
-.cart-item-img {
+.cart-item-thumb {
   width: 150px;
   height: 100px;
-  background: #000000;
   border-radius: 12px;
   flex-shrink: 0;
+  object-fit: cover; 
+  object-position: center;
 }
 
 .cart-category-badge {
