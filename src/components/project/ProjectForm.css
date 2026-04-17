@@ -5,7 +5,7 @@
   width: 95%;
   max-width: 1000px;
   margin: auto;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e5e7eb;
 }
 
 .proj-form-title {
@@ -34,7 +34,7 @@
   color: #101828;
 }
 
-.form-divider {
+.form-div {
   border: 0;
   height: 1px;
   background: #e2e8f0;
