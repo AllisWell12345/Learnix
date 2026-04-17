@@ -1,13 +1,21 @@
-import { Outlet } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./ProjectPage.css";
 
 function ProjectPage() {
+  const navigate = useNavigate();
+  const { lectureid } = useParams();
+
+  const handleRegistClick = () => {
+    navigate(`/student/mylec/${lectureid}/myproj/regist`);
+  };
+
   return (
     <div className="content">
       <div className="proj-container">
         <div className="proj-left-card">
+          {/* 강사의 템플릿으로 이동 필요 */}
           <div className="proj-card-header">프로젝트 템플릿</div>
-          <div className="proj-topic-box">주제:</div>
+          <div className="proj-topic-box">주제: OOOOOOOOOOO</div>
           <div className="proj-guide-list">
             <p>1. 프로젝트 설명 :</p>
             <p>2. 요구 사항 :</p>
@@ -19,7 +27,9 @@ function ProjectPage() {
 
         <div className="proj-right-card">
           <div className="proj-card-header">프로젝트 결과 보고서</div>
-          <button className="proj-write-btn">＋ 작성하기</button>
+          <button className="proj-write-btn" onClick={handleRegistClick}>
+            ＋ 작성하기
+          </button>
 
           <div className="proj-report-content">{/* 요소 가져오기 */}</div>
         </div>
