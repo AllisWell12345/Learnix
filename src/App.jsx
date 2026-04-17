@@ -64,7 +64,7 @@ function App() {
             <Route path="project">
               <Route index element={<PortfolioPage />} />
               <Route path=":lectureId" element={<ProjectTotalPage />}>
-                <Route path=":projectid" element={<ProjectDetailPage />} />
+                <Route path=":projectId" element={<ProjectDetailPage />} />
               </Route>
             </Route>
 
@@ -99,7 +99,7 @@ function App() {
               />
               <Route path=":lectureId/edit" element={<TemplateEditPage />} />
               <Route path=":lectureId" element={<ProjectTotalPage />}>
-                <Route path=":projectid" element={<ProjectDetailPage />} />
+                <Route path=":projectId" element={<ProjectDetailPage />} />
               </Route>
             </Route>
 
@@ -107,11 +107,11 @@ function App() {
               <Route index element={<PortfolioPage />} />
               <Route path=":lectureId" element={<InterviewTotalPage />}>
                 <Route
-                  path=":projectid/regist"
+                  path=":projectId/regist"
                   element={<InterviewRegistPage />}
                 />
                 <Route
-                  path=":projectid/detail"
+                  path=":projectId/detail"
                   element={<InterviewDetailPage />}
                 />
               </Route>
@@ -126,9 +126,9 @@ function App() {
             <Route path=":lectureId" element={<LectureDetailPage />} />
           </Route>
           <Route path="data" element={<DataManagePage />}>
-            <Route path=":projectid/project" element={<ProjectDetailPage />} />
+            <Route path=":projectId/project" element={<ProjectDetailPage />} />
             <Route
-              path=":projectid/interview"
+              path=":projectId/interview"
               element={<InterviewDetailPage />}
             />
           </Route>
