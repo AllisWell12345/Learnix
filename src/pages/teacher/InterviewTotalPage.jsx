@@ -1,40 +1,46 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getQuestionsAll } from "../../services/questionService";
+import { getUserByUid } from "../../services/userService";
+import InterviewItem from "../../components/interview/InterviewItem";
 import "./InterviewTotalPage.css";
 
 function InterviewTotalPage() {
   const navigate = useNavigate();
+  const [projects] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // 임시 데이터
-  const testItems = [
-    { id: 1, title: "강의아이템", status: "waiting", projectId: 1 },
-    { id: 2, title: "강의아이템", status: "waiting", projectId: 2 },
-    { id: 3, title: "강의아이템", status: "reviewing", projectId: 3 },
-    { id: 4, title: "강의아이템", status: "completed", projectId: 4 },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const allQuestions = await getQuestionsAll();
+        const projectsWithUser = await Promise.all(
+          allQuestions.map(async (q) => {
+            const student = q.studentUid
+              ? await getUserByUid(q.studentUid)
+              : null;
+            return { ...q, student };
+          }),
+        );
+        setProjects(projectsWithUser);
+      } catch (err) {
+        console.error("데이터 불러오기 실패:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
-  const [projects] = useState(testItems);
+  const handleRegist = (interview) => {
+    navigate(`/teacher/interview/${interview.interviewId}/regist`);
+  };
 
-  const renderCard = (it) => (
-    <div key={it.id} className="it-card">
-      <div className="it-card-info">
-        <h4 className="it-card-title">{it.title}</h4>
-      </div>
+  const handleDetail = (interview) => {
+    navigate(`/teacher/interview/${interview.interviewId}/detail`);
+  };
 
-      {it.status === "waiting" && (
-        <button
-          className="it-register-btn"
-          onClick={() =>
-            navigate(
-              `/teacher/portfolio/interview/${it.id}/${it.projectId}/regist`,
-            )
-          }
-        >
-          모의면접 등록
-        </button>
-      )}
-    </div>
-  );
+  if (loading) return <div className="it-page">불러오는 중...</div>;
 
   return (
     <div className="it-page">
@@ -53,7 +59,14 @@ function InterviewTotalPage() {
           <div className="it-list">
             {projects
               .filter((it) => it.status === "waiting")
-              .map((it) => renderCard(it))}
+              .map((it) => (
+                <InterviewItem
+                  key={it.interviewId}
+                  interview={it}
+                  mode="list"
+                  onRegist={handleRegist}
+                />
+              ))}
           </div>
         </section>
 
@@ -68,16 +81,12 @@ function InterviewTotalPage() {
             {projects
               .filter((it) => it.status === "reviewing")
               .map((it) => (
-                <div
-                  key={it.id}
-                  onClick={() =>
-                    navigate(
-                      `/teacher/portfolio/interview/${it.id}/${it.projectId}/detail`,
-                    )
-                  }
-                >
-                  {renderCard(it)}
-                </div>
+                <InterviewItem
+                  key={it.interviewId}
+                  interview={it}
+                  mode="list"
+                  onDetail={handleDetail}
+                />
               ))}
           </div>
         </section>
@@ -93,16 +102,12 @@ function InterviewTotalPage() {
             {projects
               .filter((it) => it.status === "completed")
               .map((it) => (
-                <div
-                  key={it.id}
-                  onClick={() =>
-                    navigate(
-                      `/teacher/portfolio/interview/${it.id}/${it.projectId}/detail`,
-                    )
-                  }
-                >
-                  {renderCard(it)}
-                </div>
+                <InterviewItem
+                  key={it.interviewId}
+                  interview={it}
+                  mode="list"
+                  onDetail={handleDetail}
+                />
               ))}
           </div>
         </section>

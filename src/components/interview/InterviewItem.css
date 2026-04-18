@@ -1,7 +1,90 @@
-/* ===== 공통 ===== */
+/* ===== list 모드 ===== */
+.ii-list-card {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+  border: 1px solid #f8fafc;
+  transition: background-color 0.15s;
+}
+
+.ii-list-card-clickable {
+  cursor: pointer;
+}
+
+.ii-list-card-clickable:hover {
+  background-color: #f8fafc;
+}
+
+.ii-list-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.ii-list-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #101828;
+}
+
+.ii-list-lecture {
+  font-size: 13px;
+  color: #4a5565;
+}
+
+.ii-list-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.ii-list-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: #4a5565;
+}
+
+.ii-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+/* ===== 모의면접 등록 버튼 ===== */
+.ii-regist-btn {
+  padding: 9px 18px;
+  background-color: #5e936c;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.ii-regist-btn:hover {
+  background-color: #3e5f44;
+}
+
+/* ===== detail 모드 공통 ===== */
 .interviewitem-wrap {
-  max-width: 820px;
-  margin: 0 auto;
+  max-width: 900px;
   flex-direction: column;
 }
 
@@ -9,7 +92,14 @@
   font-size: 24px;
   font-weight: 700;
   color: #101828;
-  margin-bottom: 4px;
+  margin-bottom: 10px;
+}
+
+.interviewitem-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  vertical-align: middle;
 }
 
 /* ===== 카드 ===== */
@@ -18,6 +108,7 @@
   border-radius: 12px;
   padding: 24px 28px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 10px;
 }
 
 .interviewitem-card-title {
@@ -157,7 +248,7 @@
   flex: 1;
   height: 46px;
   padding: 0 14px;
-  border: 1.5px solid #dddddd;
+  border: 1.5px solid #e5e7eb;
   border-radius: 8px;
   font-size: 14px;
   font-family: inherit;
@@ -171,7 +262,7 @@
 }
 
 .interviewitem-comment-input::placeholder {
-  color: #eef7e6;
+  color: #e5e7eb;
 }
 
 .interviewitem-comment-submit-btn {
@@ -201,7 +292,7 @@
 /* ===== 댓글 목록 ===== */
 .interviewitem-comment-list {
   display: flex;
-  flex-direction: #e5e7eb;
+  flex-direction: column;
   gap: 10px;
 }
 
@@ -247,7 +338,7 @@
 
 .interviewitem-comment-date {
   font-size: 12px;
-  color: #e5e7eb;
+  color: #4a5565;
 }
 
 .interviewitem-comment-content {
@@ -275,8 +366,8 @@
 
 .interviewitem-edit-btn {
   background: #ffffff;
-  border: 1px solid #e5e7eb;
-  color: #e5e7eb;
+  border: 1px solid #155dfc;
+  color: #155dfc;
 }
 
 .interviewitem-delete-btn {
@@ -287,14 +378,23 @@
 
 .interviewitem-report-btn {
   background: #ffffff;
-  border: 1px solid #e5e7eb;
-  color: #4a5565;
+  border: 1px solid #e17100;
+  color: #e17100;
 }
 
-.interviewitem-edit-btn:hover,
-.interviewitem-delete-btn:hover,
+.interviewitem-edit-btn:hover {
+  background: #f8fafc;
+  border: 1px solid #155dfc;
+}
+
 .interviewitem-report-btn:hover {
-  opacity: 0.7;
+  background: #f8fafc;
+  border: 1px solid #e17100;
+}
+
+.interviewitem-delete-btn:hover {
+  background: #f8fafc;
+  border: 1px solid #fb2c36;
 }
 
 /* ===== 수정 모드 ===== */

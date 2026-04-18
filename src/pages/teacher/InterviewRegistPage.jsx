@@ -5,7 +5,6 @@ function InterviewRegistPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // 프로젝트 정보는 이전 페이지에서 navigate state로 전달받음
   const projectInfo = location.state?.projectInfo || null;
 
   const handleSubmit = (data) => {
