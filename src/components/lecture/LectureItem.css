@@ -209,3 +209,15 @@
   color: #101828;
 }
 
+.lecitem-manager-delete-btn {
+  width: 24px;
+  height: 24px;
+  background: none;
+  border: none;
+  border-radius: 7px;
+}
+
+.lecitem-manager-delete-btn:hover {
+  cursor: pointer;
+  background-color: #e5e7eb;
+}
