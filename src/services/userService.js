@@ -25,6 +25,8 @@ export const createUser = async (userData) => {
 // 현재 로그인한 유저의 정보를 읽어오기 위해 만들었던 단일 조회 함수
 export const getUserByUid = async (uid) => {
   try {
+    console.count("Firestore user read");      // 읽기 횟수 카운트
+
     const userRef = doc(db, COLLECTION_NAME, uid);
     const userSnap = await getDoc(userRef);
 
