@@ -5,6 +5,8 @@ import "./MyLecturePage.css";
 import LectureItem from "../../components/lecture/LectureItem";
 import { getLecturesAll, updateLecture } from "../../services/lectureService";
 import { getAttendingsByUserId } from "../../services/attendingService";
+import { getUserByUid } from "../../services/userService";
+import { auth } from "../../firebase/config";
 
 function MyLecturePage() {
   const navigate = useNavigate();
