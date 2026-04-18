@@ -7,10 +7,10 @@ function InterviewTotalPage() {
 
   // 임시 데이터
   const testItems = [
-    { id: 1, title: "강의아이템", status: "waiting" },
-    { id: 2, title: "강의아이템", status: "waiting" },
-    { id: 3, title: "강의아이템", status: "reviewing" },
-    { id: 4, title: "강의아이템", status: "completed" },
+    { id: 1, title: "강의아이템", status: "waiting", projectId: 1 },
+    { id: 2, title: "강의아이템", status: "waiting", projectId: 2 },
+    { id: 3, title: "강의아이템", status: "reviewing", projectId: 3 },
+    { id: 4, title: "강의아이템", status: "completed", projectId: 4 },
   ];
 
   const [projects] = useState(testItems);
@@ -24,7 +24,11 @@ function InterviewTotalPage() {
       {it.status === "waiting" && (
         <button
           className="it-register-btn"
-          onClick={() => navigate(`${it.id}`)}
+          onClick={() =>
+            navigate(
+              `/teacher/portfolio/interview/${it.id}/${it.projectId}/regist`,
+            )
+          }
         >
           모의면접 등록
         </button>
@@ -60,10 +64,21 @@ function InterviewTotalPage() {
               {projects.filter((it) => it.status === "reviewing").length}개
             </span>
           </div>
-          <div className="it-list">
+          <div className="it-list-detail">
             {projects
               .filter((it) => it.status === "reviewing")
-              .map((it) => renderCard(it))}
+              .map((it) => (
+                <div
+                  key={it.id}
+                  onClick={() =>
+                    navigate(
+                      `/teacher/portfolio/interview/${it.id}/${it.projectId}/detail`,
+                    )
+                  }
+                >
+                  {renderCard(it)}
+                </div>
+              ))}
           </div>
         </section>
 
@@ -74,10 +89,21 @@ function InterviewTotalPage() {
               {projects.filter((it) => it.status === "completed").length}개
             </span>
           </div>
-          <div className="it-list">
+          <div className="it-list-detail">
             {projects
               .filter((it) => it.status === "completed")
-              .map((it) => renderCard(it))}
+              .map((it) => (
+                <div
+                  key={it.id}
+                  onClick={() =>
+                    navigate(
+                      `/teacher/portfolio/interview/${it.id}/${it.projectId}/detail`,
+                    )
+                  }
+                >
+                  {renderCard(it)}
+                </div>
+              ))}
           </div>
         </section>
       </main>

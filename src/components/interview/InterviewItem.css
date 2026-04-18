@@ -1,0 +1,339 @@
+/* ===== 공통 ===== */
+.interviewitem-wrap {
+  max-width: 820px;
+  margin: 0 auto;
+  flex-direction: column;
+}
+
+.interviewitem-main-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #101828;
+  margin-bottom: 4px;
+}
+
+/* ===== 카드 ===== */
+.interviewitem-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px 28px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.interviewitem-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #101828;
+  margin-bottom: 16px;
+}
+
+/* ===== 프로젝트 + 수강생 정보 행 ===== */
+.interviewitem-info-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+
+.interviewitem-info-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.interviewitem-info-field:last-child {
+  margin-bottom: 0;
+}
+
+.interviewitem-info-label {
+  font-size: 12px;
+  color: #4a5565;
+}
+
+.interviewitem-info-val {
+  font-size: 14px;
+  color: #101828;
+  line-height: 1.5;
+}
+
+.interviewitem-info-bold {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.interviewitem-date-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #4a5565;
+}
+
+.interviewitem-date-label svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* ===== 면접 질문 ===== */
+.interviewitem-qa-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.interviewitem-qa-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.interviewitem-question {
+  font-size: 14px;
+  color: #101828;
+  line-height: 1.6;
+}
+
+.interviewitem-answer-label {
+  font-size: 13px;
+  color: #888888;
+}
+
+.interviewitem-answer-input {
+  width: 100%;
+  min-height: 80px;
+  padding: 12px 14px;
+  border: 1.5px solid #dddddd;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #4a5565;
+  background: #ffffff;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.interviewitem-answer-input:focus {
+  border-color: #5e936c;
+}
+
+.interviewitem-answer-input[readonly] {
+  background-color: #f8fafc;
+  cursor: default;
+}
+
+/* ===== 댓글 헤더 ===== */
+.interviewitem-comment-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.interviewitem-comment-header svg {
+  width: 18px;
+  height: 18px;
+  color: #4a5565;
+}
+
+.interviewitem-comment-header .interviewitem-card-title {
+  margin-bottom: 0;
+}
+
+.interviewitem-comment-count {
+  font-size: 14px;
+  color: #4a5565;
+}
+
+/* ===== 댓글 입력 ===== */
+.interviewitem-comment-input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.interviewitem-comment-input {
+  flex: 1;
+  height: 46px;
+  padding: 0 14px;
+  border: 1.5px solid #dddddd;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #101828;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.interviewitem-comment-input:focus {
+  border-color: #5e936c;
+}
+
+.interviewitem-comment-input::placeholder {
+  color: #eef7e6;
+}
+
+.interviewitem-comment-submit-btn {
+  width: 46px;
+  height: 46px;
+  background-color: #5e936c;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+  color: #ffffff;
+}
+
+.interviewitem-comment-submit-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.interviewitem-comment-submit-btn:hover {
+  background-color: #5e936c;
+}
+
+/* ===== 댓글 목록 ===== */
+.interviewitem-comment-list {
+  display: flex;
+  flex-direction: #e5e7eb;
+  gap: 10px;
+}
+
+.interviewitem-comment-item {
+  padding: 16px 18px;
+  border-radius: 8px;
+  background-color: #f8f8f8;
+}
+
+/* 강사 댓글 - 노란색 배경 */
+.interviewitem-comment-teacher {
+  background-color: #fff7e6;
+  border: 1px solid #e17100;
+}
+
+.interviewitem-comment-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.interviewitem-comment-author-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.interviewitem-comment-author {
+  font-size: 14px;
+  font-weight: 600;
+  color: #101828;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.interviewitem-teacher-badge {
+  font-size: 12px;
+  font-weight: 400;
+  color: #4a5565;
+}
+
+.interviewitem-comment-date {
+  font-size: 12px;
+  color: #e5e7eb;
+}
+
+.interviewitem-comment-content {
+  font-size: 14px;
+  color: #101828;
+  line-height: 1.6;
+}
+
+/* ===== 댓글 버튼 ===== */
+.interviewitem-comment-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.interviewitem-edit-btn,
+.interviewitem-delete-btn,
+.interviewitem-report-btn {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.interviewitem-edit-btn {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  color: #e5e7eb;
+}
+
+.interviewitem-delete-btn {
+  background: #ffffff;
+  border: 1px solid #ffa2a2;
+  color: #fb2c36;
+}
+
+.interviewitem-report-btn {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  color: #4a5565;
+}
+
+.interviewitem-edit-btn:hover,
+.interviewitem-delete-btn:hover,
+.interviewitem-report-btn:hover {
+  opacity: 0.7;
+}
+
+/* ===== 수정 모드 ===== */
+.interviewitem-edit-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.interviewitem-edit-input {
+  flex: 1;
+  height: 38px;
+  padding: 0 12px;
+  border: 1.5px solid #5e936c;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+}
+
+.interviewitem-edit-done-btn {
+  padding: 0 14px;
+  height: 38px;
+  background: #5e936c;
+  border: none;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 640px) {
+  .interviewitem-info-row {
+    grid-template-columns: 1fr;
+  }
+
+  .interviewitem-wrap {
+    padding: 24px 16px 40px;
+  }
+}

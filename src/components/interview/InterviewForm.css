@@ -1,0 +1,224 @@
+/* ===== 공통 ===== */
+.interviewform-wrap {
+  max-width: 1000px;
+  margin-right: 100px;
+}
+
+/* ===== 페이지 타이틀 ===== */
+.interviewform-page-title-area {
+  margin-bottom: 32px;
+}
+
+.interviewform-page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #101828;
+  margin-bottom: 8px;
+}
+
+.interviewform-page-subtitle {
+  font-size: 14px;
+  color: #4a5565;
+}
+
+/* ===== 섹션 ===== */
+.interviewform-section {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.interviewform-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #101828;
+  margin-bottom: 24px;
+}
+
+.interviewform-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+/* ===== 프로젝트 정보 ===== */
+.interviewform-info-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.interviewform-info-field:last-child {
+  margin-bottom: 0;
+}
+
+.interviewform-info-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.interviewform-info-label {
+  font-size: 13px;
+  color: #4a5565;
+  font-weight: 400;
+}
+
+.interviewform-info-val {
+  font-size: 15px;
+  color: #101828;
+  line-height: 1.6;
+}
+
+.interviewform-info-val-bold {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.interviewform-info-desc {
+  min-height: 80px;
+  color: #4a5565;
+}
+
+/* ===== 질문 필드 ===== */
+.interviewform-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.interviewform-field:last-of-type {
+  margin-bottom: 0;
+}
+
+.interviewform-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a5565;
+}
+
+.interviewform-required {
+  color: #5e936c;
+  margin-left: 2px;
+}
+
+.interviewform-textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 12px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #4a5565;
+  background: #ffffff;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.interviewform-textarea:focus {
+  border-color: #5e936c;
+}
+
+.interviewform-textarea::placeholder {
+  color: #e5e7eb;
+}
+
+/* ===== 에러 ===== */
+.interviewform-error-border {
+  border-color: #fb2c36 !important;
+}
+
+.interviewform-error-msg {
+  font-size: 12px;
+  color: #fb2c36;
+}
+
+/* ===== 힌트 ===== */
+.interviewform-hint {
+  font-size: 13px;
+  color: #4a5565;
+  margin-top: 12px;
+}
+
+/* ===== 질문 추가 버튼 ===== */
+.interviewform-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 14px;
+  background: #ffffff;
+  border: 1.5px solid #5e936c;
+  border-radius: 8px;
+  color: #5e936c;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.interviewform-add-btn:hover {
+  background-color: #f8fafc;
+}
+
+/* ===== 하단 버튼 ===== */
+.interviewform-btn-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.interviewform-cancel-btn {
+  padding: 10px 24px;
+  background: #ffffff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  color: #4a5565;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.interviewform-cancel-btn:hover {
+  border-color: #4a5565;
+}
+
+.interviewform-submit-btn {
+  padding: 10px 28px;
+  background: #5e936c;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.interviewform-submit-btn:hover {
+  background-color: #3e5f44;
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 640px) {
+  .interviewform-info-row {
+    grid-template-columns: 1fr;
+  }
+
+  .interviewform-wrap {
+    padding: 24px 16px 40px;
+  }
+}
