@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import './App.css'
+import "./App.css";
 import MainLayout from "./layouts/MainLayout";
 import StudentLayout from "./layouts/StudentLayout";
 import StudentPortfolioLayout from "./layouts/StudentPortfolioLayout";
@@ -36,7 +36,7 @@ import AuthInitializer from "./components/AuthInitializer";
 function App() {
   return (
     <>
-    <AuthInitializer />
+      <AuthInitializer />
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
@@ -52,10 +52,16 @@ function App() {
 
           <Route path="mylec">
             <Route index element={<MyLecturePage />} />
-            <Route path=":lectureId" element={<LectureDetailPage />}/>
+            <Route path=":lectureId" element={<LectureDetailPage />} />
             <Route path=":lectureId/myproj" element={<ProjectPage />} />
-            <Route path=":lectureId/myproj/regist" element={<ProjectRegistPage />} />
-            <Route path=":lectureId/myproj/edit" element={<ProjectEditPage />} />
+            <Route
+              path=":lectureId/myproj/regist"
+              element={<ProjectRegistPage />}
+            />
+            <Route
+              path=":lectureId/myproj/edit"
+              element={<ProjectEditPage />}
+            />
           </Route>
 
           <Route path="portfolio" element={<StudentPortfolioLayout />}>
@@ -71,8 +77,14 @@ function App() {
             <Route path="interview">
               <Route index element={<PortfolioPage />} />
               <Route path=":lectureId" element={<InterviewDetailPage />} />
-              <Route path=":lectureId/notice" element={<InterviewNoticePage />} />
-              <Route path=":lectureId/practice" element={<InterviewPracticePage />} />
+              <Route
+                path=":lectureId/notice"
+                element={<InterviewNoticePage />}
+              />
+              <Route
+                path=":lectureId/practice"
+                element={<InterviewPracticePage />}
+              />
             </Route>
           </Route>
         </Route>
@@ -105,16 +117,15 @@ function App() {
 
             <Route path="interview">
               <Route index element={<PortfolioPage />} />
-              <Route path=":lectureId" element={<InterviewTotalPage />}>
-                <Route
-                  path=":projectId/regist"
-                  element={<InterviewRegistPage />}
-                />
-                <Route
-                  path=":projectId/detail"
-                  element={<InterviewDetailPage />}
-                />
-              </Route>
+              <Route path=":lectureId" element={<InterviewTotalPage />} />
+              <Route
+                path=":lectureId/:projectId/regist"
+                element={<InterviewRegistPage />}
+              />
+              <Route
+                path=":lectureId/:projectId/detail"
+                element={<InterviewDetailPage />}
+              />
             </Route>
           </Route>
         </Route>

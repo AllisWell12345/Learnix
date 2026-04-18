@@ -49,6 +49,18 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  cursor: pointer;
+}
+
+.it-list-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.it-list-detail:hover {
+  background-color: #f8fafc;
 }
 
 .it-card {

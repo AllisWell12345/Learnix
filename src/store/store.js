@@ -3,6 +3,7 @@ import cartReducer from "./cartSlice";
 import lectureReducer from "./lectureSlice";
 import userReducer from "./userSlice";
 import searchbarReducer from "./searchbarSlice";
+import interviewReducer from "./interviewSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     lecture: lectureReducer,
     user: userReducer,
     searchbar: searchbarReducer,
+    interview: interviewReducer,
   },
 });
 
