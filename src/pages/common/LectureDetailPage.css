@@ -79,7 +79,28 @@
   cursor: pointer;
 }
 
+.lecdetail-cart-btn.manager {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background-color: #ffffff;
+  color: #fb2c36;
+  border: 2px solid #ffa2a2;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.lecdetail-cart-btn.manager:hover {
+  cursor: pointer;
+  border: 2px solid #fb2c36;
+  background-color: #f8fafc;
+}
+
 .lecdetail-cart-btn:hover {
+  cursor: pointer;
   background-color: #3e5f44;
 }
 

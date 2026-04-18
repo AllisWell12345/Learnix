@@ -133,9 +133,8 @@ function App() {
         <Route path="/manager" element={<ManagerLayout />}>
           <Route index element={<ManagerDashboardPage />} />
           <Route path="user" element={<UserManagePage />} />
-          <Route path="lecture" element={<LectureManagePage />}>
-            <Route path=":lectureId" element={<LectureDetailPage />} />
-          </Route>
+          <Route path="lecture" element={<LectureManagePage />}/>
+          <Route path="lecture/:lectureId" element={<LectureDetailPage />} />
           <Route path="data" element={<DataManagePage />}>
             <Route path=":projectId/project" element={<ProjectDetailPage />} />
             <Route

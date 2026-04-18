@@ -48,7 +48,7 @@ function LectureManagePage() {
           );
 
           openModal("CHECK", {
-            mainMsg: "삭제가 되었습니다.",
+            mainMsg: "강의가 삭제 되었습니다.",
           });
         } catch (error) {
           console.error("강의 삭제 실패:", error);
