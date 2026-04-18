@@ -1,4 +1,13 @@
 /* ===== 페이지 ===== */
+.ld-loading {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 36px;
+  color: #4a5565;
+}
 
 .lecdetail-container {
   max-width: 900px;

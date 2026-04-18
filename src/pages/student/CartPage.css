@@ -4,6 +4,26 @@
   flex-direction: column;
 }
 
+.cart-loading {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 36px;
+  color: #4a5565;
+}
+
+.empty-cart {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #4a5565;
+  font-size: 32px;
+}
+
 /* 장바구니 헤더 */
 .cart-header {
   width: 100%;
@@ -197,6 +217,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #fb2c36;
 }
 
 .cart-btn-del:hover {

@@ -12,6 +12,7 @@ import {
 import useModal from "../../hooks/useModal";
 import FileIcon from "../../assets/img/fileIcon.svg";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const categories = ["프론트엔드", "백엔드", "UI/UX", "데이터 분석"];
 
@@ -31,6 +32,7 @@ function LectureForm({ mode = "regist", lectureId = null, onCancel }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitTried, setSubmitTried] = useState(false);
   const { modal, openModal } = useModal();
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   const [form, setForm] = useState({
     thumbnail: null,
@@ -288,6 +290,7 @@ function LectureForm({ mode = "regist", lectureId = null, onCancel }) {
         recruitEnd: form.recruitEnd,
         studyStart: form.studyStart,
         studyEnd: form.studyEnd,
+        userId: currentUser.userId,
       };
 
       let savedLectureId = lectureId;

@@ -8,7 +8,7 @@ import {
   updateDoc,
   deleteDoc,
   query,
-  orderBy,
+  where,
 } from "firebase/firestore";
 import { getDataId } from "./getIdService.js";
 
@@ -49,16 +49,46 @@ export const getAttendingById = async (attendingId) => {
   }
 };
 
-// 전체조회
-export const getAttendingsAll = async () => {
+// 현재 유저 신청 강의 전체조회
+export const getAttendingsByUserId = async (userId) => {
   try {
-    const q = query(collection(db, COLLECTION_NAME), orderBy("attendingId", "desc"));
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("userId", "==", Number(userId)),
+    );
+
     const querySnapshot = await getDocs(q);
 
-    return querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    return querySnapshot.docs
+      .map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
+      .sort((a, b) => Number(b.attendingId) - Number(a.attendingId));
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 현재 유저 + 현재 강의 신청 여부 조회
+export const getAttendingByUserAndLecture = async (userId, lectureId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("userId", "==", Number(userId)),
+      where("lectureId", "==", Number(lectureId)),
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) return null;
+
+    const firstDoc = querySnapshot.docs[0];
+
+    return {
+      id: firstDoc.id,
+      ...firstDoc.data(),
+    };
   } catch (error) {
     throw error;
   }

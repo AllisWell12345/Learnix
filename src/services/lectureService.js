@@ -9,6 +9,7 @@ import {
   deleteDoc,
   query,
   orderBy,
+  where,
 } from "firebase/firestore";
 import { getDataId } from "./getIdService.js";
 
@@ -53,6 +54,26 @@ export const getLectureById = async (lectureId) => {
 export const getLecturesAll = async () => {
   try {
     const q = query(collection(db, COLLECTION_NAME), orderBy("lectureId", "desc"));
+    const querySnapshot = await getDocs(q);
+
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 모집중인 강의만 조회
+export const getPlayingLectures = async () => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("status", "==", "playing"),
+      orderBy("lectureId", "desc")
+    );
+
     const querySnapshot = await getDocs(q);
 
     return querySnapshot.docs.map((doc) => ({

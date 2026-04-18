@@ -1,34 +1,65 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearch, setKeyword } from "../../store/searchbarSlice";
+import { getPlayingLectures } from "../../services/lectureService";
 import "./HomePage.css";
 import Searchbar from "../../components/common/Searchbar";
 import LectureItem from "../../components/lecture/LectureItem";
 
 function HomePage() {
-  const { lectures } = useSelector((state) => state.lecture);
-  const { search, keyword } = useSelector((state) => state.searchbar);
   const dispatch = useDispatch();
+  const { search, keyword } = useSelector((state) => state.searchbar);
+
+  const [lectures, setLectures] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("전체");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLectureList = async () => {
+      try {
+        setLoading(true);
+        const lectureList = await getPlayingLectures();
+        setLectures(lectureList);
+      } catch (error) {
+        console.error("강의 목록 조회 실패:", error);
+        setLectures([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLectureList();
+  }, []);
 
   const handleSearch = () => {
-    dispatch(setKeyword(search));
+    dispatch(setKeyword(search.trim()));
   };
 
   const categories = ["전체", "프론트엔드", "백엔드", "UI/UX", "데이터 분석"];
 
-  const filtered = lectures
+  const filteredLectures = lectures
     .filter(
-      (l) => selectedCategory === "전체" || l.category === selectedCategory,
+      (lecture) =>
+        selectedCategory === "전체" || lecture.category === selectedCategory,
     )
-    .filter((l) => {
-      if (!keyword) return true;
-      const kw = keyword.toLowerCase();
+    .filter((lecture) => {
+      if (!keyword.trim()) return true;
+
+      const lowerKeyword = keyword.toLowerCase();
+
       return (
-        l.title.toLowerCase().includes(kw) ||
-        l.subTitle.toLowerCase().includes(kw)
+        lecture.title.toLowerCase().includes(lowerKeyword) ||
+        lecture.subTitle.toLowerCase().includes(lowerKeyword)
       );
     });
+
+  if (loading) {
+    return <div className="content"> <div className="home-loading">불러오는 중...</div></div>;
+  }
+
+  if (!lectures) {
+    return <div className="content"> <div className="home-loading">강의를 불러올 수 없습니다.</div></div>;
+  }
 
   return (
     <div className="content">
@@ -38,6 +69,7 @@ function HomePage() {
           onChange={(e) => dispatch(setSearch(e.target.value))}
           onSearch={handleSearch}
         />
+
         <div className="category-container">
           {categories.map((category) => (
             <button
@@ -48,18 +80,20 @@ function HomePage() {
                   ? "category-btn active"
                   : "category-btn"
               }
-              onClick={() => {
-                setSelectedCategory(category);
-                console.log(category);
-              }}
+              onClick={() => setSelectedCategory(category)}
             >
               {category}
             </button>
           ))}
         </div>
+
         <div className="lecture-list">
-          {filtered.map((item) => (
-            <LectureItem key={item.lectureId} item={item} mode="box" />
+          {filteredLectures.map((lecture) => (
+            <LectureItem
+              key={lecture.lectureId}
+              lecture={lecture}
+              mode="box"
+            />
           ))}
         </div>
       </div>

@@ -8,14 +8,14 @@ import {
   updateDoc,
   deleteDoc,
   query,
-  orderBy,
+  where,
 } from "firebase/firestore";
 import { getDataId } from "./getIdService.js";
 
 const COLLECTION_NAME = "carts";
 
 // 등록
-export const createcart = async (cartData) => {
+export const createCart = async (cartData) => {
   try {
     const cartId = await getDataId("cart");
 
@@ -52,13 +52,59 @@ export const getCartById = async (cartId) => {
 // 전체조회
 export const getCartsAll = async () => {
   try {
-    const q = query(collection(db, COLLECTION_NAME), orderBy("cartId", "desc"));
+    const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
+
+    return querySnapshot.docs
+      .map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
+      .sort((a, b) => Number(b.cartId) - Number(a.cartId));
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 현재 유저 장바구니 전체조회
+export const getCartsByUserId = async (userId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("userId", "==", Number(userId)),
+    );
+
     const querySnapshot = await getDocs(q);
 
-    return querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    return querySnapshot.docs
+      .map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
+      .sort((a, b) => Number(b.cartId) - Number(a.cartId));
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 현재 유저 + 현재 강의 장바구니 조회
+export const getCartByUserAndLecture = async (userId, lectureId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("userId", "==", Number(userId)),
+      where("lectureId", "==", Number(lectureId)),
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) return null;
+
+    const firstDoc = querySnapshot.docs[0];
+
+    return {
+      id: firstDoc.id,
+      ...firstDoc.data(),
+    };
   } catch (error) {
     throw error;
   }
