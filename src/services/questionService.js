@@ -11,6 +11,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { getDataId } from "./getIdService.js";
+import { where } from "firebase/firestore";
 
 const COLLECTION_NAME = "questions";
 
@@ -55,6 +56,43 @@ export const getQuestionsAll = async () => {
     const q = query(collection(db, COLLECTION_NAME), orderBy("questionId", "desc"));
     const querySnapshot = await getDocs(q);
 
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    throw error;
+  }
+};
+
+// lectureId + projectId로 질문 조회
+export const getQuestionsByLectureAndProject = async (lectureId, projectId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("lectureId", "==", lectureId),
+      where("projectId", "==", projectId),
+      orderBy("questionId", "asc")
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    throw error;
+  }
+};
+
+// lectureId로 전체 조회 (InterviewTotalPage용)
+export const getQuestionsByLectureId = async (lectureId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("lectureId", "==", lectureId),
+      orderBy("questionId", "desc")
+    );
+    const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),

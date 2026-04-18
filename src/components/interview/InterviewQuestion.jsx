@@ -25,7 +25,9 @@ function InterviewQuestion({ questions, onChange, onAdd }) {
         </div>
       ))}
 
-      <p className="interviewform-hint">* 최소 3개 이상의 질문을 입력해야합니다.</p>
+      <p className="interviewform-hint">
+        * 최소 3개 이상의 질문을 입력해야합니다.
+      </p>
     </div>
   );
 }

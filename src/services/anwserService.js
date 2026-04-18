@@ -11,6 +11,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { getDataId } from "./getIdService.js";
+import { where } from "firebase/firestore";
 
 const COLLECTION_NAME = "answers";
 
@@ -59,6 +60,24 @@ export const getAnswersAll = async () => {
       id: doc.id,
       ...doc.data(),
     }));
+  } catch (error) {
+    throw error;
+  }
+};
+
+// questionId로 답변 조회
+export const getAnswerByQuestionId = async (questionId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("questionId", "==", questionId)
+    );
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) return null;
+    return {
+      id: querySnapshot.docs[0].id,
+      ...querySnapshot.docs[0].data(),
+    };
   } catch (error) {
     throw error;
   }

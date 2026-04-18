@@ -1,21 +1,24 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { getQuestionsAll } from "../../services/questionService";
+import { useNavigate, useParams } from "react-router-dom";
 import { getUserByUid } from "../../services/userService";
+import { getQuestionsByLectureId } from "../../services/questionService";
 import InterviewItem from "../../components/interview/InterviewItem";
 import "./InterviewTotalPage.css";
 
 function InterviewTotalPage() {
   const navigate = useNavigate();
-  const [projects] = useState([]);
+  const { lectureId } = useParams();
+  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const allQuestions = await getQuestionsAll();
+        // 해당 강의의 질문만 조회
+        const questions = await getQuestionsByLectureId(Number(lectureId));
+
         const projectsWithUser = await Promise.all(
-          allQuestions.map(async (q) => {
+          questions.map(async (q) => {
             const student = q.studentUid
               ? await getUserByUid(q.studentUid)
               : null;
@@ -30,14 +33,31 @@ function InterviewTotalPage() {
       }
     };
     fetchData();
-  }, []);
+  }, [lectureId]);
 
   const handleRegist = (interview) => {
-    navigate(`/teacher/interview/${interview.interviewId}/regist`);
+    navigate(
+      `/teacher/portfolio/interview/${interview.lectureId}/${interview.projectId}/regist`,
+      {
+        state: {
+          projectInfo: {
+            projectTitle: interview.projectTitle,
+            lectureTitle: interview.lectureTitle,
+            submitDate: interview.submitDate,
+            projectDesc: interview.projectDesc,
+            lectureId: interview.lectureId,
+            projectId: interview.projectId,
+            studentUid: interview.studentUid,
+          },
+        },
+      },
+    );
   };
 
   const handleDetail = (interview) => {
-    navigate(`/teacher/interview/${interview.interviewId}/detail`);
+    navigate(
+      `/teacher/portfolio/interview/${interview.lectureId}/${interview.projectId}/detail`,
+    );
   };
 
   if (loading) return <div className="it-page">불러오는 중...</div>;
