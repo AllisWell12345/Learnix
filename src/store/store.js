@@ -3,6 +3,7 @@ import cartReducer from "./cartSlice";
 import userReducer from "./userSlice";
 import searchbarReducer from "./searchbarSlice";
 import interviewReducer from "./interviewSlice";
+import projectReducer from "./projectSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     user: userReducer,
     searchbar: searchbarReducer,
     interview: interviewReducer,
+    project: projectReducer,
   },
 });
 

@@ -10,49 +10,56 @@ import {
   query,
   orderBy,
 } from "firebase/firestore";
-import { getDataId } from "./getIdService.js";
 
 const COLLECTION_NAME = "templates";
 
-// 등록
+/* 1. 템플릿 등록 */
 export const createTemplate = async (templateData) => {
   try {
-    const templateId = await getDataId("template");
+    const docId = String(templateData.lectureId);
 
     const newTemplate = {
       ...templateData,
-      templateId,
+      lectureId: Number(templateData.lectureId),
+      createdAt: new Date().toISOString(),
     };
 
-    await setDoc(doc(db, COLLECTION_NAME, String(templateId)), newTemplate);
+    await setDoc(doc(db, COLLECTION_NAME, docId), newTemplate);
 
     return newTemplate;
   } catch (error) {
+    console.error("템플릿 등록 실패:", error);
     throw error;
   }
 };
 
-// 개별조회
-export const getTemplateById = async (templateId) => {
+/* 2. 템플릿 개별 조회 */
+export const getTemplateById = async (lectureId) => {
   try {
-    const templateRef = doc(db, COLLECTION_NAME, String(templateId));
+    if (!lectureId) return null;
+
+    const templateRef = doc(db, COLLECTION_NAME, String(lectureId));
     const templateSnap = await getDoc(templateRef);
 
-    if (!templateSnap.exists()) return null;
+    if (!templateSnap.exists()) {
+      console.log(`강의 ${lectureId}번에 대한 템플릿이 없습니다.`);
+      return null;
+    }
 
     return {
       id: templateSnap.id,
       ...templateSnap.data(),
     };
   } catch (error) {
+    console.error("템플릿 조회 실패:", error);
     throw error;
   }
 };
 
-// 전체조회
+/* 3. 전체 템플릿 조회 */
 export const getTemplatesAll = async () => {
   try {
-    const q = query(collection(db, COLLECTION_NAME), orderBy("templateId", "desc"));
+    const q = query(collection(db, COLLECTION_NAME));
     const querySnapshot = await getDocs(q);
 
     return querySnapshot.docs.map((doc) => ({
@@ -60,26 +67,29 @@ export const getTemplatesAll = async () => {
       ...doc.data(),
     }));
   } catch (error) {
+    console.error("전체 템플릿 조회 실패:", error);
     throw error;
   }
 };
 
-// 수정
-export const updateTemplate = async (templateId, updateData) => {
+/* 4. 템플릿 수정 */
+export const updateTemplate = async (lectureId, updateData) => {
   try {
-    const templateRef = doc(db, COLLECTION_NAME, String(templateId));
+    const templateRef = doc(db, COLLECTION_NAME, String(lectureId));
     await updateDoc(templateRef, updateData);
   } catch (error) {
+    console.error("템플릿 수정 실패:", error);
     throw error;
   }
 };
 
-// 삭제
-export const deleteTemplate = async (templateId) => {
+/* 5. 템플릿 삭제 */
+export const deleteTemplate = async (lectureId) => {
   try {
-    const templateRef = doc(db, COLLECTION_NAME, String(templateId));
+    const templateRef = doc(db, COLLECTION_NAME, String(lectureId));
     await deleteDoc(templateRef);
   } catch (error) {
+    console.error("템플릿 삭제 실패:", error);
     throw error;
   }
 };
