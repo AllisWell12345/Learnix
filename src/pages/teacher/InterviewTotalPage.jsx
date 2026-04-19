@@ -81,7 +81,7 @@ function InterviewTotalPage() {
               .filter((it) => it.status === "waiting")
               .map((it) => (
                 <InterviewItem
-                  key={it.interviewId}
+                  key={it.questionId}
                   interview={it}
                   mode="list"
                   onRegist={handleRegist}

@@ -3,7 +3,7 @@ import "./InterviewItem.css";
 import review from "../../assets/img/common/reviewIcon.svg";
 import send from "../../assets/img/Icon/SendIcon.svg";
 import calendar from "../../assets/img/Icon/CalendarIcon.png";
-import student from "../../assets/img/Icon/CalendarIcon.png";
+import student from "../../assets/img/Icon/StudentIcon.png";
 import useModal from "../../hooks/useModal";
 
 function InterviewItem({ interview, mode, currentUser, onRegist, onDetail }) {
@@ -88,7 +88,7 @@ function InterviewItem({ interview, mode, currentUser, onRegist, onDetail }) {
     );
   }
 
-  // ===== 강사 detail 모드 =====
+  // ===== detail 모드 =====
   if (mode === "detail") {
     return (
       <>

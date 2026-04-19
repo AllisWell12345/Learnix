@@ -8,7 +8,7 @@ import InterviewItem from "../../components/interview/InterviewItem";
 
 function InterviewDetailPage() {
   const { lectureId, projectId } = useParams();
-  const { user } = useSelector((state) => state.auth);
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   const [interview, setInterview] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -61,7 +61,7 @@ function InterviewDetailPage() {
       <InterviewItem
         interview={interview}
         mode="detail" // teacherdetail → detail로 통일
-        currentUser={user}
+        currentUser={currentUser}
       />
     </div>
   );
