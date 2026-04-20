@@ -8,11 +8,13 @@ import {
 } from "../../store/projectSlice";
 import { updateTemplate } from "../../services/templateService";
 import TemplateForm from "../../components/project/TemplateForm";
+import useModal from "../../hooks/useModal";
 
 function TemplateEditPage() {
   const navigate = useNavigate();
-  const { lectureId } = useParams();
   const dispatch = useDispatch();
+  const { modal, openModal } = useModal();
+  const { lectureId } = useParams();
   const { currentTemplate, status } = useSelector((state) => state.project);
 
   const [formData, setFormData] = useState({
@@ -44,12 +46,18 @@ function TemplateEditPage() {
     try {
       await updateTemplate(currentTemplate.templateId, formData);
 
-      alert("수정되었습니다!");
-
-      navigate(-1);
+      openModal("CHECK", {
+        mainMsg: "수정이 완료되었습니다.",
+        subMsg: "이전 페이지로 이동합니다.",
+        onConfirm: () => navigate(-1),
+      });
     } catch (error) {
       console.error("수정 실패:", error);
-      alert("수정 중 오류가 발생했습니다.");
+      openModal("WARNING", {
+        mainMsg: "수정 중 오류가 발생했습니다.",
+        subMsg: "잠시 후 다시 시도해 주세요.",
+        onConfirm: () => console.log("수정 에러 확인"),
+      });
     }
   };
 
@@ -57,6 +65,7 @@ function TemplateEditPage() {
 
   return (
     <div className="content">
+      {modal}
       <TemplateForm
         title="프로젝트 템플릿 수정"
         formData={formData}
