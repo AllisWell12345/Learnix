@@ -1,4 +1,5 @@
 import React from "react";
+import "../../pages/manager/UserManagePage.css";
 import profile from "../../assets/img/common/profileIcon.svg";
 
 function UserItem({ user, onActiveChange }) {
@@ -13,7 +14,7 @@ function UserItem({ user, onActiveChange }) {
         </div>
       </div>
 
-      <div className="usermanage-td">
+      <div className="usermanage-td usermanage-th-enter usermanage-td-role">
         <p
           className={`usermanage-role-badge ${
             user.role === "student"
@@ -31,16 +32,18 @@ function UserItem({ user, onActiveChange }) {
         </p>
       </div>
 
-      <div className="usermanage-td usermanage-td-email">{user.email}</div>
+      <div className="usermanage-td usermanage-th-enter usermanage-td-email">{user.email}</div>
 
-      <div className="usermanage-td usermanage-td-phone">{user.phone}</div>
+      <div className="usermanage-td usermanage-th-enter usermanage-td-phone">{user.phone}</div>
 
-      <button
-        className={`usermanage-status-btn ${user.active ? "status-active" : "status-deactive"}`}
-        onClick={() => onActiveChange(user)}
-      >
-        {user.active ? "활성" : "비활성"}
-      </button>
+      <div className="usermanage-td-status ">
+        <button
+          className={`usermanage-status-btn usermanage-th-enter ${user.active ? "status-active" : "status-deactive"}`}
+          onClick={() => onActiveChange(user)}
+        >
+          {user.active ? "활성" : "비활성"}
+        </button>
+      </div>
     </div>
   );
 }

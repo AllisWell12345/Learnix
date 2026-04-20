@@ -24,7 +24,6 @@ function UserManagePage() {
         const userdata = await getUsersAll();
         setAllUsers(userdata);
         setUsers(userdata);
-        console.log(userdata);
       } catch (error) {
         console.error("회원 조회 실패:", error);
         openModal("WARNING", {
@@ -149,15 +148,15 @@ function UserManagePage() {
       {/* 테이블 */}
       <div className="usermanage-container">
         <div className="usermanage-header">
-          <div className="usermanage-th">이름</div>
-          <div className="usermanage-th">회원 구분</div>
-          <div className="usermanage-th">이메일</div>
+          <div className="usermanage-th usermanage-td-name ">이름</div>
+          <div className="usermanage-th usermanage-td-role">회원 구분</div>
+          <div className="usermanage-th usermanage-td-email">이메일</div>
           <div className="usermanage-th usermanage-td-phone">전화번호</div>
-          <div className="usermanage-th">상태</div>
+          <div className="usermanage-th usermanage-td-status">상태</div>
         </div>
         <div className="usermanage-body">
           {loading ? (
-            <div className="usermanage-loading">잠시만 기다려주세요!</div>
+            <div className="loading">불러오는 중...</div>
           ) : (
             users.map((user) => <UserItem key={user.userId} user={user} onActiveChange={handleActiveChange}/>)
           )}
