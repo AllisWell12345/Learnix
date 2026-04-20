@@ -129,6 +129,16 @@
   line-height: 1.5;
   white-space: pre-wrap;
 }
+
+.link {
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+}
+
+.link:hover {
+  cursor: pointer;
+}
+
 .student-email {
   font-size: 14px;
   color: #101828;

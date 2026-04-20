@@ -83,6 +83,21 @@ export const getAnswerByQuestionId = async (questionId) => {
   }
 };
 
+// 특정 강의에 답변이 하나라도 있는지 확인
+export const hasAnswersByLectureId = async (lectureId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("lectureId", "==", Number(lectureId))
+    );
+
+    const snapshot = await getDocs(q);
+    return !snapshot.empty;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // 수정
 export const updateAnswer = async (answerId, updateData) => {
   try {

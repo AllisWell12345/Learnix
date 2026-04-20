@@ -6,6 +6,7 @@ import { doc, getDoc } from "firebase/firestore";
 import "./ProjectItem.css";
 import StudentIcon from "../../assets/img/Icon/StudentIcon.png";
 import CalendarIcon from "../../assets/img/Icon/CalendarIcon.png";
+import { getUserByUserId } from "../../services/userService.js";
 
 function ProjectItem({ project, mode = "list", role = "student" }) {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
   const currentUser = useSelector((state) => state.user.currentUser);
 
   const [lectureName, setLectureName] = useState("");
+  const [projectUser, setProjectUser] = useState(null);
 
   useEffect(() => {
     const fetchLectureName = async () => {
@@ -35,13 +37,32 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
     fetchLectureName();
   }, [lectureId]);
 
+  useEffect(() => {
+  const fetchProjectUser = async () => {
+    try {
+      if (!project?.userId) {
+        setProjectUser(null);
+        return;
+      }
+
+      const userData = await getUserByUserId(project.userId);
+      setProjectUser(userData);
+    } catch (error) {
+      console.error("프로젝트 작성자 정보 조회 실패:", error);
+      setProjectUser(null);
+    }
+  };
+
+  fetchProjectUser();
+}, [project]);
+
   if (mode === "list" || mode === "interview") {
     return (
       <div
         className="pt-item-list-card"
         onClick={() =>
           navigate(
-            `/student/portfolio/project/${lectureId}/${project.projectId}`,
+            `/${currentUser.role}/portfolio/project/${lectureId}/${project.projectId}`,
           )
         }
       >
@@ -60,7 +81,7 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
               />
               수강생{" "}
               <span className="info-value">
-                {currentUser?.name || project.name}
+                {projectUser?.name || "이름 정보 없음"}
               </span>
             </div>
             <div className="pt-item-list-info-item">
@@ -98,7 +119,7 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
       <div className="pt-wrap">
         <div className="pt-item-detail-container">
           <header className="pt-item-detail-header">
-            <p className="pt-item-detail-main-title">( {project.title} )</p>
+            <p className="pt-item-detail-main-title">{project.title}</p>
           </header>
 
           <div className="pt-item-detail-columns">
@@ -107,8 +128,8 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
 
               <div className="info-fixed-area">
                 <div className="info-row">
-                  <span className="info-label">프로젝트 주제</span>
-                  <p className="info-content bold">( {project.title} )</p>
+                  <span className="info-label">프로젝트 제목</span>
+                  <p className="info-content bold">{project.title}</p>
                 </div>
 
                 <div className="info-row">
@@ -139,6 +160,11 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
                   <span className="info-label">4. 해결 방법</span>
                   <p className="info-content desc-text">{project.solution}</p>
                 </div>
+
+                <div className="info-row">
+                  <span className="info-label">5. 프로젝트 링크</span>
+                  <p className="info-content desc-text link">{project.projectLink}</p>
+                </div>
               </div>
             </section>
 
@@ -148,13 +174,13 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
                 <div className="info-row">
                   <span className="info-label">이름</span>
                   <p className="info-content bold">
-                    {currentUser?.name || project.name}
+                    {projectUser?.name || "이름 정보 없음"}
                   </p>
                 </div>
                 <div className="info-row">
                   <span className="info-label">이메일</span>
                   <p className="info-content student-email">
-                    {currentUser?.email || project.email}
+                    {projectUser?.email || "이메일 정보 없음"}
                   </p>
                 </div>
                 <hr className="student-div" />

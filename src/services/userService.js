@@ -86,3 +86,26 @@ export const updateLastLogin = async (uid) => {
     throw error;
   }
 };
+
+// userId로 유저 조회
+export const getUserByUserId = async (userId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("userId", "==", Number(userId)),
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) return null;
+
+    const firstDoc = querySnapshot.docs[0];
+
+    return {
+      id: firstDoc.id,
+      ...firstDoc.data(),
+    };
+  } catch (error) {
+    throw error;
+  }
+};
