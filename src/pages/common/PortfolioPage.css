@@ -96,23 +96,6 @@
     font-size: 14px;
 }
 
-.portfolio-lec-box {
-    width: 100%;
-    height: 120px;
-    border-radius: 14px;
-    border: 1px solid #E5E7EB;
-    background: #FFF;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-.test-item2 {
-    width: 100%;
-    height: 100px;
-    border: 1px solid black;
-}
-
 .portfolio-current-list {
     width: 100%;
     max-height: 30vh;
