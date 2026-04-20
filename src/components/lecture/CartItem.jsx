@@ -26,7 +26,7 @@ function CartItem({ item, onRemove, onApply, disabled = false }) {
           <span className="cart-info-label">
             <img src={StudentIcon} alt="" className="cart-icon" /> 모집 인원
           </span>
-          <span className="cart-info-val">35/{item.members}명</span>
+          <span className="cart-info-val">{item.attendingCount || 0} / {item.members}명</span>
         </div>
 
         <div className="cart-info-col">

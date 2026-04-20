@@ -5,6 +5,13 @@ import filter from "../../assets/img/common/filterIcon.svg";
 import LectureItem from "../../components/lecture/LectureItem";
 import { getLecturesAll, deleteLecture } from "../../services/lectureService";
 import useModal from "../../hooks/useModal";
+import { deleteCartsByLectureId } from "../../services/cartService";
+import { deleteAttendingsByLectureId } from "../../services/attendingService";
+import { deleteProjectsByLectureId } from "../../services/projectService";
+import { deleteVideosByLectureId } from "../../services/videoService";
+import { deleteTemplateByLectureId } from "../../services/templateService";
+import { deleteQuestionsByLectureId } from "../../services/questionService";
+import { deleteAnswersByLectureId } from "../../services/answerService";
 
 function LectureManagePage() {
   const [lectures, setLectures] = useState([]);
@@ -38,22 +45,34 @@ function LectureManagePage() {
   const handleDeleteLecture = (lecture) => {
     openModal("DELETE", {
       mainMsg: "강의를 삭제하시겠습니까?",
-      subMsg: "확인 버튼을 누르면 해당 강의가 삭제됩니다.",
+      subMsg: "관련된 모든 데이터가 함께 삭제됩니다.",
       onDelete: async () => {
         try {
-          await deleteLecture(lecture.lectureId);
+          const lectureId = lecture.lectureId;
+
+          // 1. 하위 데이터 전체 삭제
+          await deleteVideosByLectureId(lectureId);
+          await deleteTemplateByLectureId(lectureId);
+          await deleteProjectsByLectureId(lectureId);
+          await deleteQuestionsByLectureId(lectureId);
+          await deleteAnswersByLectureId(lectureId);
+          await deleteAttendingsByLectureId(lectureId);
+          await deleteCartsByLectureId(lectureId);
+
+          // 2. 강의 삭제
+          await deleteLecture(lectureId);
 
           setLectures((prev) =>
-            prev.filter((item) => item.lectureId !== lecture.lectureId),
+            prev.filter((item) => item.lectureId !== lectureId),
           );
 
           openModal("CHECK", {
-            mainMsg: "강의가 삭제 되었습니다.",
+            mainMsg: "강의가 삭제되었습니다.",
           });
         } catch (error) {
           console.error("강의 삭제 실패:", error);
           openModal("WARNING", {
-            mainMsg: "강의 삭제 실패",
+            mainMsg: "삭제 실패",
             subMsg: "잠시 후 다시 시도해주세요.",
           });
         }

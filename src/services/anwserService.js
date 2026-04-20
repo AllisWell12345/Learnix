@@ -102,3 +102,19 @@ export const deleteAnswer = async (answerId) => {
     throw error;
   }
 };
+
+// 특정 강의의 답변 전체 삭제
+export const deleteAnswersByLectureId = async (lectureId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("lectureId", "==", Number(lectureId))
+    );
+
+    const snapshot = await getDocs(q);
+
+    await Promise.all(snapshot.docs.map((docItem) => deleteDoc(docItem.ref)));
+  } catch (error) {
+    throw error;
+  }
+};

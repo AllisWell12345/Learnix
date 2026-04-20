@@ -3,10 +3,23 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import LectureItem from "../../components/lecture/LectureItem";
 import { getLectureById, deleteLecture } from "../../services/lectureService";
 import { getVideosByLectureId } from "../../services/videoService";
-import { createCart, getCartByUserAndLecture } from "../../services/cartService";
-import { getAttendingByUserAndLecture } from "../../services/attendingService";
+import {
+  createCart,
+  getCartByUserAndLecture,
+} from "../../services/cartService";
+import {
+  getAttendingByUserAndLecture,
+  getAttendingsByLectureId,
+} from "../../services/attendingService";
 import useModal from "../../hooks/useModal";
 import { useSelector } from "react-redux";
+import { deleteCartsByLectureId } from "../../services/cartService";
+import { deleteAttendingsByLectureId } from "../../services/attendingService";
+import { deleteProjectsByLectureId } from "../../services/projectService";
+import { deleteVideosByLectureId } from "../../services/videoService";
+import { deleteTemplateByLectureId } from "../../services/templateService";
+import { deleteQuestionsByLectureId } from "../../services/questionService";
+import { deleteAnswersByLectureId } from "../../services/answerService";
 
 function LectureDetailPage() {
   const navigate = useNavigate();
@@ -18,6 +31,7 @@ function LectureDetailPage() {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cartLoading, setCartLoading] = useState(false);
+  const [attendingCount, setAttendingCount] = useState(0);
 
   const currentUser = useSelector((state) => state.user.currentUser);
 
@@ -30,13 +44,19 @@ function LectureDetailPage() {
 
         const lectureData = await getLectureById(Number(lectureId));
         const videoList = await getVideosByLectureId(Number(lectureId));
+        const attendingList = await getAttendingsByLectureId(Number(lectureId));
 
-        setLecture(lectureData);
+        setLecture({
+          ...lectureData,
+          attendingCount: attendingList.length,
+        });
         setVideos(videoList || []);
+        setAttendingCount(attendingList.length);
       } catch (error) {
         console.error("강의 상세 조회 실패:", error);
         setLecture(null);
         setVideos([]);
+        setAttendingCount(0);
       } finally {
         setLoading(false);
       }
@@ -45,13 +65,26 @@ function LectureDetailPage() {
     fetchLectureDetail();
   }, [lectureId]);
 
+  // 관리자 강의 삭제 시 관련 데이터도 함께 삭제
   const handleDeleteLecture = (targetLecture) => {
     openModal("DELETE", {
       mainMsg: "강의를 삭제하시겠습니까?",
-      subMsg: "확인 버튼을 누르면 해당 강의가 삭제됩니다.",
+      subMsg: "확인 버튼을 누르면 해당 강의와 관련된 데이터도 함께 삭제됩니다.",
       onDelete: async () => {
         try {
-          await deleteLecture(targetLecture.lectureId);
+          const lectureId = targetLecture.lectureId;
+
+          // 강의에 연결된 하위 데이터 먼저 삭제
+          await deleteVideosByLectureId(lectureId);
+          await deleteTemplateByLectureId(lectureId);
+          await deleteProjectsByLectureId(lectureId);
+          await deleteQuestionsByLectureId(lectureId);
+          await deleteAnswersByLectureId(lectureId);
+          await deleteAttendingsByLectureId(lectureId);
+          await deleteCartsByLectureId(lectureId);
+
+          // 마지막으로 강의 삭제
+          await deleteLecture(lectureId);
 
           openModal("CHECK", {
             mainMsg: "강의가 삭제 되었습니다.",

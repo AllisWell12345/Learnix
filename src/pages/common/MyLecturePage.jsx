@@ -7,6 +7,7 @@ import { getLecturesAll, updateLecture } from "../../services/lectureService";
 import { getAttendingsByUserId } from "../../services/attendingService";
 import { getUserByUid } from "../../services/userService";
 import { auth } from "../../firebase/config";
+import { getAttendingCountMapByLectures } from "../../services/attendingService";
 
 function MyLecturePage() {
   const navigate = useNavigate();
@@ -40,9 +41,23 @@ function MyLecturePage() {
             (lecture) => lecture.status === "finished",
           );
 
-          setCurrentLectures(playingLectures);
-          setFinishedLectures(finishedLectures);
-          return;
+          const allStudentLectures = [...playingLectures, ...finishedLectures];
+          const attendingCountMap =
+            await getAttendingCountMapByLectures(allStudentLectures);
+
+          setCurrentLectures(
+            playingLectures.map((lecture) => ({
+              ...lecture,
+              attendingCount: attendingCountMap[Number(lecture.lectureId)] || 0,
+            })),
+          );
+
+          setFinishedLectures(
+            finishedLectures.map((lecture) => ({
+              ...lecture,
+              attendingCount: attendingCountMap[Number(lecture.lectureId)] || 0,
+            })),
+          );
         }
 
         // ================= 강사 =================
@@ -61,8 +76,26 @@ function MyLecturePage() {
             (lecture) => lecture.status !== "finished",
           );
 
-          setCurrentLectures(notFinishedLectures);
-          setFinishedLectures(finishedLectures);
+          const allTeacherLectures = [
+            ...notFinishedLectures,
+            ...finishedLectures,
+          ];
+          const attendingCountMap =
+            await getAttendingCountMapByLectures(allTeacherLectures);
+
+          setCurrentLectures(
+            notFinishedLectures.map((lecture) => ({
+              ...lecture,
+              attendingCount: attendingCountMap[Number(lecture.lectureId)] || 0,
+            })),
+          );
+
+          setFinishedLectures(
+            finishedLectures.map((lecture) => ({
+              ...lecture,
+              attendingCount: attendingCountMap[Number(lecture.lectureId)] || 0,
+            })),
+          );
         }
       } catch (error) {
         console.error("내 강의 조회 실패:", error);
