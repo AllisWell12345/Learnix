@@ -43,7 +43,7 @@ function MyLecturePage() {
 
           const allStudentLectures = [...playingLectures, ...finishedLectures];
           const attendingCountMap =
-          await getAttendingCountMapByLectures(allStudentLectures);
+            await getAttendingCountMapByLectures(allStudentLectures);
 
           setCurrentLectures(
             playingLectures.map((lecture) => ({
@@ -145,13 +145,7 @@ function MyLecturePage() {
   const handleTeacherMainButton = async () => {
     if (!currentUser || currentUser.role !== "teacher") return;
 
-    // 등록한 강의가 하나도 없을 때
-    if (teacherAllLecturesCount === 0) {
-      navigate("/teacher/mylec/regist");
-      return;
-    }
-
-    // waiting 강의가 있을 때 모집 시작
+    // 대기 중인 강의가 있으면 모집 시작
     if (waitingLecture) {
       try {
         setStartingRecruit(true);
@@ -172,7 +166,12 @@ function MyLecturePage() {
       } finally {
         setStartingRecruit(false);
       }
+
+      return;
     }
+
+    // 진행 중/대기 중 강의가 없으면 강의 등록 페이지로 이동
+    navigate("/teacher/mylec/regist");
   };
 
   const teacherButtonInfo = useMemo(() => {
@@ -191,7 +190,7 @@ function MyLecturePage() {
       };
     }
 
-    // waiting 강의가 있으면 모집 시작 버튼
+    // 대기 중인 강의가 있으면 모집 시작 버튼
     if (waitingLecture) {
       return {
         show: true,
@@ -199,20 +198,12 @@ function MyLecturePage() {
       };
     }
 
-    // 등록된 강의가 하나도 없으면 강의 등록 버튼
-    if (teacherAllLecturesCount === 0) {
-      return {
-        show: true,
-        text: "+ 강의 등록",
-      };
-    }
-
-    // finished 포함 기타 상황에서는 버튼 숨김
+    // 진행 중/대기 중 강의가 없으면 강의 등록 버튼
     return {
-      show: false,
-      text: "",
+      show: true,
+      text: "+ 강의 등록",
     };
-  }, [currentUser, playingLecture, waitingLecture, teacherAllLecturesCount]);
+  }, [currentUser, playingLecture, waitingLecture]);
 
   if (!currentUser) {
     return (
