@@ -36,10 +36,10 @@ function LectureManagePage() {
   };
 
   const handleDeleteLecture = (lecture) => {
-    openModal("CONFIRM", {
+    openModal("DELETE", {
       mainMsg: "강의를 삭제하시겠습니까?",
       subMsg: "확인 버튼을 누르면 해당 강의가 삭제됩니다.",
-      onConfirm: async () => {
+      onDelete: async () => {
         try {
           await deleteLecture(lecture.lectureId);
 

@@ -116,7 +116,7 @@ function PortfolioPage() {
   };
 
   if (!currentUser || loading)
-    return <div className="content">로딩 중입니다...</div>;
+    return <div className="content"><div className="portfolio-empty">로딩 중입니다...</div></div>;
 
   return (
     <div className="portfolio-container">
@@ -156,7 +156,7 @@ function PortfolioPage() {
             ))
           ) : (
             <div className="portfolio-lec-box">
-              <div className="prtfolio-empty">{emptyCurrentMessage}</div>
+              <div className="portfolio-empty">{emptyCurrentMessage}</div>
             </div>
           )}
         </div>
@@ -183,7 +183,7 @@ function PortfolioPage() {
             ))
           ) : (
             <div className="portfolio-lec-box">
-              <div className="test-item2">지난 강의가 없습니다.</div>
+              <div className="portfolio-empty">종료된 강의가 없습니다.</div>
             </div>
           )}
         </div>

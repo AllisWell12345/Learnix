@@ -185,7 +185,7 @@ function LectureItem({
             학습 종료일
           </span>
           <span className="lecitem-info-col-val">
-            {lecture.studyEnd.replace(/-/g, ".")}
+            {lecture.studyEnd}
           </span>
         </div>
 

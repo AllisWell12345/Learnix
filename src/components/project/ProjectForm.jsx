@@ -9,7 +9,7 @@ function ProjectForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { lectureId } = useParams();
-  const { currentUser } = useSelector((state) => state.user);
+  const currentUser = useSelector((state) => state.user.currentUser);
   const { modal, openModal } = useModal();
 
   const [formData, setFormData] = useState({
@@ -42,7 +42,7 @@ function ProjectForm() {
         try {
           const projectData = {
             ...formData,
-            userId: currentUser?.uid,
+            userId: currentUser?.userId,
             author: currentUser?.displayName || "익명",
             lectureId: String(lectureId),
             createdAt: new Date().toISOString(),

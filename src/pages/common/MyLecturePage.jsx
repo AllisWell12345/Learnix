@@ -253,7 +253,7 @@ function MyLecturePage() {
         {/* 끝난 강의 섹션 */}
         <div className="mylec-lec-container">
           <div className="mylec-sub-title-area">
-            <p className="mylec-sub-title">끝난 강의</p>
+            <p className="mylec-sub-title">종료된 강의</p>
             <div className="mylec-end-number">{finishedLectures.length}개</div>
           </div>
 
@@ -268,7 +268,7 @@ function MyLecturePage() {
                 />
               ))
             ) : (
-              <div className="mylec-empty">끝난 강의가 없습니다.</div>
+              <div className="mylec-empty">종료된 강의가 없습니다.</div>
             )}
           </div>
         </div>
