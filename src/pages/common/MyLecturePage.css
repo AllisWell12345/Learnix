@@ -54,6 +54,7 @@
 
 .mylec-regist-btn:hover {
     background-color: #3e5f44;
+    cursor: pointer;
 }
 
 .mylec-lec-container {
