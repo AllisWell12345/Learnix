@@ -13,6 +13,12 @@
   margin-bottom: 8px;
 }
 
+.datamanage-title-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .datamanage-title-bar {
   display: inline-block;
   width: 8px;

@@ -74,3 +74,15 @@ export const updateUserActive = async (uid, nextActive) => {
     throw error;
   }
 };
+
+// 마지막 로그인 시간 업데이트
+export const updateLastLogin = async (uid) => {
+  try {
+    const userRef = doc(db, COLLECTION_NAME, uid);
+    await updateDoc(userRef, {
+      lastLoginAt: new Date().toISOString(),
+    });
+  } catch (error) {
+    throw error;
+  }
+};

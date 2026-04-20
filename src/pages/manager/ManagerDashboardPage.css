@@ -58,7 +58,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 24px;
+  gap: 15px;
   animation: card-fadeup 0.35s ease both;
 }
 
@@ -140,7 +140,7 @@
   color: #4a5565;
   display: flex;
   align-items: center;
-  margin-top: 35px;
+  margin-top: 33px;
   gap: 4px;
 }
 
@@ -170,7 +170,7 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #e5e7eb;
 }
@@ -212,30 +212,34 @@
   gap: 4px;
 }
 
-/* .dashboard-login-item {
+.dashboard-login-item {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 10px 8px;
   border-radius: 8px;
   transition: background-color 0.15s;
-} 
+  cursor: pointer;
+}
 
 .dashboard-login-item:hover {
   background-color: #f8fafc;
-} */
+}
 
 /* 아바타 */
-/* .dashboard-avatar {
+.dashboard-avatar {
+  position: relative;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  background-color: #eef7e6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
   flex-shrink: 0;
+}
+
+.dasboard-profile-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  object-fit: cover;
+  display: block;
 }
 
 .dashboard-avatar-dot {
@@ -244,8 +248,8 @@
   border-radius: 50%;
   border: 2px solid #ffffff;
   position: absolute;
-  bottom: 1px;
-  right: 1px;
+  bottom: -1px;
+  right: -1px;
 }
 
 .dot-green {
@@ -268,14 +272,14 @@
 
 .dashboard-login-email {
   font-size: 12px;
-  color: #e5e7eb;
+  color: #4a5565;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-} */
+}
 
 /* 역할 뱃지 */
-/* .dashboard-role-badge {
+.dashboard-role-badge {
   font-size: 12px;
   font-weight: 500;
   padding: 3px 10px;
@@ -288,17 +292,24 @@
   color: #ffffff;
 }
 
-.badge-gray {
-  background-color: #eeeeee;
-  color: #4a5565;
+.badge-lightgreen {
+  background-color: #eef7e6;
+  color: #3e5f44;
 }
 
 .dashboard-login-time {
-  font-size: 12px;
-  color: #e5e7eb;
+  font-size: 14px;
+  color: #101828;
   flex-shrink: 0;
   white-space: nowrap;
-} */
+}
+
+.dashboard-empty {
+  font-size: 14px;
+  color: #101828;
+  text-align: center;
+  padding: 20px 0;
+}
 
 /* ===== 공지 목록 ===== */
 .dashboard-notice-list {
@@ -308,18 +319,19 @@
   flex: 1;
 }
 
-/* .dashboard-notice-item {
+.dashboard-notice-item {
   display: flex;
-  gap: 12px;
-  padding: 16px;
+  gap: 8px;
+  padding: 15px;
   border-radius: 8px;
   border: 1px solid #e5e7eb;
   background-color: #ffffff;
   transition: background-color 0.15s;
+  cursor: pointer;
 }
 
 .dashboard-notice-item:hover {
-  background-color: #e5e7eb;
+  background-color: #fff7e6;
 }
 
 .notice-highlight {
@@ -327,15 +339,14 @@
   border-color: #e17100;
 }
 
-.dashboard-notice-icon {
-  width: 28px;
-  height: 28px;
-  background-color: #e17100;
+.dashboard-highlight-icon {
+  width: 18px;
+  height: 18px;
+  padding-top: 2px;
   border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
 
 .dashboard-notice-content {
@@ -344,7 +355,7 @@
 }
 
 .dashboard-notice-title {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: #101828;
   margin-bottom: 4px;
@@ -352,15 +363,15 @@
 
 .dashboard-notice-desc {
   font-size: 13px;
-  color: #4a5565;
+  color: #101828;
   margin-bottom: 6px;
   line-height: 1.5;
 }
 
 .dashboard-notice-date {
   font-size: 12px;
-  color: #e5e7eb;
-} */
+  color: #4a5565;
+}
 
 .dashboard-notice-footer {
   margin-top: 16px;
