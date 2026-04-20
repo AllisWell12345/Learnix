@@ -93,3 +93,23 @@ export const deleteTemplate = async (templateId) => {
     throw error;
   }
 };
+
+// 특정 강의의 템플릿 삭제
+export const deleteTemplateByLectureId = async (lectureId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("lectureId", "==", String(lectureId)),
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) return;
+
+    const firstDoc = querySnapshot.docs[0];
+    await deleteDoc(firstDoc.ref);
+  } catch (error) {
+    console.error("템플릿 삭제 실패:", error);
+    throw error;
+  }
+};

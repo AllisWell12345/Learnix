@@ -7,6 +7,7 @@ import {
   createAttending,
   getAttendingsByUserId,
   getAttendingByUserAndLecture,
+  getAttendingCountMapByLectures,
 } from "../../services/attendingService";
 import useModal from "../../hooks/useModal";
 
@@ -28,27 +29,20 @@ function CartPage() {
           return;
         }
 
+        // 장바구니 목록 조회
         const myCartItems = await getCartsByUserId(currentUser.userId);
-        const myAttendings = await getAttendingsByUserId(currentUser.userId);
 
-        const appliedIds = myAttendings.map((a) => Number(a.lectureId));
+        // 장바구니 강의들 기준으로 수강생 수 계산
+        const attendingCountMap =
+        await getAttendingCountMapByLectures(myCartItems);
 
-        // 이미 신청된 강의 제거 (DB + UI)
-        const invalidItems = myCartItems.filter((item) =>
-          appliedIds.includes(Number(item.lectureId)),
-        );
+        // 각 아이템에 수강생 수 붙이기
+        const itemsWithCount = myCartItems.map((item) => ({
+          ...item,
+          attendingCount: attendingCountMap[Number(item.lectureId)] || 0,
+        }));
 
-        if (invalidItems.length > 0) {
-          await Promise.all(
-            invalidItems.map((item) => deleteCart(item.cartId)),
-          );
-        }
-
-        const validItems = myCartItems.filter(
-          (item) => !appliedIds.includes(Number(item.lectureId)),
-        );
-
-        setItems(validItems);
+        setItems(itemsWithCount);
       } catch (error) {
         console.error(error);
         setItems([]);
@@ -114,7 +108,7 @@ function CartPage() {
               members: item.members,
               studyStart: item.studyStart,
               studyEnd: item.studyEnd,
-              status: "playing"
+              status: "playing",
             });
           }
 
@@ -185,7 +179,7 @@ function CartPage() {
                 members: item.members,
                 studyStart: item.studyStart,
                 studyEnd: item.studyEnd,
-                status: "playing"
+                status: "playing",
               });
             }
 
@@ -207,7 +201,7 @@ function CartPage() {
   };
 
   // ===================== UI =====================
-  if (loading) return <div className="cart-loading">로딩중...</div>;
+  if (loading) return <div className="loading">불러오는 중...</div>;
 
   return (
     <>

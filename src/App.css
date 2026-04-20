@@ -33,3 +33,13 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+.loading {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 36px;
+  color: #4a5565;
+}

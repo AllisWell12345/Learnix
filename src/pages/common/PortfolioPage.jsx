@@ -3,7 +3,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "./PortfolioPage.css";
 import LectureItem from "../../components/lecture/LectureItem";
-import { getAttendingsByUserId } from "../../services/attendingService";
+import {
+  getAttendingsByUserId,
+  getAttendingCountMapByLectures,
+} from "../../services/attendingService";
 import { getLecturesAll } from "../../services/lectureService";
 import { getTemplateById } from "../../services/templateService";
 
@@ -51,10 +54,26 @@ function PortfolioPage() {
             (lecture) => lecture.status === "finished",
           );
 
-          setStudentCurrentLectures(playingLectures);
+          const lectureList = [...playingLectures, ...finished];
+          const attendingCountMap =
+          await getAttendingCountMapByLectures(lectureList);
+
+          setStudentCurrentLectures(
+            playingLectures.map((lecture) => ({
+              ...lecture,
+              attendingCount: attendingCountMap[Number(lecture.lectureId)] || 0,
+            })),
+          );
+
+          setFinishedLectures(
+            finished.map((lecture) => ({
+              ...lecture,
+              attendingCount: attendingCountMap[Number(lecture.lectureId)] || 0,
+            })),
+          );
+
           setTeacherTargetLecture(null);
           setTeacherTemplateMap({});
-          setFinishedLectures(finished);
           return;
         }
 
@@ -74,11 +93,36 @@ function PortfolioPage() {
             (lecture) => lecture.status === "finished",
           );
 
-          setTeacherTargetLecture(targetLecture);
-          setFinishedLectures(finished);
+          const lecturesToCheckCount = [
+            ...(targetLecture ? [targetLecture] : []),
+            ...finished,
+          ];
+          console.time("port_attendingCount");
+          const attendingCountMap =
+          await getAttendingCountMapByLectures(lecturesToCheckCount);
+          console.timeEnd("port_attendingCount");
+
+          const targetLectureWithCount = targetLecture
+            ? {
+                ...targetLecture,
+                attendingCount:
+                  attendingCountMap[Number(targetLecture.lectureId)] || 0,
+              }
+            : null;
+
+          const finishedWithCount = finished.map((lecture) => ({
+            ...lecture,
+            attendingCount: attendingCountMap[Number(lecture.lectureId)] || 0,
+          }));
+
+          setTeacherTargetLecture(targetLectureWithCount);
+          setFinishedLectures(finishedWithCount);
 
           // 프로젝트/면접 탭 모두 프로젝트 템플릿 존재 여부를 기준으로 강의 리스트 노출
-          if ((isProjectPage || isInterviewPage) && (targetLecture || finished.length > 0)) {
+          if (
+            (isProjectPage || isInterviewPage) &&
+            (targetLecture || finished.length > 0)
+          ) {
             const lecturesToCheck = [
               ...(targetLecture ? [targetLecture] : []),
               ...finished,
@@ -158,7 +202,7 @@ function PortfolioPage() {
   // 강사 현재 강의 섹션 제목을 waiting/playing 상태에 따라 결정
   const teacherCurrentSectionTitle = useMemo(() => {
     if (!teacherTargetLecture) {
-      return isProjectPage ? "진행 중인 강의" : "진행 중인 강의";
+      return isProjectPage ? "대기 중인 강의" : "대기 중인 강의";
     }
 
     return teacherTargetLecture.status === "waiting"
@@ -221,17 +265,12 @@ function PortfolioPage() {
     }
 
     return "수강 중인 강의가 없습니다.";
-  }, [
-    currentUser,
-    teacherTargetLecture,
-    isProjectPage,
-    isInterviewPage,
-  ]);
+  }, [currentUser, teacherTargetLecture, isProjectPage, isInterviewPage]);
 
   if (!currentUser || loading) {
     return (
       <div className="content">
-        <div className="portfolio-empty">로딩 중입니다...</div>
+        <div className="loading">불러오는 중...</div>
       </div>
     );
   }
@@ -244,14 +283,16 @@ function PortfolioPage() {
           <p className="portfolio-title">{portfolioTitle}</p>
         </div>
 
-        {currentUser.role === "teacher" && isProjectPage && teacherTargetLecture && (
-          <button
-            className="portfolio-regist-btn"
-            onClick={handleTeacherProjectAction}
-          >
-            {teacherProjectButtonText}
-          </button>
-        )}
+        {currentUser.role === "teacher" &&
+          isProjectPage &&
+          teacherTargetLecture && (
+            <button
+              className="portfolio-regist-btn"
+              onClick={handleTeacherProjectAction}
+            >
+              {teacherProjectButtonText}
+            </button>
+          )}
       </div>
 
       {currentUser.role === "teacher" ? (
@@ -259,7 +300,9 @@ function PortfolioPage() {
           <div className="portfolio-sub-title-area">
             <p className="portfolio-sub-title">{teacherCurrentSectionTitle}</p>
             <div className="portfolio-current-number">
-              {teacherHasCurrentTemplate && teacherTargetLecture ? "1개" : "0개"}
+              {teacherHasCurrentTemplate && teacherTargetLecture
+                ? "1개"
+                : "0개"}
             </div>
           </div>
 

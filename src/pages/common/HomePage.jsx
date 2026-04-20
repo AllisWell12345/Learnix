@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearch, setKeyword } from "../../store/searchbarSlice";
 import { getPlayingLectures } from "../../services/lectureService";
+import { getAttendingCountMapByLectures } from "../../services/attendingService";
 import "./HomePage.css";
 import Searchbar from "../../components/common/Searchbar";
 import LectureItem from "../../components/lecture/LectureItem";
@@ -18,8 +19,20 @@ function HomePage() {
     const fetchLectureList = async () => {
       try {
         setLoading(true);
+
         const lectureList = await getPlayingLectures();
-        setLectures(lectureList);
+        console.time("home_attendingCount");
+        const attendingCountMap = await getAttendingCountMapByLectures(
+          lectureList,
+        );
+        console.timeEnd("home_attendingCount");
+
+        const lecturesWithCount = lectureList.map((lecture) => ({
+          ...lecture,
+          attendingCount: attendingCountMap[Number(lecture.lectureId)] || 0,
+        }));
+
+        setLectures(lecturesWithCount);
       } catch (error) {
         console.error("강의 목록 조회 실패:", error);
         setLectures([]);
@@ -54,11 +67,19 @@ function HomePage() {
     });
 
   if (loading) {
-    return <div className="content"> <div className="home-loading">불러오는 중...</div></div>;
+    return (
+      <div className="content">
+        <div className="loading">불러오는 중...</div>
+      </div>
+    );
   }
 
   if (!lectures) {
-    return <div className="content"> <div className="home-loading">강의를 불러올 수 없습니다.</div></div>;
+    return (
+      <div className="content">
+        <div className="loading">해당하는 강의가 없습니다.</div>
+      </div>
+    );
   }
 
   return (
@@ -89,11 +110,7 @@ function HomePage() {
 
         <div className="lecture-list">
           {filteredLectures.map((lecture) => (
-            <LectureItem
-              key={lecture.lectureId}
-              lecture={lecture}
-              mode="box"
-            />
+            <LectureItem key={lecture.lectureId} lecture={lecture} mode="box" />
           ))}
         </div>
       </div>

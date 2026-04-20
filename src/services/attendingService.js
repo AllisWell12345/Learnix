@@ -9,6 +9,7 @@ import {
   deleteDoc,
   query,
   where,
+  getCountFromServer,
 } from "firebase/firestore";
 import { getDataId } from "./getIdService.js";
 
@@ -94,6 +95,60 @@ export const getAttendingByUserAndLecture = async (userId, lectureId) => {
   }
 };
 
+// 전체 수강 신청 데이터 조회
+export const getAttendingsAll = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
+
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 특정 강의의 수강생 수만 조회
+export const getAttendingCountByLectureId = async (lectureId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("lectureId", "==", Number(lectureId)),
+    );
+
+    const snapshot = await getCountFromServer(q);
+    return snapshot.data().count;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 전달받은 강의 목록 기준으로 lectureId별 수강생 수를 계산
+export const getAttendingCountMapByLectures = async (lectures = []) => {
+  try {
+    if (!lectures.length) return {};
+
+    const uniqueLectureIds = [
+      ...new Set(lectures.map((lecture) => Number(lecture.lectureId))),
+    ];
+
+    const countResults = await Promise.all(
+      uniqueLectureIds.map(async (lectureId) => {
+        const count = await getAttendingCountByLectureId(lectureId);
+        return { lectureId, count };
+      }),
+    );
+
+    return countResults.reduce((acc, item) => {
+      acc[item.lectureId] = item.count;
+      return acc;
+    }, {});
+  } catch (error) {
+    throw error;
+  }
+};
+
 // 수정
 export const updateAttending = async (attendingId, updateData) => {
   try {
@@ -109,6 +164,24 @@ export const deleteAttending = async (attendingId) => {
   try {
     const attendingRef = doc(db, COLLECTION_NAME, String(attendingId));
     await deleteDoc(attendingRef);
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 특정 강의를 신청한 attending 전체 삭제
+export const deleteAttendingsByLectureId = async (lectureId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("lectureId", "==", Number(lectureId)),
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    await Promise.all(
+      querySnapshot.docs.map((attendingDoc) => deleteDoc(attendingDoc.ref)),
+    );
   } catch (error) {
     throw error;
   }

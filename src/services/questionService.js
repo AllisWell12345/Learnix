@@ -9,9 +9,9 @@ import {
   deleteDoc,
   query,
   orderBy,
+  where,
 } from "firebase/firestore";
 import { getDataId } from "./getIdService.js";
-import { where } from "firebase/firestore";
 
 const COLLECTION_NAME = "questions";
 
@@ -117,6 +117,22 @@ export const deleteQuestion = async (questionId) => {
   try {
     const questionRef = doc(db, COLLECTION_NAME, String(questionId));
     await deleteDoc(questionRef);
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 특정 강의의 질문 전체 삭제
+export const deleteQuestionsByLectureId = async (lectureId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("lectureId", "==", Number(lectureId))
+    );
+
+    const snapshot = await getDocs(q);
+
+    await Promise.all(snapshot.docs.map((docItem) => deleteDoc(docItem.ref)));
   } catch (error) {
     throw error;
   }

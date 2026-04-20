@@ -129,3 +129,21 @@ export const deleteCart = async (cartId) => {
     throw error;
   }
 };
+
+// 특정 강의가 담긴 장바구니 전체 삭제
+export const deleteCartsByLectureId = async (lectureId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("lectureId", "==", Number(lectureId)),
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    await Promise.all(
+      querySnapshot.docs.map((cartDoc) => deleteDoc(cartDoc.ref)),
+    );
+  } catch (error) {
+    throw error;
+  }
+};

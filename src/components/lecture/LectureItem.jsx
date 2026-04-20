@@ -161,7 +161,7 @@ function LectureItem({
           <div className="lecitem-footer">
             <span className="lecitem-members">
               <img src={StudentIcon} alt="수강인원" className="lecitem-icon" />
-              {lecture.members}명
+              {lecture.attendingCount || 0} / {lecture.members}명
             </span>
             <span className="lecitem-price">
               {lecture.price.toLocaleString()}원
@@ -188,7 +188,7 @@ function LectureItem({
             <img src={StudentIcon} alt="수강인원" className="lecitem-icon" />
             수강생
           </span>
-          <span className="lecitem-info-col-val">15/{lecture.members}명</span>
+          <span className="lecitem-info-col-val">{lecture.attendingCount || 0} / {lecture.members}명</span>
         </div>
 
         <div className="lecitem-info-col">
@@ -298,7 +298,7 @@ function LectureItem({
                 className="lecdetail-icon"
               />
               <p className="lecdetail-stat-label">수강 인원</p>
-              <p className="lecdetail-stat-val">28 / {lecture.members}명</p>
+              <p className="lecdetail-stat-val">{lecture.attendingCount || 0} / {lecture.members}명</p>
             </div>
           </div>
 
