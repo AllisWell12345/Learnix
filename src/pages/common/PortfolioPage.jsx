@@ -14,7 +14,7 @@ function PortfolioPage() {
 
   const [studentCurrentLectures, setStudentCurrentLectures] = useState([]);
   const [teacherTargetLecture, setTeacherTargetLecture] = useState(null);
-  const [teacherHasTemplate, setTeacherHasTemplate] = useState(false);
+  const [teacherTemplateMap, setTeacherTemplateMap] = useState({});
   const [finishedLectures, setFinishedLectures] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,7 +26,7 @@ function PortfolioPage() {
     location.pathname === "/student/portfolio/interview" ||
     location.pathname === "/teacher/portfolio/interview";
 
-  // 포트폴리오 페이지에 필요한 강의와 템플릿 존재 여부를 조회
+  // 포트폴리오 페이지에 필요한 강의 목록과 템플릿 존재 여부를 조회
   useEffect(() => {
     const fetchPortfolioLectures = async () => {
       try {
@@ -35,7 +35,7 @@ function PortfolioPage() {
         if (!currentUser) {
           setStudentCurrentLectures([]);
           setTeacherTargetLecture(null);
-          setTeacherHasTemplate(false);
+          setTeacherTemplateMap({});
           setFinishedLectures([]);
           return;
         }
@@ -53,7 +53,7 @@ function PortfolioPage() {
 
           setStudentCurrentLectures(playingLectures);
           setTeacherTargetLecture(null);
-          setTeacherHasTemplate(false);
+          setTeacherTemplateMap({});
           setFinishedLectures(finished);
           return;
         }
@@ -77,11 +77,32 @@ function PortfolioPage() {
           setTeacherTargetLecture(targetLecture);
           setFinishedLectures(finished);
 
-          if (isProjectPage && targetLecture) {
-            const template = await getTemplateById(targetLecture.lectureId);
-            setTeacherHasTemplate(!!template);
+          // 프로젝트/면접 탭 모두 프로젝트 템플릿 존재 여부를 기준으로 강의 리스트 노출
+          if ((isProjectPage || isInterviewPage) && (targetLecture || finished.length > 0)) {
+            const lecturesToCheck = [
+              ...(targetLecture ? [targetLecture] : []),
+              ...finished,
+            ];
+
+            const templateResults = await Promise.all(
+              lecturesToCheck.map(async (lecture) => {
+                const template = await getTemplateById(lecture.lectureId);
+
+                return {
+                  lectureId: lecture.lectureId,
+                  hasTemplate: !!template,
+                };
+              }),
+            );
+
+            const templateMap = templateResults.reduce((acc, item) => {
+              acc[item.lectureId] = item.hasTemplate;
+              return acc;
+            }, {});
+
+            setTeacherTemplateMap(templateMap);
           } else {
-            setTeacherHasTemplate(false);
+            setTeacherTemplateMap({});
           }
 
           return;
@@ -90,7 +111,7 @@ function PortfolioPage() {
         console.error("포트폴리오 강의 조회 실패:", error);
         setStudentCurrentLectures([]);
         setTeacherTargetLecture(null);
-        setTeacherHasTemplate(false);
+        setTeacherTemplateMap({});
         setFinishedLectures([]);
       } finally {
         setLoading(false);
@@ -98,16 +119,33 @@ function PortfolioPage() {
     };
 
     fetchPortfolioLectures();
-  }, [currentUser, isProjectPage]);
+  }, [currentUser, isProjectPage, isInterviewPage]);
 
-  // 강의 카드 클릭 시 포트폴리오 상세 페이지 경로 생성
+  // 현재 탭과 사용자 역할에 맞는 클릭 경로 생성
   const getLecturePath = (lectureId) => {
     if (!currentUser) return "";
 
-    const role = currentUser.role;
-    const type = isProjectPage ? "project" : "interview";
+    if (currentUser.role === "teacher") {
+      if (isProjectPage) {
+        return `/teacher/portfolio/project/${lectureId}`;
+      }
 
-    return `/${role}/portfolio/${type}/${lectureId}`;
+      if (isInterviewPage) {
+        return `/teacher/portfolio/interview/${lectureId}`;
+      }
+    }
+
+    if (currentUser.role === "student") {
+      if (isProjectPage) {
+        return `/student/portfolio/project/${lectureId}`;
+      }
+
+      if (isInterviewPage) {
+        return `/student/portfolio/interview/${lectureId}`;
+      }
+    }
+
+    return "";
   };
 
   // 페이지 종류에 따라 상단 제목을 결정
@@ -117,13 +155,31 @@ function PortfolioPage() {
     return "포트폴리오 관리";
   }, [isProjectPage, isInterviewPage]);
 
-  // 강사 프로젝트 관리 페이지의 현재 강의 섹션 제목을 상태값 기준으로 결정
+  // 강사 현재 강의 섹션 제목을 waiting/playing 상태에 따라 결정
   const teacherCurrentSectionTitle = useMemo(() => {
-    if (!teacherTargetLecture) return "진행 중인 강의";
+    if (!teacherTargetLecture) {
+      return isProjectPage ? "진행 중인 강의" : "진행 중인 강의";
+    }
+
     return teacherTargetLecture.status === "waiting"
       ? "대기 중인 강의"
       : "진행 중인 강의";
-  }, [teacherTargetLecture]);
+  }, [teacherTargetLecture, isProjectPage]);
+
+  // 강사 현재 강의에 프로젝트 템플릿이 있는지 판단
+  const teacherHasCurrentTemplate = useMemo(() => {
+    if (!teacherTargetLecture) return false;
+    return !!teacherTemplateMap[teacherTargetLecture.lectureId];
+  }, [teacherTargetLecture, teacherTemplateMap]);
+
+  // 종료된 강의 중 프로젝트 템플릿이 있는 강의만 필터링
+  const teacherFinishedLecturesWithTemplate = useMemo(() => {
+    if (currentUser?.role !== "teacher") return finishedLectures;
+
+    return finishedLectures.filter(
+      (lecture) => !!teacherTemplateMap[lecture.lectureId],
+    );
+  }, [currentUser, finishedLectures, teacherTemplateMap]);
 
   // 강사 프로젝트 버튼 클릭 시 템플릿 존재 여부에 따라 등록 또는 수정 페이지로 이동
   const handleTeacherProjectAction = () => {
@@ -131,7 +187,7 @@ function PortfolioPage() {
     if (!isProjectPage) return;
     if (!teacherTargetLecture) return;
 
-    if (teacherHasTemplate) {
+    if (teacherHasCurrentTemplate) {
       navigate(
         `/teacher/portfolio/project/${teacherTargetLecture.lectureId}/edit`,
       );
@@ -146,8 +202,31 @@ function PortfolioPage() {
   // 강사 프로젝트 버튼 문구를 템플릿 존재 여부에 따라 결정
   const teacherProjectButtonText = useMemo(() => {
     if (currentUser?.role !== "teacher" || !isProjectPage) return "";
-    return teacherHasTemplate ? "프로젝트 수정" : "+ 프로젝트 등록";
-  }, [currentUser, isProjectPage, teacherHasTemplate]);
+
+    return teacherHasCurrentTemplate ? "프로젝트 수정" : "+ 프로젝트 등록";
+  }, [currentUser, isProjectPage, teacherHasCurrentTemplate]);
+
+  // 현재 강의 영역에 템플릿이 없을 때 표시할 문구 결정
+  const emptyCurrentMessage = useMemo(() => {
+    if (currentUser?.role === "teacher") {
+      if (!teacherTargetLecture) {
+        return isProjectPage
+          ? "대기 중이거나 진행 중인 강의가 없습니다."
+          : "대기 중이거나 진행 중인 강의가 없습니다.";
+      }
+
+      return isProjectPage
+        ? "작성된 프로젝트가 없습니다."
+        : "진행 가능한 모의 면접이 없습니다.";
+    }
+
+    return "수강 중인 강의가 없습니다.";
+  }, [
+    currentUser,
+    teacherTargetLecture,
+    isProjectPage,
+    isInterviewPage,
+  ]);
 
   if (!currentUser || loading) {
     return (
@@ -180,13 +259,13 @@ function PortfolioPage() {
           <div className="portfolio-sub-title-area">
             <p className="portfolio-sub-title">{teacherCurrentSectionTitle}</p>
             <div className="portfolio-current-number">
-              {teacherHasTemplate && teacherTargetLecture ? "1개" : "0개"}
+              {teacherHasCurrentTemplate && teacherTargetLecture ? "1개" : "0개"}
             </div>
           </div>
 
           <div className="portfolio-current-list">
             {teacherTargetLecture ? (
-              teacherHasTemplate ? (
+              teacherHasCurrentTemplate ? (
                 <LectureItem
                   key={teacherTargetLecture.lectureId}
                   lecture={teacherTargetLecture}
@@ -194,16 +273,10 @@ function PortfolioPage() {
                   customPath={getLecturePath(teacherTargetLecture.lectureId)}
                 />
               ) : (
-                <div className="portfolio-empty">
-                  작성된 프로젝트가 없습니다.
-                </div>
+                <div className="portfolio-empty">{emptyCurrentMessage}</div>
               )
             ) : (
-              <div className="portfolio-empty">
-                {isProjectPage
-                  ? "대기 중이거나 진행 중인 강의가 없습니다."
-                  : "진행 중인 모의면접 강의가 없습니다."}
-              </div>
+              <div className="portfolio-empty">{emptyCurrentMessage}</div>
             )}
           </div>
         </div>
@@ -237,13 +310,22 @@ function PortfolioPage() {
         <div className="portfolio-sub-title-area">
           <p className="portfolio-sub-title">종료된 강의</p>
           <div className="portfolio-end-number">
-            {finishedLectures.length}개
+            {currentUser.role === "teacher"
+              ? teacherFinishedLecturesWithTemplate.length
+              : finishedLectures.length}
+            개
           </div>
         </div>
 
         <div className="portfolio-end-list">
-          {finishedLectures.length > 0 ? (
-            finishedLectures.map((lecture) => (
+          {(currentUser.role === "teacher"
+            ? teacherFinishedLecturesWithTemplate
+            : finishedLectures
+          ).length > 0 ? (
+            (currentUser.role === "teacher"
+              ? teacherFinishedLecturesWithTemplate
+              : finishedLectures
+            ).map((lecture) => (
               <LectureItem
                 key={lecture.lectureId}
                 lecture={lecture}
