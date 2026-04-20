@@ -5,7 +5,7 @@ import eyeOn from "../../assets/img/Auth/eyeon.svg";
 import eyeOff from "../../assets/img/Auth/eyeoff.svg";
 import useModal from "../../hooks/useModal";
 import { login, logout } from "../../services/authService";
-import { getUserByUid } from "../../services/userService";
+import { getUserByUid, updateLastLogin } from "../../services/userService";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -49,10 +49,18 @@ function LoginPage() {
       const authUser = await login(email, password);
       const loginUser = await getUserByUid(authUser.uid);
 
+      await updateLastLogin(authUser.uid);
+
       if (loginUser.active === false) {
         openModal("CHECK", {
-          mainMsg: loginUser.role === "teacher"? "가입 승인 대기중입니다." :"휴면 상태입니다.",
-          subMsg: loginUser.role === "teacher"? "관리자의 승인을 기다려주세요." :"휴면 상태를 해제해주세요.",
+          mainMsg:
+            loginUser.role === "teacher"
+              ? "가입 승인 대기중입니다."
+              : "휴면 상태입니다.",
+          subMsg:
+            loginUser.role === "teacher"
+              ? "관리자의 승인을 기다려주세요."
+              : "휴면 상태를 해제해주세요.",
           onConfirm: () => {
             setLoginForm({
               email: "",

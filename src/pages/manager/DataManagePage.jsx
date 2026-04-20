@@ -12,6 +12,7 @@ import trash from "../../assets/img/common/deleteIcon.svg";
 function DataManagePage() {
   const [data, setData] = useState("");
   const [search, setSearch] = useState("");
+  const [keyword, setKeyword] = useState("");
 
   const handleDeleteProject = (userId) => {
     if (!window.confirm("프로젝트를 삭제하시겠습니까?")) return;
@@ -28,32 +29,28 @@ function DataManagePage() {
   };
 
   const handleSearch = () => {
-    // 검색은 실시간 필터로 처리
+    setKeyword(search.trim());
   };
-
-  // const filtered = data.filter((u) => u.name.includes(search));
 
   return (
     <div className="datamanage-page">
-      {/* 타이틀 */}
-      <div className="datamanage-title-area">
-        <h1 className="datamanage-title">
-          <span className="datamanage-title-bar" />
-          자료 관리
-        </h1>
-      </div>
+      <div className="datamanage-title-container">
+        {/* 타이틀 */}
+        <div className="datamanage-title-area">
+          <h1 className="datamanage-title">
+            <span className="datamanage-title-bar" />
+            자료 관리
+          </h1>
+        </div>
 
-      {/* 검색 바 */}
-      <div className="datamanage-search-area">
-        <Searchbar
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onSearch={handleSearch}
-          placeholder="이름 또는 이메일로 검색..."
-        />
-        <button className="datamanage-filter-btn">
-          <img src={filter} className="datamanage-filter-icon" />
-        </button>
+        {/* 검색 바 */}
+        <div className="datamanage-search-area">
+          <Searchbar
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onSearch={handleSearch}
+          />
+        </div>
       </div>
 
       {/* 유저별 카드 목록 */}
