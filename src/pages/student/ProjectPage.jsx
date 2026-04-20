@@ -22,10 +22,10 @@ function ProjectPage() {
           {template ? (
             <div className="proj-guide-list">
               <div className="proj-topic-box">주제: {template.title}</div>
-              <p>1. 설명 : {template.content}</p>
-              <p>2. 요구 사항 : {template.require}</p>
-              <p>3. 제약 사항 : {template.limit}</p>
-              <p>4. 가이드 라인 : {template.guideLine}</p>
+              <p>1. 설명: {template.content}</p>
+              <p>2. 요구 사항: {template.require}</p>
+              <p>3. 제약 사항: {template.limit}</p>
+              <p>4. 가이드 라인: {template.guideLine}</p>
             </div>
           ) : (
             <p className="no-data">등록된 가이드가 없습니다.</p>
