@@ -8,6 +8,7 @@ import {
   updateDoc,
   deleteDoc,
   query,
+  where,
   orderBy,
 } from "firebase/firestore";
 import { getDataId } from "./getIdService.js";
@@ -33,18 +34,27 @@ export const createTemplate = async (templateData) => {
 };
 
 // 개별조회
-export const getTemplateById = async (templateId) => {
+export const getTemplateById = async (lectureId) => {
   try {
-    const templateRef = doc(db, COLLECTION_NAME, String(templateId));
-    const templateSnap = await getDoc(templateRef);
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("lectureId", "==", String(lectureId)) 
+    );
 
-    if (!templateSnap.exists()) return null;
+    const querySnapshot = await getDocs(q);
 
+    if (querySnapshot.empty) {
+      console.log("해당 강의의 템플릿이 없습니다.");
+      return null;
+    }
+    
+    const docSnap = querySnapshot.docs[0];
     return {
-      id: templateSnap.id,
-      ...templateSnap.data(),
+      id: docSnap.id,
+      ...docSnap.data(),
     };
   } catch (error) {
+    console.error("템플릿 조회 에러:", error);
     throw error;
   }
 };

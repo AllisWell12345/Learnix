@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchTemplateDetail,
   clearProjectState,
+  registTemplate,
 } from "../../store/projectSlice";
+import { updateTemplate } from "../../services/templateService";
 import TemplateForm from "../../components/project/TemplateForm";
 
 function TemplateEditPage() {
@@ -36,6 +38,21 @@ function TemplateEditPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleSave = async (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+
+    try {
+      await updateTemplate(currentTemplate.templateId, formData);
+
+      alert("수정되었습니다!");
+
+      navigate(-1);
+    } catch (error) {
+      console.error("수정 실패:", error);
+      alert("수정 중 오류가 발생했습니다.");
+    }
+  };
+
   if (status === "loading") return <div className="content">로딩 중...</div>;
 
   return (
@@ -44,10 +61,11 @@ function TemplateEditPage() {
         title="프로젝트 템플릿 수정"
         formData={formData}
         handleChange={handleChange}
-        handleSubmit={() => navigate(-1)}
+        handleSubmit={handleSave}
         handleCancel={() => navigate(-1)}
       />
     </div>
   );
 }
+
 export default TemplateEditPage;

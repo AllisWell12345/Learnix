@@ -1,5 +1,8 @@
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { db } from "../../firebase/config.js";
+import { doc, getDoc } from "firebase/firestore";
 import "./ProjectItem.css";
 import StudentIcon from "../../assets/img/Icon/StudentIcon.png";
 import CalendarIcon from "../../assets/img/Icon/CalendarIcon.png";
@@ -8,6 +11,29 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
   const navigate = useNavigate();
   const { lectureId } = useParams();
   const currentUser = useSelector((state) => state.user.currentUser);
+
+  const [lectureName, setLectureName] = useState("");
+
+  useEffect(() => {
+    const fetchLectureName = async () => {
+      if (lectureId) {
+        try {
+          const lecDoc = await getDoc(doc(db, "lectures", String(lectureId)));
+
+          if (lecDoc.exists()) {
+            setLectureName(lecDoc.data().title);
+          } else {
+            setLectureName("강의명 로드실패");
+          }
+        } catch (error) {
+          console.error("강의명 로드 실패:", error);
+          setLectureName("강의명 로드실패");
+        }
+      }
+    };
+
+    fetchLectureName();
+  }, [lectureId]);
 
   if (mode === "list" || mode === "interview") {
     return (
@@ -32,7 +58,10 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
                 alt="수강생"
                 className="pt-item-list-icon"
               />
-              수강생 <span className="info-value">{project.userId}</span>
+              수강생{" "}
+              <span className="info-value">
+                {currentUser?.name || project.name}
+              </span>
             </div>
             <div className="pt-item-list-info-item">
               <img
@@ -40,7 +69,10 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
                 alt="제출일"
                 className="pt-item-list-icon"
               />
-              제출일 <span className="info-value">{project.date}</span>
+              제출일{" "}
+              <span className="info-value">
+                {project.createdAt?.split("T")[0] || "날짜 정보 없음"}
+              </span>
             </div>
           </div>
 
@@ -82,7 +114,7 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
                 <div className="info-row">
                   <span className="info-label">강의명</span>
                   <p className="info-content">
-                    {project.className || "강의 정보 없음"}
+                    {lectureName || "강의 정보 로딩 중..."}
                   </p>
                 </div>
 
@@ -134,7 +166,9 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
                   />
                   <div className="student-date-text">
                     <span className="info-label">제출일</span>
-                    <p className="info-content">{project.createdAt}</p>
+                    <p className="info-content">
+                      {project.createdAt?.split("T")[0] || "날짜 정보 없음"}
+                    </p>
                   </div>
                 </div>
               </div>
