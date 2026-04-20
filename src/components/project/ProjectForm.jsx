@@ -43,7 +43,6 @@ function ProjectForm() {
           const projectData = {
             ...formData,
             userId: currentUser?.userId,
-            author: currentUser?.displayName || "익명",
             lectureId: String(lectureId),
             createdAt: new Date().toISOString(),
             status: "waiting",

@@ -156,9 +156,15 @@ function UserManagePage() {
         </div>
         <div className="usermanage-body">
           {loading ? (
-            <div className="loading">불러오는 중...</div>
+              <div className="loading">불러오는 중...</div>
           ) : (
-            users.map((user) => <UserItem key={user.userId} user={user} onActiveChange={handleActiveChange}/>)
+            users.map((user) => (
+              <UserItem
+                key={user.userId}
+                user={user}
+                onActiveChange={handleActiveChange}
+              />
+            ))
           )}
         </div>
       </div>
