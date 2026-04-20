@@ -201,7 +201,7 @@ function PortfolioPage() {
   // 강사 현재 강의 섹션 제목을 waiting/playing 상태에 따라 결정
   const teacherCurrentSectionTitle = useMemo(() => {
     if (!teacherTargetLecture) {
-      return isProjectPage ? "진행 중인 강의" : "진행 중인 강의";
+      return isProjectPage ? "대기 중인 강의" : "대기 중인 강의";
     }
 
     return teacherTargetLecture.status === "waiting"
@@ -269,7 +269,7 @@ function PortfolioPage() {
   if (!currentUser || loading) {
     return (
       <div className="content">
-        <div className="portfolio-empty">로딩 중입니다...</div>
+        <div className="loading">불러오는 중...</div>
       </div>
     );
   }

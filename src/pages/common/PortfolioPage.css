@@ -52,6 +52,11 @@
     background: #5E936C;
 }
 
+.portfolio-regist-btn:hover {
+    cursor: pointer;
+    background-color: #3e5f44;
+}
+
 .portfolio-lec-container {
     width: 100%;
     display: flex;

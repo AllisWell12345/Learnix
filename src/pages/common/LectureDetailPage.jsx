@@ -185,7 +185,7 @@ function LectureDetailPage() {
   };
 
   if (loading || cartLoading) {
-    return <div className="ld-loading">로딩중입니다...</div>;
+    return <div className="loading">불러오는 중...</div>;
   }
 
   if (!lecture) {

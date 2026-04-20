@@ -1,10 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./LectureManagePage.css";
 import Searchbar from "../../components/common/Searchbar";
-import filter from "../../assets/img/common/filterIcon.svg";
 import LectureItem from "../../components/lecture/LectureItem";
 import { getLecturesAll, deleteLecture } from "../../services/lectureService";
-import useModal from "../../hooks/useModal";
 import { deleteCartsByLectureId } from "../../services/cartService";
 import { deleteAttendingsByLectureId } from "../../services/attendingService";
 import { deleteProjectsByLectureId } from "../../services/projectService";
@@ -12,15 +10,18 @@ import { deleteVideosByLectureId } from "../../services/videoService";
 import { deleteTemplateByLectureId } from "../../services/templateService";
 import { deleteQuestionsByLectureId } from "../../services/questionService";
 import { deleteAnswersByLectureId } from "../../services/answerService";
+import useModal from "../../hooks/useModal";
 
 function LectureManagePage() {
   const [lectures, setLectures] = useState([]);
   const [search, setSearch] = useState("");
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
 
   const { modal, openModal } = useModal();
 
+  // 강의 목록을 조회
   useEffect(() => {
     const fetchLectures = async () => {
       try {
@@ -38,19 +39,22 @@ function LectureManagePage() {
     fetchLectures();
   }, []);
 
+  // 검색어를 확정
   const handleSearch = () => {
     setKeyword(search.trim());
   };
 
+  // 강의 삭제 시 관련 데이터까지 함께 삭제
   const handleDeleteLecture = (lecture) => {
     openModal("DELETE", {
       mainMsg: "강의를 삭제하시겠습니까?",
-      subMsg: "관련된 모든 데이터가 함께 삭제됩니다.",
+      subMsg: "확인 버튼을 누르면 해당 강의와 관련된 데이터도 함께 삭제됩니다.",
       onDelete: async () => {
         try {
+          setDeleting(true);
+
           const lectureId = lecture.lectureId;
 
-          // 1. 하위 데이터 전체 삭제
           await deleteVideosByLectureId(lectureId);
           await deleteTemplateByLectureId(lectureId);
           await deleteProjectsByLectureId(lectureId);
@@ -58,8 +62,6 @@ function LectureManagePage() {
           await deleteAnswersByLectureId(lectureId);
           await deleteAttendingsByLectureId(lectureId);
           await deleteCartsByLectureId(lectureId);
-
-          // 2. 강의 삭제
           await deleteLecture(lectureId);
 
           setLectures((prev) =>
@@ -67,19 +69,22 @@ function LectureManagePage() {
           );
 
           openModal("CHECK", {
-            mainMsg: "강의가 삭제되었습니다.",
+            mainMsg: "강의가 삭제 되었습니다.",
           });
         } catch (error) {
           console.error("강의 삭제 실패:", error);
           openModal("WARNING", {
-            mainMsg: "삭제 실패",
+            mainMsg: "강의 삭제 실패",
             subMsg: "잠시 후 다시 시도해주세요.",
           });
+        } finally {
+          setDeleting(false);
         }
       },
     });
   };
 
+  // 검색어 기준으로 강의 목록 필터링
   const filteredLectures = useMemo(() => {
     return lectures.filter((lecture) => {
       if (!keyword) return true;
@@ -94,7 +99,7 @@ function LectureManagePage() {
   }, [lectures, keyword]);
 
   if (loading) {
-    return <div>로딩중입니다...</div>;
+    return <div className="loading">불러오는 중...</div>;
   }
 
   return (
@@ -120,15 +125,21 @@ function LectureManagePage() {
 
       <div className="lecmanage-lec-container">
         <div className="lecmanage-total-list">
-          {filteredLectures.map((lecture) => (
-            <div key={lecture.lectureId} className="lecmanage-lec-box">
-              <LectureItem
-                lecture={lecture}
-                mode="list"
-                onDelete={handleDeleteLecture}
-              />
-            </div>
-          ))}
+          {deleting ? (
+            <div className="loading">삭제하는 중...</div>
+          ) : filteredLectures.length > 0 ? (
+            filteredLectures.map((lecture) => (
+              <div key={lecture.lectureId} className="lecmanage-lec-box">
+                <LectureItem
+                  lecture={lecture}
+                  mode="list"
+                  onDelete={handleDeleteLecture}
+                />
+              </div>
+            ))
+          ) : (
+            <div className="loading">해당하는 강의가 없습니다.</div>
+          )}
         </div>
       </div>
     </div>

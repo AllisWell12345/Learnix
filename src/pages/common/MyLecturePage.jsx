@@ -218,7 +218,7 @@ function MyLecturePage() {
     return (
       <div className="content">
         <div className="mylec-container">
-          <div className="mylec-empty">불러오는 중...</div>
+          <div className="loading">불러오는 중...</div>
         </div>
       </div>
     );
@@ -228,7 +228,7 @@ function MyLecturePage() {
     return (
       <div className="content">
         <div className="mylec-container">
-          <div className="mylec-empty">불러오는 중...</div>
+          <div className="loading">불러오는 중...</div>
         </div>
       </div>
     );

@@ -201,7 +201,7 @@ function CartPage() {
   };
 
   // ===================== UI =====================
-  if (loading) return <div className="cart-loading">로딩중...</div>;
+  if (loading) return <div className="loading">불러오는 중...</div>;
 
   return (
     <>

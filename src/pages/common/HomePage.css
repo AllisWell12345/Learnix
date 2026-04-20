@@ -1,13 +1,3 @@
-.home-loading {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 36px;
-  color: #4a5565;
-}
-
 .home-container {
     width: 100%;
     height: 100%;
@@ -46,6 +36,10 @@
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
+}
+
+.category-btn:hover {
+    background-color: #f4f5f7;
 }
 
 .category-btn.active {

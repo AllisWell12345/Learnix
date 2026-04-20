@@ -9,9 +9,9 @@ import {
   deleteDoc,
   query,
   orderBy,
+  where,
 } from "firebase/firestore";
 import { getDataId } from "./getIdService.js";
-import { where } from "firebase/firestore";
 
 const COLLECTION_NAME = "questions";
 

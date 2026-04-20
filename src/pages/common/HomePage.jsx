@@ -67,7 +67,7 @@ function HomePage() {
   if (loading) {
     return (
       <div className="content">
-        <div className="home-loading">불러오는 중...</div>
+        <div className="loading">불러오는 중...</div>
       </div>
     );
   }
@@ -75,7 +75,7 @@ function HomePage() {
   if (!lectures) {
     return (
       <div className="content">
-        <div className="home-loading">강의를 불러올 수 없습니다.</div>
+        <div className="loading">해당하는 강의가 없습니다.</div>
       </div>
     );
   }
