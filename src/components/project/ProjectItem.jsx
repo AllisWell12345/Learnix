@@ -1,4 +1,8 @@
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { db } from "../../firebase/config.js";
+import { doc, getDoc } from "firebase/firestore";
 import "./ProjectItem.css";
 import StudentIcon from "../../assets/img/Icon/StudentIcon.png";
 import CalendarIcon from "../../assets/img/Icon/CalendarIcon.png";
@@ -6,6 +10,30 @@ import CalendarIcon from "../../assets/img/Icon/CalendarIcon.png";
 function ProjectItem({ project, mode = "list", role = "student" }) {
   const navigate = useNavigate();
   const { lectureId } = useParams();
+  const currentUser = useSelector((state) => state.user.currentUser);
+
+  const [lectureName, setLectureName] = useState("");
+
+  useEffect(() => {
+    const fetchLectureName = async () => {
+      if (lectureId) {
+        try {
+          const lecDoc = await getDoc(doc(db, "lectures", String(lectureId)));
+
+          if (lecDoc.exists()) {
+            setLectureName(lecDoc.data().title);
+          } else {
+            setLectureName("강의명 로드실패");
+          }
+        } catch (error) {
+          console.error("강의명 로드 실패:", error);
+          setLectureName("강의명 로드실패");
+        }
+      }
+    };
+
+    fetchLectureName();
+  }, [lectureId]);
 
   if (mode === "list" || mode === "interview") {
     return (
@@ -30,7 +58,10 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
                 alt="수강생"
                 className="pt-item-list-icon"
               />
-              수강생 <span className="info-value">{project.userid}</span>
+              수강생{" "}
+              <span className="info-value">
+                {currentUser?.name || project.name}
+              </span>
             </div>
             <div className="pt-item-list-info-item">
               <img
@@ -38,7 +69,10 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
                 alt="제출일"
                 className="pt-item-list-icon"
               />
-              제출일 <span className="info-value">{project.date}</span>
+              제출일{" "}
+              <span className="info-value">
+                {project.createdAt?.split("T")[0] || "날짜 정보 없음"}
+              </span>
             </div>
           </div>
 
@@ -61,101 +95,90 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
 
   if (mode === "detail") {
     return (
-      <div className="pt-item-detail-container">
-        <header className="pt-item-detail-header">
-          <h1 className="pt-item-detail-main-title">( {project.title} )</h1>
-        </header>
+      <div className="pt-wrap">
+        <div className="pt-item-detail-container">
+          <header className="pt-item-detail-header">
+            <p className="pt-item-detail-main-title">( {project.title} )</p>
+          </header>
 
-        <div className="pt-item-detail-columns">
-          <section className="pt-item-detail-card info-card">
-            <h3 className="card-section-title">프로젝트 정보</h3>
+          <div className="pt-item-detail-columns">
+            <section className="pt-item-detail-card info-card">
+              <p className="card-section-title">프로젝트 정보</p>
 
-            <div className="info-fixed-area">
-              <div className="info-row">
-                <span className="info-label">프로젝트 주제</span>
-                <p className="info-content bold">( {project.title} )</p>
-              </div>
+              <div className="info-fixed-area">
+                <div className="info-row">
+                  <span className="info-label">프로젝트 주제</span>
+                  <p className="info-content bold">( {project.title} )</p>
+                </div>
 
-              <div className="info-row">
-                <span className="info-label">강의명</span>
-                <p className="info-content">{project.className}</p>
-              </div>
+                <div className="info-row">
+                  <span className="info-label">강의명</span>
+                  <p className="info-content">
+                    {lectureName || "강의 정보 로딩 중..."}
+                  </p>
+                </div>
 
-              <div className="info-row">
-                <span className="info-label">프로젝트 설명</span>
-                <p className="info-content desc-text">
-                  1. 주요 기능
-                  <br />
-                  2. 기능 구현 중 발생한 문제
-                  <br />
-                  3. 문제 해결 방법
-                </p>
-              </div>
-            </div>
-          </section>
+                <div className="info-row">
+                  <span className="info-label">1. 요구사항 분석</span>
+                  <p className="info-content desc-text">
+                    {project.requireDetail}
+                  </p>
+                </div>
 
-          <aside className="pt-item-detail-card student-card">
-            <h3 className="card-section-title">수강생 정보</h3>
+                <div className="info-row">
+                  <span className="info-label">2. 주요 기능</span>
+                  <p className="info-content desc-text">{project.feature}</p>
+                </div>
 
-            <div className="student-info-area">
-              <div className="info-row">
-                <span className="info-label">이름</span>
-                <p className="info-content bold">
-                  {project.author || "김철수"}
-                </p>
-              </div>
+                <div className="info-row">
+                  <span className="info-label">3. 발생한 문제</span>
+                  <p className="info-content desc-text">{project.problem}</p>
+                </div>
 
-              <div className="info-row">
-                <span className="info-label">이메일</span>
-                <p className="info-content student-email">
-                  {project.email || "kim@example.com"}
-                </p>
-              </div>
-
-              <hr className="student-div" />
-
-              <div className="info-row student-date-row">
-                <img
-                  src={CalendarIcon}
-                  alt="제출일"
-                  className="student-date-icon"
-                />
-                <div className="student-date-text">
-                  <span className="info-label">제출일</span>
-                  <p className="info-content">{project.date}</p>
+                <div className="info-row">
+                  <span className="info-label">4. 해결 방법</span>
+                  <p className="info-content desc-text">{project.solution}</p>
                 </div>
               </div>
-            </div>
-          </aside>
-        </div>
+            </section>
 
-        <section className="pt-item-detail-card link-card">
-          <h3 className="card-section-title">제출 링크</h3>
-          <div className="link-list">
-            <div className="link-item">
-              <img src={StudentIcon} alt="저장소" className="link-type-icon" />
-              <div className="link-text-group">
-                <span className="link-title">GitHub 저장소</span>
-                {project.projectLink && (
-                  <a
-                    href={project.projectLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="link-url"
-                  >
-                    {project.projectLink}
-                  </a>
-                )}
+            <aside className="pt-item-detail-card student-card">
+              <h3 className="card-section-title">수강생 정보</h3>
+              <div className="student-info-area">
+                <div className="info-row">
+                  <span className="info-label">이름</span>
+                  <p className="info-content bold">
+                    {currentUser?.name || project.name}
+                  </p>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">이메일</span>
+                  <p className="info-content student-email">
+                    {currentUser?.email || project.email}
+                  </p>
+                </div>
+                <hr className="student-div" />
+                <div className="info-row student-date-row">
+                  <img
+                    src={CalendarIcon}
+                    alt="제출일"
+                    className="student-date-icon"
+                  />
+                  <div className="student-date-text">
+                    <span className="info-label">제출일</span>
+                    <p className="info-content">
+                      {project.createdAt?.split("T")[0] || "날짜 정보 없음"}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
+            </aside>
           </div>
-        </section>
+        </div>
       </div>
-
-      // 댓글창 추가 구현
     );
   }
-
+  // 댓글창 구현
   return null;
 }
 

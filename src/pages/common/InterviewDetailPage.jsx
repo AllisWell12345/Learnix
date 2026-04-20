@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getUserByUid } from "../../services/userService";
 import { getQuestionsByLectureAndProject } from "../../services/questionService";
-import { getAnswerByQuestionId } from "../../services/anwserService.js";
+import { getAnswerByQuestionId } from "../../services/answerService.js";
 import InterviewItem from "../../components/interview/InterviewItem";
 
 function InterviewDetailPage() {
