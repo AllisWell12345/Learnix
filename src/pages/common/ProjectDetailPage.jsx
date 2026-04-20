@@ -5,16 +5,20 @@ import { fetchProjectDetail } from "../../store/projectSlice";
 import ProjectItem from "../../components/project/ProjectItem";
 
 function ProjectDetailPage() {
-  const { projectid } = useParams();
+  const { projectId } = useParams();
   const dispatch = useDispatch();
   const { currentProject, status } = useSelector((state) => state.project);
 
   useEffect(() => {
-    dispatch(fetchProjectDetail(projectid));
-  }, [dispatch, projectid]);
+    if (projectId) {
+      dispatch(fetchProjectDetail(projectId));
+    }
+  }, [dispatch, projectId]);
 
-  if (status === "loading" || !currentProject)
-    return <div className="content">로딩 중...</div>;
+  if (status === "loading") return <div className="content">로딩 중...</div>;
+
+  if (!currentProject)
+    return <div className="content">프로젝트를 찾을 수 없습니다.</div>;
 
   return (
     <div className="content">

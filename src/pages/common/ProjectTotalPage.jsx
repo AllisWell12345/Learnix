@@ -11,7 +11,7 @@ function ProjectTotalPage() {
   const dispatch = useDispatch();
 
   const { projects, status } = useSelector((state) => state.project);
-  const { currentUser } = useSelector((state) => state.user);
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
     dispatch(fetchProjectsAll());
@@ -20,12 +20,11 @@ function ProjectTotalPage() {
   const currentLectureProjects = projects.filter(
     (p) => String(p.lectureId) === String(lectureId),
   );
-
   const myProjects = currentLectureProjects.filter(
-    (p) => p.userId === currentUser?.uid,
+    (p) => Number(p.userId) === Number(currentUser?.userId),
   );
   const otherProjects = currentLectureProjects.filter(
-    (p) => p.userId !== currentUser?.uid,
+    (p) => Number(p.userId) !== Number(currentUser?.userId),
   );
   const waitingProjects = currentLectureProjects.filter(
     (p) => p.status === "waiting",
@@ -37,8 +36,9 @@ function ProjectTotalPage() {
   const isDetailView = pathname.split("/").filter(Boolean).length > 4;
   const role = pathname.includes("teacher") ? "teacher" : "student";
 
-  if (status === "loading")
+  if (status === "loading" && !isDetailView) {
     return <div className="content">목록 불러오는 중...</div>;
+  }
 
   return (
     <div className="pt-container">
@@ -104,13 +104,13 @@ function Section({ title, count, projects, role, mode, badgeClass }) {
     <div className="pt-section-wrapper">
       <div className="pt-section-header">
         <p className="pt-sub-title">{title}</p>
-        <span className={`pt-count-badge ${badgeClass}`}>{count}</span>
+        <span className={`pt-count-badge ${badgeClass}`}>{count}개</span>
       </div>
       <div className="pt-list">
         {projects.length > 0 ? (
-          projects.map((p) => (
+          projects.map((p, index) => (
             <ProjectItem
-              key={p.projectId}
+              key={p.id || p.projectId || `project-${index}`}
               project={p}
               role={role}
               mode={mode}

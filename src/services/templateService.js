@@ -8,58 +8,61 @@ import {
   updateDoc,
   deleteDoc,
   query,
+  where,
   orderBy,
 } from "firebase/firestore";
+import { getDataId } from "./getIdService.js";
 
 const COLLECTION_NAME = "templates";
 
-/* 1. 템플릿 등록 */
+// 등록
 export const createTemplate = async (templateData) => {
   try {
-    const docId = String(templateData.lectureId);
+    const templateId = await getDataId("template");
 
     const newTemplate = {
       ...templateData,
-      lectureId: Number(templateData.lectureId),
-      createdAt: new Date().toISOString(),
+      templateId,
     };
 
-    await setDoc(doc(db, COLLECTION_NAME, docId), newTemplate);
+    await setDoc(doc(db, COLLECTION_NAME, String(templateId)), newTemplate);
 
     return newTemplate;
   } catch (error) {
-    console.error("템플릿 등록 실패:", error);
     throw error;
   }
 };
 
-/* 2. 템플릿 개별 조회 */
+// 개별조회
 export const getTemplateById = async (lectureId) => {
   try {
-    if (!lectureId) return null;
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("lectureId", "==", String(lectureId)) 
+    );
 
-    const templateRef = doc(db, COLLECTION_NAME, String(lectureId));
-    const templateSnap = await getDoc(templateRef);
+    const querySnapshot = await getDocs(q);
 
-    if (!templateSnap.exists()) {
-      console.log(`강의 ${lectureId}번에 대한 템플릿이 없습니다.`);
+    if (querySnapshot.empty) {
+      console.log("해당 강의의 템플릿이 없습니다.");
       return null;
     }
-
+    
+    const docSnap = querySnapshot.docs[0];
     return {
-      id: templateSnap.id,
-      ...templateSnap.data(),
+      id: docSnap.id,
+      ...docSnap.data(),
     };
   } catch (error) {
-    console.error("템플릿 조회 실패:", error);
+    console.error("템플릿 조회 에러:", error);
     throw error;
   }
 };
 
-/* 3. 전체 템플릿 조회 */
+// 전체조회
 export const getTemplatesAll = async () => {
   try {
-    const q = query(collection(db, COLLECTION_NAME));
+    const q = query(collection(db, COLLECTION_NAME), orderBy("templateId", "desc"));
     const querySnapshot = await getDocs(q);
 
     return querySnapshot.docs.map((doc) => ({
@@ -67,29 +70,26 @@ export const getTemplatesAll = async () => {
       ...doc.data(),
     }));
   } catch (error) {
-    console.error("전체 템플릿 조회 실패:", error);
     throw error;
   }
 };
 
-/* 4. 템플릿 수정 */
-export const updateTemplate = async (lectureId, updateData) => {
+// 수정
+export const updateTemplate = async (templateId, updateData) => {
   try {
-    const templateRef = doc(db, COLLECTION_NAME, String(lectureId));
+    const templateRef = doc(db, COLLECTION_NAME, String(templateId));
     await updateDoc(templateRef, updateData);
   } catch (error) {
-    console.error("템플릿 수정 실패:", error);
     throw error;
   }
 };
 
-/* 5. 템플릿 삭제 */
-export const deleteTemplate = async (lectureId) => {
+// 삭제
+export const deleteTemplate = async (templateId) => {
   try {
-    const templateRef = doc(db, COLLECTION_NAME, String(lectureId));
+    const templateRef = doc(db, COLLECTION_NAME, String(templateId));
     await deleteDoc(templateRef);
   } catch (error) {
-    console.error("템플릿 삭제 실패:", error);
     throw error;
   }
 };
