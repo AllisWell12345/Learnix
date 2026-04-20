@@ -151,8 +151,8 @@ function LectureDetailPage() {
     });
   };
 
-  if (!currentUser || loading || cartLoading) {
-    return <div>로딩중입니다...</div>;
+  if (loading || cartLoading) {
+    return <div className="ld-loading">로딩중입니다...</div>;
   }
 
   if (!lecture) {

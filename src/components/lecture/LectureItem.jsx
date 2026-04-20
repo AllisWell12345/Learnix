@@ -57,9 +57,7 @@ function LectureItem({
       }
       return;
     }
-
-    if (!currentUser) return;
-
+    
     if (isMyLecturePage) {
       if (currentUser.role === "student") {
         navigate(`/student/mylec/${lecture.lectureId}/myproj`);
