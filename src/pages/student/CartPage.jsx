@@ -34,7 +34,7 @@ function CartPage() {
 
         // 장바구니 강의들 기준으로 수강생 수 계산
         const attendingCountMap =
-          await getAttendingCountMapByLectures(myCartItems);
+        await getAttendingCountMapByLectures(myCartItems);
 
         // 각 아이템에 수강생 수 붙이기
         const itemsWithCount = myCartItems.map((item) => ({

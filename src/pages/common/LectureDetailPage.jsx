@@ -9,7 +9,7 @@ import {
 } from "../../services/cartService";
 import {
   getAttendingByUserAndLecture,
-  getAttendingsByLectureId,
+  getAttendingCountByLectureId,
 } from "../../services/attendingService";
 import useModal from "../../hooks/useModal";
 import { useSelector } from "react-redux";
@@ -44,7 +44,7 @@ function LectureDetailPage() {
 
         const lectureData = await getLectureById(Number(lectureId));
         const videoList = await getVideosByLectureId(Number(lectureId));
-        const attendingList = await getAttendingsByLectureId(Number(lectureId));
+        const attendingList = await getAttendingCountByLectureId(Number(lectureId));
 
         setLecture({
           ...lectureData,

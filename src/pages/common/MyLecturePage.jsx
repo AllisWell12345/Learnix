@@ -43,7 +43,7 @@ function MyLecturePage() {
 
           const allStudentLectures = [...playingLectures, ...finishedLectures];
           const attendingCountMap =
-            await getAttendingCountMapByLectures(allStudentLectures);
+          await getAttendingCountMapByLectures(allStudentLectures);
 
           setCurrentLectures(
             playingLectures.map((lecture) => ({

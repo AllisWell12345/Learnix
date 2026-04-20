@@ -56,7 +56,7 @@ function PortfolioPage() {
 
           const lectureList = [...playingLectures, ...finished];
           const attendingCountMap =
-            await getAttendingCountMapByLectures(lectureList);
+          await getAttendingCountMapByLectures(lectureList);
 
           setStudentCurrentLectures(
             playingLectures.map((lecture) => ({
@@ -97,9 +97,10 @@ function PortfolioPage() {
             ...(targetLecture ? [targetLecture] : []),
             ...finished,
           ];
-
+          console.time("port_attendingCount");
           const attendingCountMap =
-            await getAttendingCountMapByLectures(lecturesToCheckCount);
+          await getAttendingCountMapByLectures(lecturesToCheckCount);
+          console.timeEnd("port_attendingCount");
 
           const targetLectureWithCount = targetLecture
             ? {

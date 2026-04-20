@@ -21,9 +21,11 @@ function HomePage() {
         setLoading(true);
 
         const lectureList = await getPlayingLectures();
+        console.time("home_attendingCount");
         const attendingCountMap = await getAttendingCountMapByLectures(
           lectureList,
         );
+        console.timeEnd("home_attendingCount");
 
         const lecturesWithCount = lectureList.map((lecture) => ({
           ...lecture,

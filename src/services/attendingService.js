@@ -9,6 +9,7 @@ import {
   deleteDoc,
   query,
   where,
+  getCountFromServer,
 } from "firebase/firestore";
 import { getDataId } from "./getIdService.js";
 
@@ -94,25 +95,6 @@ export const getAttendingByUserAndLecture = async (userId, lectureId) => {
   }
 };
 
-// 특정 강의를 신청한 수강생 목록 조회
-export const getAttendingsByLectureId = async (lectureId) => {
-  try {
-    const q = query(
-      collection(db, COLLECTION_NAME),
-      where("lectureId", "==", Number(lectureId)),
-    );
-
-    const querySnapshot = await getDocs(q);
-
-    return querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-  } catch (error) {
-    throw error;
-  }
-};
-
 // 전체 수강 신청 데이터 조회
 export const getAttendingsAll = async () => {
   try {
@@ -127,24 +109,39 @@ export const getAttendingsAll = async () => {
   }
 };
 
+// 특정 강의의 수강생 수만 조회
+export const getAttendingCountByLectureId = async (lectureId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("lectureId", "==", Number(lectureId)),
+    );
+
+    const snapshot = await getCountFromServer(q);
+    return snapshot.data().count;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // 전달받은 강의 목록 기준으로 lectureId별 수강생 수를 계산
 export const getAttendingCountMapByLectures = async (lectures = []) => {
   try {
     if (!lectures.length) return {};
 
-    const lectureIdSet = new Set(
-      lectures.map((lecture) => Number(lecture.lectureId)),
+    const uniqueLectureIds = [
+      ...new Set(lectures.map((lecture) => Number(lecture.lectureId))),
+    ];
+
+    const countResults = await Promise.all(
+      uniqueLectureIds.map(async (lectureId) => {
+        const count = await getAttendingCountByLectureId(lectureId);
+        return { lectureId, count };
+      }),
     );
 
-    const attendings = await getAttendingsAll();
-
-    return attendings.reduce((acc, attending) => {
-      const lectureId = Number(attending.lectureId);
-
-      if (lectureIdSet.has(lectureId)) {
-        acc[lectureId] = (acc[lectureId] || 0) + 1;
-      }
-
+    return countResults.reduce((acc, item) => {
+      acc[item.lectureId] = item.count;
       return acc;
     }, {});
   } catch (error) {
