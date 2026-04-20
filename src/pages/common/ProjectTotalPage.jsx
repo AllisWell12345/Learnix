@@ -1,92 +1,44 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { useLocation, useParams, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProjectsAll } from "../../store/projectSlice";
 import ProjectItem from "../../components/project/ProjectItem";
 import "./ProjectTotalPage.css";
 
-// 임시 데이터
-const PRACTICE_DATA = [
-  {
-    projectId: 1,
-    userid: 1,
-    title: "React 쇼핑몰 프로젝트",
-    className: "React 마스터",
-    author: "김학생",
-    date: "2026.04.10",
-    status: "completed",
-    desc: "React와 Firebase를 활용한 이커머스 플랫폼입니다.",
-  },
-  {
-    projectId: 2,
-    userid: 2,
-    title: "Tailwind 포트폴리오",
-    className: "React 마스터",
-    author: "이철수",
-    date: "2026.04.12",
-    status: "completed",
-    desc: "유틸리티 퍼스트 CSS 프레임워크를 사용한 포트폴리오 사이트입니다.",
-  },
-  {
-    projectId: 3,
-    userid: 3,
-    title: "Node.js 채팅 앱",
-    className: "풀스택 캠프",
-    author: "박지민",
-    date: "2026.04.13",
-    status: "waiting",
-    desc: "Socket.io를 이용한 실시간 채팅 애플리케이션입니다.",
-  },
-  {
-    projectId: 4,
-    userid: 4,
-    title: "Node.js 채팅 앱",
-    className: "풀스택 캠프",
-    author: "박지민",
-    date: "2026.04.13",
-    status: "waiting",
-    desc: "Socket.io를 이용한 실시간 채팅 애플리케이션입니다.",
-  },
-  {
-    projectId: 5,
-    userid: 5,
-    title: "Node.js 채팅 앱",
-    className: "풀스택 캠프",
-    author: "박지민",
-    date: "2026.04.13",
-    status: "waiting",
-    desc: "Socket.io를 이용한 실시간 채팅 애플리케이션입니다.",
-  },
-  {
-    projectId: 6,
-    userid: 6,
-    title: "Node.js 채팅 앱",
-    className: "풀스택 캠프",
-    author: "박지민",
-    date: "2026.04.13",
-    status: "waiting",
-    desc: "Socket.io를 이용한 실시간 채팅 애플리케이션입니다.",
-  },
-];
-
 function ProjectTotalPage() {
   const { pathname } = useLocation();
-  const { lectureid } = useParams();
+  const { lectureId } = useParams();
+  const dispatch = useDispatch();
 
-  const currentUser = useSelector((state) => state.user.currentUser);
+  const { projects, status } = useSelector((state) => state.project);
+  const { currentUser } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(fetchProjectsAll());
+  }, [dispatch]);
+
+  const currentLectureProjects = projects.filter(
+    (p) => String(p.lectureId) === String(lectureId),
+  );
+
+  const myProjects = currentLectureProjects.filter(
+    (p) => p.userId === currentUser?.uid,
+  );
+  const otherProjects = currentLectureProjects.filter(
+    (p) => p.userId !== currentUser?.uid,
+  );
+  const waitingProjects = currentLectureProjects.filter(
+    (p) => p.status === "waiting",
+  );
+  const completedProjects = currentLectureProjects.filter(
+    (p) => p.status === "completed",
+  );
+
   const isDetailView = pathname.split("/").filter(Boolean).length > 4;
+  const role = pathname.includes("teacher") ? "teacher" : "student";
 
-  const user = {
-    userid: 1,
-    role: pathname.includes("teacher") ? "teacher" : "student",
-  };
-
-  const [projects] = useState(PRACTICE_DATA);
-
-  const myProjects = projects.filter((p) => p.userid === user.userid);
-  const otherProjects = projects.filter((p) => p.userid !== user.userid);
-
-  const waitingProjects = projects.filter((p) => p.status === "waiting");
-  const completedProjects = projects.filter((p) => p.status === "completed");
+  if (status === "loading")
+    return <div className="content">목록 불러오는 중...</div>;
 
   return (
     <div className="pt-container">
@@ -100,74 +52,40 @@ function ProjectTotalPage() {
           </header>
 
           <main className="pt-content">
-            {user.role === "student" ? (
+            {role === "student" ? (
               <>
-                <div className="pt-section-header">
-                  <p className="pt-sub-title">내 프로젝트</p>
-                  <span className="pt-count-badge badge-my">
-                    {myProjects.length}
-                  </span>
-                </div>
-                <div className="pt-list">
-                  {myProjects.map((p) => (
-                    <ProjectItem
-                      key={p.projectId}
-                      project={p}
-                      role={user.role}
-                    />
-                  ))}
-                </div>
-
-                <div className="pt-section-header">
-                  <p className="pt-sub-title">다른 수강생의 프로젝트</p>
-                  <span className="pt-count-badge badge-other">
-                    {otherProjects.length}
-                  </span>
-                </div>
-                <div className="pt-list">
-                  {otherProjects.map((p) => (
-                    <ProjectItem
-                      key={p.projectId}
-                      project={p}
-                      role={user.role}
-                    />
-                  ))}
-                </div>
+                <Section
+                  title="내 프로젝트"
+                  count={myProjects.length}
+                  projects={myProjects}
+                  role={role}
+                  badgeClass="badge-my"
+                />
+                <Section
+                  title="다른 수강생의 프로젝트"
+                  count={otherProjects.length}
+                  projects={otherProjects}
+                  role={role}
+                  badgeClass="badge-other"
+                />
               </>
             ) : (
               <>
-                <div className="pt-section-header">
-                  <p className="pt-sub-title">리뷰 대기 중</p>
-                  <span className="pt-count-badge badge-waiting">
-                    {waitingProjects.length}
-                  </span>
-                </div>
-                <div className="pt-list">
-                  {waitingProjects.map((p) => (
-                    <ProjectItem
-                      key={p.projectId}
-                      project={p}
-                      role={user.role}
-                      mode="interview"
-                    />
-                  ))}
-                </div>
-
-                <div className="pt-section-header">
-                  <p className="pt-sub-title">리뷰 완료</p>
-                  <span className="pt-count-badge badge-completed">
-                    {completedProjects.length}
-                  </span>
-                </div>
-                <div className="pt-list">
-                  {completedProjects.map((p) => (
-                    <ProjectItem
-                      key={p.projectId}
-                      project={p}
-                      role={user.role}
-                    />
-                  ))}
-                </div>
+                <Section
+                  title="리뷰 대기 중"
+                  count={waitingProjects.length}
+                  projects={waitingProjects}
+                  role={role}
+                  mode="interview"
+                  badgeClass="badge-waiting"
+                />
+                <Section
+                  title="리뷰 완료"
+                  count={completedProjects.length}
+                  projects={completedProjects}
+                  role={role}
+                  badgeClass="badge-completed"
+                />
               </>
             )}
           </main>
@@ -177,6 +95,31 @@ function ProjectTotalPage() {
           <Outlet />
         </div>
       )}
+    </div>
+  );
+}
+
+function Section({ title, count, projects, role, mode, badgeClass }) {
+  return (
+    <div className="pt-section-wrapper">
+      <div className="pt-section-header">
+        <p className="pt-sub-title">{title}</p>
+        <span className={`pt-count-badge ${badgeClass}`}>{count}</span>
+      </div>
+      <div className="pt-list">
+        {projects.length > 0 ? (
+          projects.map((p) => (
+            <ProjectItem
+              key={p.projectId}
+              project={p}
+              role={role}
+              mode={mode}
+            />
+          ))
+        ) : (
+          <p className="pt-empty-msg">해당하는 프로젝트가 없습니다.</p>
+        )}
+      </div>
     </div>
   );
 }

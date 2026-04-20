@@ -1,4 +1,10 @@
-.proj-form-card {
+.template-form-wrap {
+  max-width: 1000px;
+  margin-right: 100px;
+}
+
+.temp-form-card {
+  pointer-events: auto;
   background: #ffffff;
   border-radius: 12px;
   padding: 40px 60px;
@@ -8,34 +14,35 @@
   border: 1px solid #e5e7eb;
 }
 
-.proj-form-title {
+.temp-form-title {
   text-align: center;
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 30px;
+  color: #101828;
 }
 
-.proj-form-body {
+.temp-form-body {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.proj-form-item {
+.temp-form-item {
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin-bottom: 10px;
 }
 
-.proj-form-label {
+.temp-form-label {
   font-size: 18px;
   font-weight: 500;
   color: #101828;
 }
 
-.proj-form-input,
-.proj-form-textarea {
+.temp-form-input,
+.temp-form-textarea {
   padding: 12px;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
@@ -44,53 +51,64 @@
   box-sizing: border-box;
 }
 
-.proj-form-textarea {
+.temp-form-textarea {
   min-height: 200px;
   resize: none;
 }
 
-.proj-form-input:focus,
-.proj-form-textarea:focus {
+.temp-form-input:focus,
+.temp-form-textarea:focus {
   outline: none;
   border-color: #3e5f44;
 }
 
-.proj-form-btn-group {
+.topic-input {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.form-div {
+  border: 0;
+  height: 1px;
+  background: #e2e8f0;
+  margin: 10px 0;
+}
+
+.temp-form-btn-group {
   margin-top: 30px;
   display: flex;
   justify-content: flex-end;
   gap: 10px;
 }
 
-.proj-form-btn-submit,
-.proj-form-btn-cancel {
+.temp-form-btn-submit {
   padding: 10px 25px;
+  background-color: #5e936c;
+  color: #ffffff;
+  border: none;
   border-radius: 12px;
   cursor: pointer;
 }
 
-.proj-form-btn-submit {
-  background-color: #5e936c;
-  color: #ffffff;
-  border: none;
-}
-
-.proj-form-btn-submit:hover {
+.temp-form-btn-submit:hover {
   background-color: #3e5f44;
 }
 
-.proj-form-btn-cancel {
+.temp-form-btn-cancel {
+  padding: 10px 25px;
   background-color: #ffffff;
   color: #4a5565;
   border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
 }
 
-.proj-form-btn-cancel:hover {
+.temp-form-btn-cancel:hover {
   background-color: #e5e7eb;
 }
 
 @media (max-width: 768px) {
-  .proj-form-card {
+  .temp-form-card {
     padding: 30px 20px;
     width: 100%;
   }
