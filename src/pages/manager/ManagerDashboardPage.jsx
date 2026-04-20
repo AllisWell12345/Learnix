@@ -84,7 +84,7 @@ function ManagerDashboardPage() {
     fetchData();
   }, []);
 
-  if (loading) return <div className="dashboard-page">불러오는 중...</div>;
+  if (loading) return <div className="loading">불러오는 중...</div>;
 
   return (
     <div className="dashboard-page">

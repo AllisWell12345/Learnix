@@ -36,10 +36,10 @@ a {
 
 .loading {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 36px;
+  font-size: 24px;
   color: #4a5565;
 }

@@ -9,6 +9,7 @@ import {
 } from "../../services/attendingService";
 import { getLecturesAll } from "../../services/lectureService";
 import { getTemplateById } from "../../services/templateService";
+import { getProjectByUserAndLecture } from "../../services/projectService";
 
 function PortfolioPage() {
   const navigate = useNavigate();
@@ -54,12 +55,35 @@ function PortfolioPage() {
             (lecture) => lecture.status === "finished",
           );
 
-          const lectureList = [...playingLectures, ...finished];
+          // 모의 면접 탭에서는 내가 프로젝트를 제출한 강의만 수강 중 강의에 표시
+          let filteredPlayingLectures = playingLectures;
+
+          if (isInterviewPage) {
+            const projectResults = await Promise.all(
+              playingLectures.map(async (lecture) => {
+                const project = await getProjectByUserAndLecture(
+                  currentUser.userId,
+                  lecture.lectureId,
+                );
+
+                return {
+                  lecture,
+                  hasProject: !!project,
+                };
+              }),
+            );
+
+            filteredPlayingLectures = projectResults
+              .filter((item) => item.hasProject)
+              .map((item) => item.lecture);
+          }
+
+          const lectureList = [...filteredPlayingLectures, ...finished];
           const attendingCountMap =
-          await getAttendingCountMapByLectures(lectureList);
+            await getAttendingCountMapByLectures(lectureList);
 
           setStudentCurrentLectures(
-            playingLectures.map((lecture) => ({
+            filteredPlayingLectures.map((lecture) => ({
               ...lecture,
               attendingCount: attendingCountMap[Number(lecture.lectureId)] || 0,
             })),
@@ -99,7 +123,7 @@ function PortfolioPage() {
           ];
           console.time("port_attendingCount");
           const attendingCountMap =
-          await getAttendingCountMapByLectures(lecturesToCheckCount);
+            await getAttendingCountMapByLectures(lecturesToCheckCount);
           console.timeEnd("port_attendingCount");
 
           const targetLectureWithCount = targetLecture
@@ -264,7 +288,14 @@ function PortfolioPage() {
         : "진행 가능한 모의 면접이 없습니다.";
     }
 
-    return "수강 중인 강의가 없습니다.";
+    if (currentUser?.role === "student") {
+      if (isInterviewPage) {
+        return "작성한 프로젝트가 없습니다.";
+      }
+      return "수강 중인 강의가 없습니다.";
+    }
+
+    return "";
   }, [currentUser, teacherTargetLecture, isProjectPage, isInterviewPage]);
 
   if (!currentUser || loading) {
@@ -343,7 +374,7 @@ function PortfolioPage() {
                 />
               ))
             ) : (
-              <div className="portfolio-empty">수강 중인 강의가 없습니다.</div>
+              <div className="portfolio-empty">{emptyCurrentMessage}</div>
             )}
           </div>
         </div>

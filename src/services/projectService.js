@@ -50,6 +50,30 @@ export const getProjectById = async (projectId) => {
   }
 };
 
+// 현재 유저가 특정 강의에 제출한 프로젝트 조회
+export const getProjectByUserAndLecture = async (userId, lectureId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("userId", "==", Number(userId)),
+      where("lectureId", "==", Number(lectureId)),
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) return null;
+
+    const firstDoc = querySnapshot.docs[0];
+
+    return {
+      id: firstDoc.id,
+      ...firstDoc.data(),
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
 // 전체조회
 export const getProjectsAll = async () => {
   try {
