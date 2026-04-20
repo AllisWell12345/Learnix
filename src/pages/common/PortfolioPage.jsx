@@ -5,13 +5,16 @@ import "./PortfolioPage.css";
 import LectureItem from "../../components/lecture/LectureItem";
 import { getAttendingsByUserId } from "../../services/attendingService";
 import { getLecturesAll } from "../../services/lectureService";
+import { getTemplateById } from "../../services/templateService";
 
 function PortfolioPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const currentUser = useSelector((state) => state.user.currentUser);
 
-  const [currentLectures, setCurrentLectures] = useState([]);
+  const [studentCurrentLectures, setStudentCurrentLectures] = useState([]);
+  const [teacherTargetLecture, setTeacherTargetLecture] = useState(null);
+  const [teacherHasTemplate, setTeacherHasTemplate] = useState(false);
   const [finishedLectures, setFinishedLectures] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,27 +26,34 @@ function PortfolioPage() {
     location.pathname === "/student/portfolio/interview" ||
     location.pathname === "/teacher/portfolio/interview";
 
+  // 포트폴리오 페이지에 필요한 강의와 템플릿 존재 여부를 조회
   useEffect(() => {
     const fetchPortfolioLectures = async () => {
       try {
         setLoading(true);
 
         if (!currentUser) {
-          setCurrentLectures([]);
+          setStudentCurrentLectures([]);
+          setTeacherTargetLecture(null);
+          setTeacherHasTemplate(false);
           setFinishedLectures([]);
           return;
         }
 
         if (currentUser.role === "student") {
           const myAttendings = await getAttendingsByUserId(currentUser.userId);
+
           const playingLectures = myAttendings.filter(
             (lecture) => lecture.status === "playing",
           );
+
           const finished = myAttendings.filter(
             (lecture) => lecture.status === "finished",
           );
 
-          setCurrentLectures(playingLectures);
+          setStudentCurrentLectures(playingLectures);
+          setTeacherTargetLecture(null);
+          setTeacherHasTemplate(false);
           setFinishedLectures(finished);
           return;
         }
@@ -55,68 +65,97 @@ function PortfolioPage() {
             (lecture) => Number(lecture.userId) === Number(currentUser.userId),
           );
 
-          const playing = myLectures.filter(
-            (lecture) => lecture.status === "playing",
-          );
+          const targetLecture =
+            myLectures.find((lecture) => lecture.status === "waiting") ||
+            myLectures.find((lecture) => lecture.status === "playing") ||
+            null;
+
           const finished = myLectures.filter(
             (lecture) => lecture.status === "finished",
           );
 
-          setCurrentLectures(playing);
+          setTeacherTargetLecture(targetLecture);
           setFinishedLectures(finished);
+
+          if (isProjectPage && targetLecture) {
+            const template = await getTemplateById(targetLecture.lectureId);
+            setTeacherHasTemplate(!!template);
+          } else {
+            setTeacherHasTemplate(false);
+          }
+
+          return;
         }
       } catch (error) {
         console.error("포트폴리오 강의 조회 실패:", error);
+        setStudentCurrentLectures([]);
+        setTeacherTargetLecture(null);
+        setTeacherHasTemplate(false);
+        setFinishedLectures([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchPortfolioLectures();
-  }, [currentUser]);
+  }, [currentUser, isProjectPage]);
 
+  // 강의 카드 클릭 시 포트폴리오 상세 페이지 경로 생성
   const getLecturePath = (lectureId) => {
     if (!currentUser) return "";
+
     const role = currentUser.role;
     const type = isProjectPage ? "project" : "interview";
+
     return `/${role}/portfolio/${type}/${lectureId}`;
   };
 
+  // 페이지 종류에 따라 상단 제목을 결정
   const portfolioTitle = useMemo(() => {
     if (isProjectPage) return "프로젝트 관리";
     if (isInterviewPage) return "모의 면접 관리";
     return "포트폴리오 관리";
   }, [isProjectPage, isInterviewPage]);
 
-  const currentSectionTitle = useMemo(() => {
-    return currentUser?.role === "student"
-      ? "수강 중인 강의"
+  // 강사 프로젝트 관리 페이지의 현재 강의 섹션 제목을 상태값 기준으로 결정
+  const teacherCurrentSectionTitle = useMemo(() => {
+    if (!teacherTargetLecture) return "진행 중인 강의";
+    return teacherTargetLecture.status === "waiting"
+      ? "대기 중인 강의"
       : "진행 중인 강의";
-  }, [currentUser]);
+  }, [teacherTargetLecture]);
 
-  const emptyCurrentMessage = useMemo(() => {
-    if (currentUser?.role === "student") return "수강 중인 강의가 없습니다.";
-    return isProjectPage
-      ? "진행 중인 프로젝트가 없습니다."
-      : "진행 중인 모의면접이 없습니다.";
-  }, [currentUser, isProjectPage]);
-
-  const handleTeacherProjectRegist = async () => {
+  // 강사 프로젝트 버튼 클릭 시 템플릿 존재 여부에 따라 등록 또는 수정 페이지로 이동
+  const handleTeacherProjectAction = () => {
     if (currentUser?.role !== "teacher") return;
-    const allLectures = await getLecturesAll();
-    const myAvailableLecture = allLectures.find(
-      (lecture) =>
-        Number(lecture.userId) === Number(currentUser.userId) &&
-        (lecture.status === "playing" || lecture.status === "waiting"),
-    );
-    if (!myAvailableLecture) return;
+    if (!isProjectPage) return;
+    if (!teacherTargetLecture) return;
+
+    if (teacherHasTemplate) {
+      navigate(
+        `/teacher/portfolio/project/${teacherTargetLecture.lectureId}/edit`,
+      );
+      return;
+    }
+
     navigate(
-      `/teacher/portfolio/project/${myAvailableLecture.lectureId}/regist`,
+      `/teacher/portfolio/project/${teacherTargetLecture.lectureId}/regist`,
     );
   };
 
-  if (!currentUser || loading)
-    return <div className="content"><div className="portfolio-empty">로딩 중입니다...</div></div>;
+  // 강사 프로젝트 버튼 문구를 템플릿 존재 여부에 따라 결정
+  const teacherProjectButtonText = useMemo(() => {
+    if (currentUser?.role !== "teacher" || !isProjectPage) return "";
+    return teacherHasTemplate ? "프로젝트 수정" : "+ 프로젝트 등록";
+  }, [currentUser, isProjectPage, teacherHasTemplate]);
+
+  if (!currentUser || loading) {
+    return (
+      <div className="content">
+        <div className="portfolio-empty">로딩 중입니다...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="portfolio-container">
@@ -126,41 +165,73 @@ function PortfolioPage() {
           <p className="portfolio-title">{portfolioTitle}</p>
         </div>
 
-        {currentUser.role === "teacher" && isProjectPage && (
+        {currentUser.role === "teacher" && isProjectPage && teacherTargetLecture && (
           <button
             className="portfolio-regist-btn"
-            onClick={handleTeacherProjectRegist}
+            onClick={handleTeacherProjectAction}
           >
-            + 프로젝트 등록
+            {teacherProjectButtonText}
           </button>
         )}
       </div>
 
-      <div className="portfolio-lec-container">
-        <div className="portfolio-sub-title-area">
-          <p className="portfolio-sub-title">{currentSectionTitle}</p>
-          <div className="portfolio-current-number">
-            {currentLectures.length}개
+      {currentUser.role === "teacher" ? (
+        <div className="portfolio-lec-container">
+          <div className="portfolio-sub-title-area">
+            <p className="portfolio-sub-title">{teacherCurrentSectionTitle}</p>
+            <div className="portfolio-current-number">
+              {teacherHasTemplate && teacherTargetLecture ? "1개" : "0개"}
+            </div>
+          </div>
+
+          <div className="portfolio-current-list">
+            {teacherTargetLecture ? (
+              teacherHasTemplate ? (
+                <LectureItem
+                  key={teacherTargetLecture.lectureId}
+                  lecture={teacherTargetLecture}
+                  mode="list"
+                  customPath={getLecturePath(teacherTargetLecture.lectureId)}
+                />
+              ) : (
+                <div className="portfolio-empty">
+                  작성된 프로젝트가 없습니다.
+                </div>
+              )
+            ) : (
+              <div className="portfolio-empty">
+                {isProjectPage
+                  ? "대기 중이거나 진행 중인 강의가 없습니다."
+                  : "진행 중인 모의면접 강의가 없습니다."}
+              </div>
+            )}
           </div>
         </div>
-
-        <div className="portfolio-current-list">
-          {currentLectures.length > 0 ? (
-            currentLectures.map((lecture) => (
-              <LectureItem
-                key={lecture.lectureId}
-                lecture={lecture}
-                mode="list"
-                customPath={getLecturePath(lecture.lectureId)}
-              />
-            ))
-          ) : (
-            <div className="portfolio-lec-box">
-              <div className="portfolio-empty">{emptyCurrentMessage}</div>
+      ) : (
+        <div className="portfolio-lec-container">
+          <div className="portfolio-sub-title-area">
+            <p className="portfolio-sub-title">수강 중인 강의</p>
+            <div className="portfolio-current-number">
+              {studentCurrentLectures.length}개
             </div>
-          )}
+          </div>
+
+          <div className="portfolio-current-list">
+            {studentCurrentLectures.length > 0 ? (
+              studentCurrentLectures.map((lecture) => (
+                <LectureItem
+                  key={lecture.lectureId}
+                  lecture={lecture}
+                  mode="list"
+                  customPath={getLecturePath(lecture.lectureId)}
+                />
+              ))
+            ) : (
+              <div className="portfolio-empty">수강 중인 강의가 없습니다.</div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="portfolio-lec-container">
         <div className="portfolio-sub-title-area">
@@ -173,13 +244,12 @@ function PortfolioPage() {
         <div className="portfolio-end-list">
           {finishedLectures.length > 0 ? (
             finishedLectures.map((lecture) => (
-              <div className="portfolio-lec-box" key={lecture.lectureId}>
-                <LectureItem
-                  lecture={lecture}
-                  mode="list"
-                  customPath={getLecturePath(lecture.lectureId)}
-                />
-              </div>
+              <LectureItem
+                key={lecture.lectureId}
+                lecture={lecture}
+                mode="list"
+                customPath={getLecturePath(lecture.lectureId)}
+              />
             ))
           ) : (
             <div className="portfolio-lec-box">

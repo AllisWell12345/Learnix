@@ -26,6 +26,12 @@ function LectureItem({
 
   const isManager = currentUser?.role === "manager";
 
+  // 현재 로그인한 강사가 이 강의를 만든 강사인지 판단
+  const isMyTeacherLecture =
+    currentUser?.role === "teacher" &&
+    Number(lecture.userId) === Number(currentUser.userId);
+
+  // 강의 아이템 클릭 시 사용자 역할과 상황에 맞는 상세 페이지로 이동
   const handleClick = () => {
     if (customPath) {
       navigate(customPath);
@@ -50,67 +56,81 @@ function LectureItem({
     navigate(`/${currentUser.role}/${lecture.lectureId}`);
   };
 
+  // 상세 페이지 버튼 클릭 시 역할에 맞는 동작 처리 (삭제 / 수정 / 프로젝트 / 장바구니)
   const handleDetailAction = () => {
+    // 관리자일 경우 삭제 처리
     if (isManager) {
       if (onDelete) {
         onDelete(lecture);
       }
       return;
     }
-    
-    if (isMyLecturePage) {
-      if (currentUser.role === "student") {
-        navigate(`/student/mylec/${lecture.lectureId}/myproj`);
-        return;
-      }
 
-      if (currentUser.role === "teacher") {
-        if (lecture.status === "finished") return;
+    // 강사일 경우: 내 강의만 수정 가능, 남의 강의는 아무 동작 안함
+    if (currentUser?.role === "teacher") {
+      if (!isMyTeacherLecture) return;
+      if (lecture.status === "finished") return;
 
-        navigate(`/teacher/mylec/${lecture.lectureId}/edit`);
-        return;
-      }
+      navigate(`/teacher/mylec/${lecture.lectureId}/edit`);
+      return;
     }
 
+    // 학생 마이강의 페이지일 경우 프로젝트 페이지로 이동
+    if (isMyLecturePage && currentUser?.role === "student") {
+      navigate(`/student/mylec/${lecture.lectureId}/myproj`);
+      return;
+    }
+
+    // 그 외(비로그인 포함): 장바구니 추가 로직 실행
     if (onAddToCart) {
       onAddToCart();
     }
   };
 
+  // 상세 페이지 버튼을 보여줄지 여부 결정 (강사는 본인 강의만 표시)
   const shouldShowDetailButton = () => {
+    // 관리자는 항상 표시
     if (isManager) return true;
 
-    if (isMyLecturePage) {
-      if (currentUser?.role === "student") return true;
-      if (currentUser?.role === "teacher") {
-        return lecture.status !== "finished";
-      }
+    // 강사는 본인 강의 + 종료되지 않은 강의만 표시
+    if (currentUser?.role === "teacher") {
+      return isMyTeacherLecture && lecture.status !== "finished";
     }
 
+    // 학생 마이강의 페이지는 항상 표시
+    if (isMyLecturePage && currentUser?.role === "student") {
+      return true;
+    }
+
+    // 기본적으로는 표시 (장바구니 버튼)
     return true;
   };
 
+  // 상세 버튼에 표시될 텍스트 결정 (삭제 / 수정 / 프로젝트 / 장바구니)
   const getDetailButtonText = () => {
     if (isManager) return "삭제";
 
-    if (isMyLecturePage) {
-      if (currentUser?.role === "student") return "프로젝트";
-      if (currentUser?.role === "teacher" && lecture.status !== "finished") {
-        return "수정";
-      }
+    if (currentUser?.role === "teacher" && isMyTeacherLecture) {
+      return "수정";
+    }
+
+    if (isMyLecturePage && currentUser?.role === "student") {
+      return "프로젝트";
     }
 
     return "장바구니";
   };
 
+  // 상세 버튼에 표시될 아이콘 결정 (삭제 / 수정 / 프로젝트 / 장바구니)
   const getDetailButtonIcon = () => {
     if (isManager) return null;
 
-    if (isMyLecturePage) {
-      if (currentUser?.role === "student") return ProjectIcon;
-      if (currentUser?.role === "teacher" && lecture.status !== "finished") {
-        return EditIcon;
-      }
+    if (currentUser?.role === "teacher" && isMyTeacherLecture) {
+      return EditIcon;
+    }
+
+    if (isMyLecturePage && currentUser?.role === "student") {
+      return ProjectIcon;
     }
 
     return CartIcon;
@@ -125,7 +145,7 @@ function LectureItem({
         </div>
 
         <div className="lecitem-box-body">
-          <p className="lecitem-title">{lecture.title}</p>
+          <p className="lecitem-title">{lecture.title} {lecture.season}기</p>
           <p className="lecitem-subtitle">{lecture.subTitle}</p>
 
           <div className="lecitem-info">
@@ -159,7 +179,7 @@ function LectureItem({
 
         <div className="lecitem-list-text">
           <span className="lecitem-category-badge">{lecture.category}</span>
-          <p className="lecitem-title">{lecture.title}</p>
+          <p className="lecitem-title">{lecture.title} {lecture.season}기</p>
           <p className="lecitem-subtitle">{lecture.subTitle}</p>
         </div>
 
@@ -184,9 +204,7 @@ function LectureItem({
             <img src={CalendarIcon} alt="학습종료일" className="lecitem-icon" />
             학습 종료일
           </span>
-          <span className="lecitem-info-col-val">
-            {lecture.studyEnd}
-          </span>
+          <span className="lecitem-info-col-val">{lecture.studyEnd}</span>
         </div>
 
         {isManager && (
@@ -219,7 +237,7 @@ function LectureItem({
                 {shouldShowDetailButton() && (
                   <button
                     type="button"
-                    className={`lecdetail-cart-btn ${isManager? "manager": ""}`}
+                    className={`lecdetail-cart-btn ${isManager ? "manager" : ""}`}
                     onClick={handleDetailAction}
                   >
                     {getDetailButtonIcon() && (
@@ -234,17 +252,10 @@ function LectureItem({
                 )}
               </div>
 
-              <h1 className="lecdetail-title">{lecture.title}</h1>
+              <h1 className="lecdetail-title">{lecture.title} {lecture.season}기</h1>
               <p className="lecdetail-subtitle">{lecture.subTitle}</p>
 
               <div className="lecdetail-meta">
-                <div className="lecdetail-meta-col">
-                  <span className="lecdetail-meta-label">강사명</span>
-                  <span className="lecdetail-meta-val">
-                    {lecture.teacherName || "강사"}
-                  </span>
-                </div>
-
                 <div className="lecdetail-meta-col">
                   <span className="lecdetail-meta-label">가격</span>
                   <span className="lecdetail-price">

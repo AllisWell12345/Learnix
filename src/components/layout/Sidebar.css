@@ -11,7 +11,7 @@
 .sidebar-content {
     width: 80%;
     position: sticky;
-    top: 50px;
+    top: 0;
 }
 
 .manager-sidebar-content {

@@ -10,7 +10,7 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: #eef7e6;
+  background-color: #e8ffd7;
   color: #3e5f44;
   font-size: 12px;
   font-weight: 500;
@@ -40,7 +40,8 @@
 .lecitem-info {
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
+  gap: 4px;
+  margin-bottom: 14px;
 }
 
 .lecitem-info-row {
@@ -48,6 +49,7 @@
   color: #4a5565;
   display: flex;
   align-items: center;
+  gap: 4px;
 }
 
 .lecitem-members {
@@ -69,7 +71,7 @@
   align-items: center;
   justify-content: space-between;
   margin-top: auto;
-  padding-top: 10px;
+  padding-top: 12px;
   border-top: 1px solid #e5e7eb;
 }
 
@@ -130,8 +132,8 @@
 .lecitem-list-card .lecitem-category-badge {
   position: static;
   display: inline-block;
-  background-color: #eef3ee;
-  color: #5a7a5a;
+  background-color: #e8ffd7;
+  color: #3e5f44;
   font-size: 12px;
   font-weight: 500;
   padding: 3px 10px;
