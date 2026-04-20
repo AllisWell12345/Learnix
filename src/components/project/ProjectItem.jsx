@@ -5,7 +5,7 @@ import CalendarIcon from "../../assets/img/Icon/CalendarIcon.png";
 
 function ProjectItem({ project, mode = "list", role = "student" }) {
   const navigate = useNavigate();
-  const { lectureid } = useParams();
+  const { lectureId } = useParams();
 
   if (mode === "list" || mode === "interview") {
     return (
@@ -13,7 +13,7 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
         className="pt-item-list-card"
         onClick={() =>
           navigate(
-            `/student/portfolio/project/${lectureid}/${project.projectId}`,
+            `/student/portfolio/project/${lectureId}/${project.projectId}`,
           )
         }
       >
