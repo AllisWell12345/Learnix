@@ -66,10 +66,10 @@ function CartPage() {
 
   // ===================== 개별 삭제 =====================
   const handleRemoveItem = (item) => {
-    openModal("CONFIRM", {
+    openModal("DELETE", {
       mainMsg: "삭제하시겠습니까?",
       subMsg: "장바구니에서 해당 강의가 삭제됩니다.",
-      onConfirm: async () => {
+      onDelete: async () => {
         try {
           setProcessing(true);
 
@@ -136,10 +136,10 @@ function CartPage() {
 
   // ===================== 전체 삭제 =====================
   const handleClearCart = () => {
-    openModal("CONFIRM", {
-      mainMsg: "강의를 삭제하시겠습니까?",
-      subMsg: "장바구니가 모두 삭제됩니다.",
-      onConfirm: async () => {
+    openModal("DELETE", {
+      mainMsg: "삭제하시겠습니까?",
+      subMsg: "장바구니의 항목이 모두 삭제됩니다.",
+      onDelete: async () => {
         try {
           setProcessing(true);
 
