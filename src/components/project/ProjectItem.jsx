@@ -190,7 +190,6 @@ function ProjectItem({ project, mode = "list", role = "student" }) {
       </div>
     );
   }
-  // 댓글창 구현
   return null;
 }
 
