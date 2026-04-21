@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { registProject } from "../../store/projectSlice";
+import { setDraftProject } from "../../store/projectSlice";
 import useModal from "../../hooks/useModal";
 import "./ProjectForm.css";
 
-function ProjectForm() {
+function ProjectForm({ mode = "regist" }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { lectureId } = useParams();
   const currentUser = useSelector((state) => state.user.currentUser);
+  const draftProject = useSelector((state) => state.project.draftProject);
   const { modal, openModal } = useModal();
 
   const [formData, setFormData] = useState({
@@ -20,6 +21,19 @@ function ProjectForm() {
     solution: "",
     projectLink: "",
   });
+
+  useEffect(() => {
+    if (mode === "edit" && draftProject) {
+      setFormData({
+        title: draftProject.title || "",
+        requireDetail: draftProject.requireDetail || "",
+        feature: draftProject.feature || "",
+        problem: draftProject.problem || "",
+        solution: draftProject.solution || "",
+        projectLink: draftProject.projectLink || "",
+      });
+    }
+  }, [mode, draftProject]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,22 +50,24 @@ function ProjectForm() {
     }
 
     openModal("CONFIRM", {
-      mainMsg: "프로젝트 작성을 완료하시겠습니까?",
-      subMsg: "저장 후 프로젝트 목록으로 이동합니다.",
-      onConfirm: async () => {
+      mainMsg:
+        mode === "edit"
+          ? "프로젝트 수정을 완료하시겠습니까?"
+          : "프로젝트 작성을 완료하시겠습니까?",
+      subMsg: "저장 후 프로젝트 페이지로 이동합니다.",
+      onConfirm: () => {
         try {
-          const projectData = {
-            ...formData,
-            userId: currentUser?.userId,
-            lectureId: String(lectureId),
-            createdAt: new Date().toISOString(),
-            status: "waiting",
-          };
+          dispatch(
+            setDraftProject({
+              ...formData,
+              userId: Number(currentUser?.userId),
+              lectureId: Number(lectureId),
+            }),
+          );
 
-          await dispatch(registProject(projectData)).unwrap();
           navigate(`/student/mylec/${lectureId}/myproj`);
         } catch (error) {
-          console.error("저장 실패:", error);
+          console.error("임시 저장 실패:", error);
           openModal("ERROR", {
             mainMsg: "저장에 실패했습니다.",
             subMsg: "잠시 후 다시 시도해주세요.",
@@ -141,7 +157,7 @@ function ProjectForm() {
               className="proj-form-btn-submit"
               onClick={handleSaveProject}
             >
-              작성 완료
+              {mode === "edit" ? "수정 완료" : "작성 완료"}
             </button>
             <button className="proj-form-btn-cancel" onClick={handleCancel}>
               취소

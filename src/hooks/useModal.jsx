@@ -12,7 +12,7 @@ function useModal() {
   /**
    *
    * @param {String} type DELETE = 삭제, CHECK = 원버튼, CONFIRM = 투버튼, WARNING = 경고
-   * @param {Object} props {mainMsg: "", subMsg: "", onConfirm: 원버튼or투버튼 핸들러 함수 | onDelete: 삭제 핸들러 함수}
+   * @param {Object} props {mainMsg: "", subMsg: "", onConfirm: 원버튼/투버튼/경고 핸들러 함수 | onDelete: 삭제 핸들러 함수}
    */
   const openModal = (type, props = {}) => {
     switch (type) {

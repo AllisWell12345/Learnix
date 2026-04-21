@@ -12,9 +12,10 @@ function ProjectDetailPage() {
   const { projectId } = useParams();
   const dispatch = useDispatch();
   const { currentProject, status } = useSelector((state) => state.project);
-  const [ onStatus, setOnStatus ] = useState(false);
-  const [ commenting, setCommenting ] = useState(false);
+  const [onStatus, setOnStatus] = useState(false);
+  const [commenting, setCommenting] = useState(false);
   const { modal, openModal } = useModal();
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
     if (projectId) {
@@ -69,7 +70,7 @@ function ProjectDetailPage() {
           <img src={review} alt="댓글" className="interviewitem-icon" />
           <p className="interviewitem-card-title">댓글</p>
           <span className="interviewitem-comment-count">
-            {onStatus || currentProject.status === "completed"? 2 : 1}
+            {onStatus || currentProject.status === "completed" ? 2 : 1}
           </span>
         </div>
         <div className="interviewitem-comment-input-row">
@@ -99,20 +100,30 @@ function ProjectDetailPage() {
                 <div className="interviewitem-comment-author-area">
                   <span className="interviewitem-comment-author">
                     김철수
-                    <span className="interviewitem-teacher-badge">(나)</span>
+                    {currentUser.role === "teacher" ? (
+                      <span className="interviewitem-teacher-badge">(나)</span>
+                    ) : (
+                      <span className="interviewitem-teacher-badge">(강사)</span>
+                    )}
                   </span>
                   <span className="interviewitem-comment-date">
                     여러 핸들러에서 모달창의 유무가 통일되지 않았네요. 항상
                     사용자의 편의성을 고려해주는 것이 좋습니다.
                   </span>
                 </div>
-                <div className="interviewitem-comment-actions">
-                  <button className="interviewitem-edit-btn">수정</button>
-                  <button className="interviewitem-delete-btn">삭제</button>
-                </div>
+                {currentUser.role === "teacher" ? (
+                  <div className="interviewitem-comment-actions">
+                    <button className="interviewitem-edit-btn">수정</button>
+                    <button className="interviewitem-delete-btn">삭제</button>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
-          ) : ("")}
+          ) : (
+            ""
+          )}
           <div className={`interviewitem-comment-item`}>
             <div className="interviewitem-comment-top">
               <div className="interviewitem-comment-author-area">

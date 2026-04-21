@@ -15,7 +15,11 @@ import { getDataId } from "./getIdService.js";
 
 const COLLECTION_NAME = "videos";
 
-// 등록
+/**
+ * - 강의 등록폼의 강의 동영상을 따로 컬렉션에 저장하는 함수
+ * @param {*} videoData 
+ * @returns 
+ */
 export const createVideo = async (videoData) => {
   try {
     const videoId = await getDataId("video");
@@ -33,7 +37,11 @@ export const createVideo = async (videoData) => {
   }
 };
 
-// 특정 강의의 비디오 전체조회 (주차별 자동 정렬)
+/**
+ * - 특정 강의의 동영상 전체조회 (주차별로 자동 정렬)
+ * @param {*} lectureId 
+ * @returns 
+ */
 export const getVideosByLectureId = async (lectureId) => {
   try {
     const q = query(
@@ -53,7 +61,11 @@ export const getVideosByLectureId = async (lectureId) => {
   }
 };
 
-// 수정
+/**
+ * - 강의 수정 폼에서 동영상을 수정할 때 호출하는 함수
+ * @param {*} videoId 
+ * @param {*} updateData 
+ */
 export const updateVideo = async (videoId, updateData) => {
   try {
     const videoRef = doc(db, COLLECTION_NAME, String(videoId));
@@ -63,7 +75,10 @@ export const updateVideo = async (videoId, updateData) => {
   }
 };
 
-// 삭제
+/**
+ * - 기본 삭제 함수
+ * @param {*} videoId 
+ */
 export const deleteVideo = async (videoId) => {
   try {
     const videoRef = doc(db, COLLECTION_NAME, String(videoId));
@@ -73,7 +88,10 @@ export const deleteVideo = async (videoId) => {
   }
 };
 
-// 특정 강의의 영상 전체 삭제
+/**
+ * - 특정 강의가 삭제 되면 그 강의의 동영상을 전체 삭제하는 함수
+ * @param {*} lectureId 
+ */
 export const deleteVideosByLectureId = async (lectureId) => {
   try {
     const q = query(

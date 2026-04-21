@@ -7,6 +7,7 @@
 }
 
 .proj-left-card {
+  width: 50%;
   flex: 1;
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -15,12 +16,36 @@
 }
 
 .proj-right-card {
+  width: 50%;
   flex: 1;
   background: #ffffff;
   border: 1px solid #3e5f44;
   border-radius: 12px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.proj-right-content {
+  width: 100%;
+  flex: 1;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
   padding: 25px;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.proj-right-text {
+  width: 100%;
+  color: #4a5565;
+  font-size: 18px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 
 .proj-card-header {
@@ -59,4 +84,63 @@
 
 .proj-write-btn:hover {
   background: #3e5f44;
+}
+
+.proj-btn-list {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.proj-submit-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 25px;
+  background: #5e936c;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.proj-submit-btn:hover {
+  background: #3e5f44;
+}
+
+.proj-btn-two {
+  display: flex;
+  gap: 10px;
+}
+
+.proj-edit-btn, .proj-delete-btn {
+  padding: 10px 25px;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.proj-edit-btn {
+  background: #ffffff;
+  border: 1px solid #155dfc;
+  color: #155dfc;
+}
+
+.proj-delete-btn {
+  background: #ffffff;
+  border: 1px solid #ffa2a2;
+  color: #fb2c36;
+}
+
+.proj-edit-btn:hover {
+  cursor: pointer;
+  background: #f8fafc;
+  border: 1px solid #155dfc;
+}
+
+.proj-delete-btn:hover {
+  cursor: pointer;
+  background: #f8fafc;
+  border: 1px solid #fb2c36;
 }

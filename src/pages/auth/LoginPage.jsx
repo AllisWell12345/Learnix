@@ -49,8 +49,6 @@ function LoginPage() {
       const authUser = await login(email, password);
       const loginUser = await getUserByUid(authUser.uid);
 
-      await updateLastLogin(authUser.uid);
-
       if (loginUser.active === false) {
         openModal("CHECK", {
           mainMsg:
@@ -73,10 +71,11 @@ function LoginPage() {
         });
         await logout();
       } else {
+        await updateLastLogin(authUser.uid);
         openModal("CHECK", {
           mainMsg: "로그인 성공!",
           subMsg: "확인 버튼을 클릭하면 홈페이지로 이동합니다!",
-          onConfirm: () => navigate(`/${loginUser.role}`),
+          onConfirm: async () => navigate(`/${loginUser.role}`),
         });
       }
     } catch (error) {

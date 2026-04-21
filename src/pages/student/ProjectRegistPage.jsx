@@ -1,12 +1,7 @@
-import React from "react";
 import ProjectForm from "../../components/project/ProjectForm";
 
 function ProjectRegistPage() {
-  return (
-    <>
-      <ProjectForm />
-    </>
-  );
+  return <ProjectForm mode="regist" />;
 }
 
 export default ProjectRegistPage;
