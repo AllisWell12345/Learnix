@@ -272,11 +272,12 @@
 }
 
 .interviewitem-comment-submit-btn:hover {
-  background-color: #5e936c;
+  background-color: #3e5f44;
 }
 
 /* ===== 댓글 목록 ===== */
 .interviewitem-comment-list {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;

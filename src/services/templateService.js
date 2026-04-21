@@ -15,7 +15,11 @@ import { getDataId } from "./getIdService.js";
 
 const COLLECTION_NAME = "templates";
 
-// 등록
+/**
+ * - 프로젝트 템플릿 등록 함수
+ * @param {*} templateData 
+ * @returns 
+ */
 export const createTemplate = async (templateData) => {
   try {
     const templateId = await getDataId("template");
@@ -33,7 +37,11 @@ export const createTemplate = async (templateData) => {
   }
 };
 
-// 개별조회
+/**
+ * 특정 강의의 템플릿을 조회하는 함수 (학생의 프로젝트 작성 페이지에서 받아오기 위함)
+ * @param {*} lectureId 
+ * @returns 
+ */
 export const getTemplateById = async (lectureId) => {
   try {
     const q = query(
@@ -59,36 +67,11 @@ export const getTemplateById = async (lectureId) => {
   }
 };
 
-// 전체조회
-export const getTemplatesAll = async () => {
-  try {
-    const q = query(collection(db, COLLECTION_NAME), orderBy("templateId", "desc"));
-    const querySnapshot = await getDocs(q);
-
-    return querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-  } catch (error) {
-    throw error;
-  }
-};
-
 // 수정
 export const updateTemplate = async (templateId, updateData) => {
   try {
     const templateRef = doc(db, COLLECTION_NAME, String(templateId));
     await updateDoc(templateRef, updateData);
-  } catch (error) {
-    throw error;
-  }
-};
-
-// 삭제
-export const deleteTemplate = async (templateId) => {
-  try {
-    const templateRef = doc(db, COLLECTION_NAME, String(templateId));
-    await deleteDoc(templateRef);
   } catch (error) {
     throw error;
   }

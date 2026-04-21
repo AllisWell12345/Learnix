@@ -20,7 +20,7 @@ function ProjectTotalPage() {
   const isDetailView = !!projectId;
 
   if (status === "loading" && !isDetailView)
-    return <div className="content">로딩 중...</div>;
+    return <div className="content"><div className="loading">로딩 중...</div></div>;
 
   if (isDetailView) return <Outlet />;
 
