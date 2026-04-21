@@ -50,7 +50,12 @@ export const getProjectById = async (projectId) => {
   }
 };
 
-// 현재 유저가 특정 강의에 제출한 프로젝트 조회
+/**
+ * - 현재 유저가 특정 강의에 제출한 프로젝트 조회하는 함수
+ * @param {*} userId 
+ * @param {*} lectureId 
+ * @returns 
+ */
 export const getProjectByUserAndLecture = async (userId, lectureId) => {
   try {
     const q = query(
@@ -109,7 +114,10 @@ export const deleteProject = async (projectId) => {
   }
 };
 
-// 특정 강의의 프로젝트 전체 삭제
+/**
+ * - 특정 강의의 프로젝트 전체 삭제하는 함수 (관리자의 강의 삭제 경우를 위함)
+ * @param {*} lectureId 
+ */
 export const deleteProjectsByLectureId = async (lectureId) => {
   try {
     const q = query(

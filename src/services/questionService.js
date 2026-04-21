@@ -25,7 +25,7 @@ export const createQuestion = async (questionData) => {
       questionId,
     };
 
-    await setDoc(doc(db, COLLECTION_NAME, Number(questionId)), newQuestion);
+    await setDoc(doc(db, COLLECTION_NAME, String(questionId)), newQuestion);
 
     return newQuestion;
   } catch (error) {
@@ -36,7 +36,7 @@ export const createQuestion = async (questionData) => {
 // 개별조회
 export const getQuestionById = async (questionId) => {
   try {
-    const questionRef = doc(db, COLLECTION_NAME, Number(questionId));
+    const questionRef = doc(db, COLLECTION_NAME, String(questionId));
     const questionSnap = await getDoc(questionRef);
 
     if (!questionSnap.exists()) return null;
@@ -105,7 +105,7 @@ export const getQuestionsByLectureId = async (lectureId) => {
 // 수정
 export const updateQuestion = async (questionId, updateData) => {
   try {
-    const questionRef = doc(db, COLLECTION_NAME, Number(questionId));
+    const questionRef = doc(db, COLLECTION_NAME, String(questionId));
     await updateDoc(questionRef, updateData);
   } catch (error) {
     throw error;
@@ -115,7 +115,7 @@ export const updateQuestion = async (questionId, updateData) => {
 // 삭제
 export const deleteQuestion = async (questionId) => {
   try {
-    const questionRef = doc(db, COLLECTION_NAME, Number(questionId));
+    const questionRef = doc(db, COLLECTION_NAME, String(questionId));
     await deleteDoc(questionRef);
   } catch (error) {
     throw error;
@@ -132,6 +132,40 @@ export const deleteQuestionsByLectureId = async (lectureId) => {
 
     const snapshot = await getDocs(q);
 
+    await Promise.all(snapshot.docs.map((docItem) => deleteDoc(docItem.ref)));
+  } catch (error) {
+    throw error;
+  }
+};
+
+// projectId로 질문 전체 조회
+export const getQuestionsByProjectId = async (projectId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("projectId", "==", Number(projectId)),
+      orderBy("questionId", "asc")
+    );
+
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((docItem) => ({
+      id: docItem.id,
+      ...docItem.data(),
+    }));
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 특정 projectId의 질문 전체 삭제
+export const deleteQuestionsByProjectId = async (projectId) => {
+  try {
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("projectId", "==", Number(projectId))
+    );
+
+    const snapshot = await getDocs(q);
     await Promise.all(snapshot.docs.map((docItem) => deleteDoc(docItem.ref)));
   } catch (error) {
     throw error;

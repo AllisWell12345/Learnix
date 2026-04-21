@@ -65,7 +65,10 @@ export const getLecturesAll = async () => {
   }
 };
 
-// 모집중인 강의만 조회
+/**
+ * - status === "playing'(모집중)인 강의만 조회하는 함수 (홈페이지에 띄우기 위함)
+ * @returns 
+ */
 export const getPlayingLectures = async () => {
   try {
     const q = query(

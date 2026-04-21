@@ -48,7 +48,7 @@ function InterviewNoticePage() {
       {modal}
       <div className="interview-notice-card">
         {loading ? (
-          <h1 className="interview-project-title">불러오는 중...</h1>
+          <h1 className="loading">불러오는 중...</h1>
         ) : (
           <h1 className="interview-project-title">
             프로젝트 명 : {projectTitle}
