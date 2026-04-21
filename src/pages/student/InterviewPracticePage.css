@@ -1,4 +1,5 @@
 .practice-card {
+  width: 100%;
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
@@ -10,17 +11,25 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 .question-text {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 700;
   color: #101828;
 }
 
 .timer {
-  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-right: 20px;
+}
+
+.timer-time {
+  font-size: 16px;
   font-weight: 500;
   color: #101828;
 }
