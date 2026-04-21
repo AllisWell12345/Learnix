@@ -65,7 +65,11 @@ export const getCartsAll = async () => {
   }
 };
 
-// 현재 유저 장바구니 전체조회
+/**
+ * - 현재 유저의 장바구니 전체조회하는 함수
+ * @param {*} userId 
+ * @returns 
+ */
 export const getCartsByUserId = async (userId) => {
   try {
     const q = query(
@@ -120,7 +124,10 @@ export const updateCart = async (cartId, updateData) => {
   }
 };
 
-// 삭제
+/**
+ * - 강의를 신청했거나 장바구니에서 취소한 경우 삭제하는 함수
+ * @param {*} cartId 
+ */
 export const deleteCart = async (cartId) => {
   try {
     const cartRef = doc(db, COLLECTION_NAME, String(cartId));
@@ -130,7 +137,10 @@ export const deleteCart = async (cartId) => {
   }
 };
 
-// 특정 강의가 담긴 장바구니 전체 삭제
+/**
+ * - 특정 강의가 담긴 장바구니 전체 삭제하는 함수 (관리자가 강의를 삭제했을 경우를 위함)
+ * @param {*} lectureId 
+ */
 export const deleteCartsByLectureId = async (lectureId) => {
   try {
     const q = query(

@@ -15,7 +15,11 @@ import { getDataId } from "./getIdService.js";
 
 const COLLECTION_NAME = "attendings";
 
-// 등록
+/**
+ * - 수강생이 신청한 강의들을 유저 구분 없이 모두 하나의 컬렉션에 저장하는 함수
+ * @param {*} attendingData 
+ * @returns 
+ */
 export const createAttending = async (attendingData) => {
   try {
     const attendingId = await getDataId("attending");
@@ -33,7 +37,11 @@ export const createAttending = async (attendingData) => {
   }
 };
 
-// 개별조회
+/**
+ * - 고유 id로 개별 조회하는 함수
+ * @param {*} attendingId 
+ * @returns 
+ */
 export const getAttendingById = async (attendingId) => {
   try {
     const attendingRef = doc(db, COLLECTION_NAME, String(attendingId));
@@ -50,7 +58,11 @@ export const getAttendingById = async (attendingId) => {
   }
 };
 
-// 현재 유저 신청 강의 전체조회
+/**
+ * - 특정 유저의 신청한 강의를 모두 조회하는 함수 (수강생의 내 강의 페이지를 위함)
+ * @param {*} userId 
+ * @returns 
+ */
 export const getAttendingsByUserId = async (userId) => {
   try {
     const q = query(
@@ -71,7 +83,12 @@ export const getAttendingsByUserId = async (userId) => {
   }
 };
 
-// 현재 유저 + 현재 강의 신청 여부 조회
+/**
+ * - 특정 유저가 특정 강의를 신청했다면 그 강의를 조회하는 함수
+ * @param {*} userId 
+ * @param {*} lectureId 
+ * @returns 
+ */
 export const getAttendingByUserAndLecture = async (userId, lectureId) => {
   try {
     const q = query(
@@ -95,7 +112,10 @@ export const getAttendingByUserAndLecture = async (userId, lectureId) => {
   }
 };
 
-// 전체 수강 신청 데이터 조회
+/**
+ * - 신청한 강의 전체 조회하는 함수
+ * @returns 
+ */
 export const getAttendingsAll = async () => {
   try {
     const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
@@ -109,7 +129,11 @@ export const getAttendingsAll = async () => {
   }
 };
 
-// 특정 강의의 수강생 수만 조회
+/**
+ * - 특정 강의의 수강생 수만 조회하는 함수
+ * @param {*} lectureId 
+ * @returns 
+ */
 export const getAttendingCountByLectureId = async (lectureId) => {
   try {
     const q = query(
@@ -124,7 +148,11 @@ export const getAttendingCountByLectureId = async (lectureId) => {
   }
 };
 
-// 전달받은 강의 목록 기준으로 lectureId별 수강생 수를 계산
+/**
+ * - 전달받은 강의 목록 기준으로 lectureId별 수강생 수를 계산하는 함수
+ * @param {*} lectures 
+ * @returns 
+ */
 export const getAttendingCountMapByLectures = async (lectures = []) => {
   try {
     if (!lectures.length) return {};
@@ -169,7 +197,10 @@ export const deleteAttending = async (attendingId) => {
   }
 };
 
-// 특정 강의를 신청한 attending 전체 삭제
+/**
+ * - 특정 강의를 신청한 attending 전체 삭제하는 함수 (관리자가 강의를 삭제한 경우를 위함)
+ * @param {*} lectureId 
+ */
 export const deleteAttendingsByLectureId = async (lectureId) => {
   try {
     const q = query(

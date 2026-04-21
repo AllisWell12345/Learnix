@@ -2,17 +2,18 @@ import { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getQuestionsByLectureAndProject } from "../../services/questionService";
-import { getAnswerByQuestionId } from "../../services/answerService.js";
-import { getProjectByUserAndLecture } from "../../services/projectService";
+import { getAnswerByQuestionId } from "../../services/answerService";
+import { getProjectById } from "../../services/projectService";
 import InterviewItem from "../../components/interview/InterviewItem";
+import { getUserByUserId } from "../../services/userService";
 
 function InterviewDetailPage() {
   const location = useLocation();
-  const { lectureId } = useParams();
+  const { lectureId, projectId } = useParams();
   const currentUser = useSelector((state) => state.user.currentUser);
 
-  // teacher 쪽 InterviewTotalPage에서 넘겨준 interview
   const passedInterview = location.state?.interview || null;
+  const passedProject = location.state?.project || null;
 
   const [interview, setInterview] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -22,51 +23,39 @@ function InterviewDetailPage() {
       try {
         setLoading(true);
 
-        if (!currentUser?.userId || !lectureId) {
+        if (!projectId) {
           setInterview(null);
           return;
         }
 
-        // 1. 역할에 따라 프로젝트 주인을 결정
-        let targetUserId = null;
-
-        // 학생은 자기 자신의 프로젝트
-        if (currentUser.role === "student") {
-          targetUserId = Number(currentUser.userId);
-        }
-
-        // 강사는 상세 조회 대상으로 넘어온 학생의 프로젝트
-        if (currentUser.role === "teacher") {
-          targetUserId = Number(passedInterview?.student?.userId);
-        }
-
-        if (!targetUserId) {
-          setInterview(null);
-          return;
-        }
-
-        // 2. 해당 유저 + 강의 기준 프로젝트 조회
-        const targetProject = await getProjectByUserAndLecture(
-          targetUserId,
-          Number(lectureId),
-        );
+        // 1. projectId로 프로젝트 조회
+        const targetProject = await getProjectById(Number(projectId));
 
         if (!targetProject?.projectId) {
           setInterview(null);
           return;
         }
 
-        // 3. projectId + lectureId로 질문 조회
+        // 2. lectureId는 URL 우선, 없으면 project에서 사용 (관리자 대응)
+        const targetLectureId = lectureId
+          ? Number(lectureId)
+          : Number(targetProject.lectureId);
+
+        if (!targetLectureId) {
+          setInterview(null);
+          return;
+        }
+
+        // 3. lectureId + projectId로 질문 조회
         const questions = await getQuestionsByLectureAndProject(
-          Number(lectureId),
+          targetLectureId,
           Number(targetProject.projectId),
         );
 
-        // 4. 각 질문의 questionId로 답변 조회
+        // 4. 질문별 답변 조회
         const questionsWithAnswer = await Promise.all(
           questions.map(async (q) => {
             const answerDoc = await getAnswerByQuestionId(Number(q.questionId));
-
             return {
               ...q,
               answer: answerDoc?.answer || "",
@@ -74,19 +63,18 @@ function InterviewDetailPage() {
           }),
         );
 
-        // 5. 화면에 뿌릴 interview 데이터 구성
-        if (currentUser.role === "student") {
-          setInterview({
-            ...targetProject,
-            questions: questionsWithAnswer,
-            comments: [],
-          });
-          return;
+        // 5. 학생 정보
+        let student = null;
+        if (targetProject.userId) {
+          student = await getUserByUserId(Number(targetProject.userId));
         }
 
-        // teacher는 기존에 넘겨받은 interview 정보 + 질문/답변 결합
         setInterview({
-          ...passedInterview,
+          ...(passedInterview || {}),
+          ...(passedProject || {}),
+          ...targetProject,
+          student,
+          projectTitle: targetProject.title,
           questions: questionsWithAnswer,
           comments: passedInterview?.comments || [],
         });
@@ -99,9 +87,9 @@ function InterviewDetailPage() {
     };
 
     fetchInterviewDetail();
-  }, [lectureId, currentUser, passedInterview]);
+  }, [lectureId, projectId, passedInterview, passedProject]);
 
-  if (loading) return <div className="content">불러오는 중...</div>;
+  if (loading) return <div className="content"><div className="loading">불러오는 중...</div></div>;
   if (!interview)
     return <div className="content">인터뷰를 찾을 수 없습니다.</div>;
 

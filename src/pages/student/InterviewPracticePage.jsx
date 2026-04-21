@@ -255,7 +255,7 @@ function InterviewPracticePage() {
     return (
       <div className="practice-container">
         {modal}
-        <div className="practice-card">불러오는 중...</div>
+        <div className="loading">불러오는 중...</div>
       </div>
     );
   }

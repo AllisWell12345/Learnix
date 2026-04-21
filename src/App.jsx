@@ -76,13 +76,16 @@ function App() {
 
             <Route path="interview">
               <Route index element={<PortfolioPage />} />
-              <Route path=":lectureId" element={<InterviewDetailPage />} />
               <Route
-                path=":lectureId/notice"
+                path=":lectureId/:projectId"
+                element={<InterviewDetailPage />}
+              />
+              <Route
+                path=":lectureId/:projectId/notice"
                 element={<InterviewNoticePage />}
               />
               <Route
-                path=":lectureId/practice"
+                path=":lectureId/:projectId/practice"
                 element={<InterviewPracticePage />}
               />
             </Route>
@@ -133,15 +136,17 @@ function App() {
         <Route path="/manager" element={<ManagerLayout />}>
           <Route index element={<ManagerDashboardPage />} />
           <Route path="user" element={<UserManagePage />} />
-          <Route path="lecture" element={<LectureManagePage />}/>
+          <Route path="lecture" element={<LectureManagePage />} />
           <Route path="lecture/:lectureId" element={<LectureDetailPage />} />
-          <Route path="data" element={<DataManagePage />}>
-            <Route path=":projectId/project" element={<ProjectDetailPage />} />
-            <Route
-              path=":projectId/interview"
-              element={<InterviewDetailPage />}
-            />
-          </Route>
+          <Route path="data" element={<DataManagePage />} />
+          <Route
+            path="data/:projectId/project"
+            element={<ProjectDetailPage />}
+          />
+          <Route
+            path="data/:projectId/interview"
+            element={<InterviewDetailPage />}
+          />
         </Route>
       </Routes>
     </>

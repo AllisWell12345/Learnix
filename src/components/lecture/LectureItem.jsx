@@ -77,11 +77,15 @@ function LectureItem({
 
       // 5. 답변이 없으면 notice, 있으면 상세 페이지
       if (!hasAnswers) {
-        navigate(`/student/portfolio/interview/${lecture.lectureId}/notice`);
+        navigate(
+          `/student/portfolio/interview/${lecture.lectureId}/${currentProject.projectId}/notice`,
+        );
         return;
       }
 
-      navigate(`/student/portfolio/interview/${lecture.lectureId}`);
+      navigate(
+        `/student/portfolio/interview/${lecture.lectureId}/${currentProject.projectId}`,
+      );
     } catch (error) {
       console.error("모의 면접 페이지 이동 실패:", error);
       openModal("WARNING", {

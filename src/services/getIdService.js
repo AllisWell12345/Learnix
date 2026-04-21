@@ -1,6 +1,11 @@
 import { db } from "../firebase/config.js";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
+/**
+ * - 각 컬렉션의 데이터들에게 생성 순서대로 순차적으로 고유 id 값을 부여하기 위해 카운트를 계산하는 함수
+ * @param {*} DataName 
+ * @returns 
+ */
 export const getDataId = async (DataName) => {
   const dataIdRef = doc(db, "counts", "dataIds");
   const dataIdSnap = await getDoc(dataIdRef);
@@ -15,7 +20,6 @@ export const getDataId = async (DataName) => {
     interview: 0,
     question: 0,
     answer: 0,
-    comment: 0,
   };
 
   if (!dataIdSnap.exists()) {

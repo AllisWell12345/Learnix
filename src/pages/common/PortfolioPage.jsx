@@ -67,7 +67,10 @@ function PortfolioPage() {
                 );
 
                 return {
-                  lecture,
+                  lecture: {
+                    ...lecture,
+                    projectId: project?.projectId || null,
+                  },
                   hasProject: !!project,
                 };
               }),
@@ -190,7 +193,7 @@ function PortfolioPage() {
   }, [currentUser, isProjectPage, isInterviewPage]);
 
   // 현재 탭과 사용자 역할에 맞는 클릭 경로 생성
-  const getLecturePath = (lectureId) => {
+  const getLecturePath = (lectureId, projectId = null) => {
     if (!currentUser) return "";
 
     if (currentUser.role === "teacher") {
@@ -209,7 +212,9 @@ function PortfolioPage() {
       }
 
       if (isInterviewPage) {
-        return `/student/portfolio/interview/${lectureId}`;
+        return projectId
+          ? `/student/portfolio/interview/${lectureId}/${projectId}`
+          : `/student/portfolio/interview/${lectureId}`;
       }
     }
 
@@ -370,7 +375,10 @@ function PortfolioPage() {
                   key={lecture.lectureId}
                   lecture={lecture}
                   mode="list"
-                  customPath={getLecturePath(lecture.lectureId)}
+                  customPath={getLecturePath(
+                    lecture.lectureId,
+                    lecture.projectId,
+                  )}
                 />
               ))
             ) : (
@@ -404,7 +412,10 @@ function PortfolioPage() {
                 key={lecture.lectureId}
                 lecture={lecture}
                 mode="list"
-                customPath={getLecturePath(lecture.lectureId)}
+                customPath={getLecturePath(
+                  lecture.lectureId,
+                  lecture.projectId,
+                )}
               />
             ))
           ) : (

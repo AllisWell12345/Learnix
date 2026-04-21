@@ -16,6 +16,7 @@ function ProjectDetailPage() {
   const [commenting, setCommenting] = useState(false);
   const { modal, openModal } = useModal();
   const currentUser = useSelector((state) => state.user.currentUser);
+  const isManager = currentUser?.role === "manager";
 
   useEffect(() => {
     if (projectId) {
@@ -73,23 +74,25 @@ function ProjectDetailPage() {
             {onStatus || currentProject.status === "completed" ? 2 : 1}
           </span>
         </div>
-        <div className="interviewitem-comment-input-row">
-          <input
-            className="interviewitem-comment-input"
-            type="text"
-            placeholder="댓글을 입력하세요..."
-          />
-          <button
-            className="interviewitem-comment-submit-btn"
-            onClick={handleAddComment}
-          >
-            {commenting ? (
-              "..."
-            ) : (
-              <img src={send} alt="댓글" className="interviewitem-icon" />
-            )}
-          </button>
-        </div>
+        {!isManager && (
+          <div className="interviewitem-comment-input-row">
+            <input
+              className="interviewitem-comment-input"
+              type="text"
+              placeholder="댓글을 입력하세요..."
+            />
+            <button
+              className="interviewitem-comment-submit-btn"
+              onClick={handleAddComment}
+            >
+              {commenting ? (
+                "..."
+              ) : (
+                <img src={send} alt="댓글" className="interviewitem-icon" />
+              )}
+            </button>
+          </div>
+        )}
         {/* 댓글 목록 */}
         <div className="interviewitem-comment-list">
           {onStatus || currentProject.status === "completed" ? (
@@ -103,7 +106,9 @@ function ProjectDetailPage() {
                     {currentUser.role === "teacher" ? (
                       <span className="interviewitem-teacher-badge">(나)</span>
                     ) : (
-                      <span className="interviewitem-teacher-badge">(강사)</span>
+                      <span className="interviewitem-teacher-badge">
+                        (강사)
+                      </span>
                     )}
                   </span>
                   <span className="interviewitem-comment-date">
@@ -111,14 +116,18 @@ function ProjectDetailPage() {
                     사용자의 편의성을 고려해주는 것이 좋습니다.
                   </span>
                 </div>
-                {currentUser.role === "teacher" ? (
-                  <div className="interviewitem-comment-actions">
-                    <button className="interviewitem-edit-btn">수정</button>
+                <div className="interviewitem-comment-actions">
+                  {isManager ? (
                     <button className="interviewitem-delete-btn">삭제</button>
-                  </div>
-                ) : (
-                  ""
-                )}
+                  ) : currentUser.role === "teacher" ? (
+                    <>
+                      <button className="interviewitem-edit-btn">수정</button>
+                      <button className="interviewitem-delete-btn">삭제</button>
+                    </>
+                  ) : (
+                    <button className="interviewitem-report-btn">신고</button>
+                  )}
+                </div>
               </div>
             </div>
           ) : (
@@ -133,7 +142,16 @@ function ProjectDetailPage() {
                 </span>
               </div>
               <div className="interviewitem-comment-actions">
-                <button className="interviewitem-report-btn">신고</button>
+                {isManager ? (
+                  <button className="interviewitem-delete-btn">삭제</button>
+                ) : currentUser.role === "teacher" ? (
+                  <>
+                    <button className="interviewitem-edit-btn">수정</button>
+                    <button className="interviewitem-delete-btn">삭제</button>
+                  </>
+                ) : (
+                  <button className="interviewitem-report-btn">신고</button>
+                )}
               </div>
             </div>
           </div>
