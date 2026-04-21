@@ -37,7 +37,7 @@ function InterviewRegistPage() {
         await createQuestion({
           lectureId: projectInfo.lectureId,
           projectId: projectInfo.projectId,
-          content: questionText,
+          question: questionText,
         });
       }
       openModal("CHECK", {

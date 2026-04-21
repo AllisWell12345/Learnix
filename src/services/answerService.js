@@ -36,7 +36,7 @@ export const createAnswer = async (answerData) => {
 // 개별조회
 export const getAnswerById = async (answerId) => {
   try {
-    const answerRef = doc(db, COLLECTION_NAME, String(answerId));
+    const answerRef = doc(db, COLLECTION_NAME, Number(answerId));
     const answerSnap = await getDoc(answerRef);
 
     if (!answerSnap.exists()) return null;
@@ -83,6 +83,23 @@ export const getAnswerByQuestionId = async (questionId) => {
   }
 };
 
+// questionIds 중 하나라도 답변이 있는지 확인
+export const hasAnswersByQuestionIds = async (questionIds) => {
+  try {
+    if (!questionIds || questionIds.length === 0) return false;
+
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where("questionId", "in", questionIds.map((id) => Number(id)))
+    );
+
+    const snapshot = await getDocs(q);
+    return !snapshot.empty;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // 특정 강의에 답변이 하나라도 있는지 확인
 export const hasAnswersByLectureId = async (lectureId) => {
   try {
@@ -101,7 +118,7 @@ export const hasAnswersByLectureId = async (lectureId) => {
 // 수정
 export const updateAnswer = async (answerId, updateData) => {
   try {
-    const answerRef = doc(db, COLLECTION_NAME, String(answerId));
+    const answerRef = doc(db, COLLECTION_NAME, Number(answerId));
     await updateDoc(answerRef, updateData);
   } catch (error) {
     throw error;
@@ -111,7 +128,7 @@ export const updateAnswer = async (answerId, updateData) => {
 // 삭제
 export const deleteAnswer = async (answerId) => {
   try {
-    const answerRef = doc(db, COLLECTION_NAME, String(answerId));
+    const answerRef = doc(db, COLLECTION_NAME, Number(answerId));
     await deleteDoc(answerRef);
   } catch (error) {
     throw error;

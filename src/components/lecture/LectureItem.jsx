@@ -10,8 +10,9 @@ import EditIcon from "../../assets/img/common/editIcon.svg";
 import thumb from "../../assets/img/lectureThumb.png";
 import { useSelector } from "react-redux";
 import useModal from "../../hooks/useModal";
-import { getQuestionsByLectureId } from "../../services/questionService";
-import { hasAnswersByLectureId } from "../../services/answerService";
+import { getQuestionsByLectureAndProject } from "../../services/questionService";
+import { hasAnswersByQuestionIds } from "../../services/answerService";
+import { getProjectByUserAndLecture } from "../../services/projectService";
 
 function LectureItem({
   lecture,
@@ -38,28 +39,48 @@ function LectureItem({
   // 학생이 모의 면접 강의를 클릭했을 때 질문/답변 존재 여부에 따라 이동 처리
   const handleStudentInterviewClick = async () => {
     try {
-      const questions = await getQuestionsByLectureId(
+      // 1. 현재 학생의 해당 강의 프로젝트 조회
+      const currentProject = await getProjectByUserAndLecture(
+        Number(currentUser?.userId),
         Number(lecture.lectureId),
       );
 
-      // 질문이 하나도 없으면 안내 모달만 표시
-      if (!questions.length) {
+      // 프로젝트가 없으면 면접 진행 불가
+      if (!currentProject?.projectId) {
         openModal("CHECK", {
-          mainMsg: "아직 면접 내용이 존재하지 않습니다.",
-          subMsg: "강사님의 등록을 기다려주세요!"
+          mainMsg: "아직 제출한 프로젝트가 없습니다.",
+          subMsg: "프로젝트를 먼저 제출해주세요.",
         });
         return;
       }
 
-      // 질문은 있고 답변은 없는 경우 notice 페이지로 이동
-      const hasAnswers = await hasAnswersByLectureId(Number(lecture.lectureId));
+      // 2. 현재 학생 프로젝트에 연결된 질문만 조회
+      const questions = await getQuestionsByLectureAndProject(
+        Number(lecture.lectureId),
+        Number(currentProject.projectId),
+      );
 
+      // 질문이 하나도 없으면 notice도 못 감
+      if (!questions.length) {
+        openModal("CHECK", {
+          mainMsg: "아직 면접 내용이 존재하지 않습니다.",
+          subMsg: "강사님의 등록을 기다려주세요!",
+        });
+        return;
+      }
+
+      // 3. 조회한 질문들의 questionId 추출
+      const questionIds = questions.map((item) => Number(item.questionId));
+
+      // 4. 해당 질문들에 연결된 답변이 하나라도 있는지 확인
+      const hasAnswers = await hasAnswersByQuestionIds(questionIds);
+
+      // 5. 답변이 없으면 notice, 있으면 상세 페이지
       if (!hasAnswers) {
         navigate(`/student/portfolio/interview/${lecture.lectureId}/notice`);
         return;
       }
 
-      // 질문과 답변이 모두 존재하면 인터뷰 상세 페이지로 이동
       navigate(`/student/portfolio/interview/${lecture.lectureId}`);
     } catch (error) {
       console.error("모의 면접 페이지 이동 실패:", error);
