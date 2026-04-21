@@ -46,7 +46,7 @@ export const getTemplateById = async (lectureId) => {
   try {
     const q = query(
       collection(db, COLLECTION_NAME),
-      where("lectureId", "==", String(lectureId)) 
+      where("lectureId", "==", Number(lectureId)) 
     );
 
     const querySnapshot = await getDocs(q);
@@ -82,7 +82,7 @@ export const deleteTemplateByLectureId = async (lectureId) => {
   try {
     const q = query(
       collection(db, COLLECTION_NAME),
-      where("lectureId", "==", String(lectureId)),
+      where("lectureId", "==", Number(lectureId)),
     );
 
     const querySnapshot = await getDocs(q);
