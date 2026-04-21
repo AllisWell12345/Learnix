@@ -117,72 +117,68 @@ Label: feature / fix
 ## 컴포넌트 구조 설계
 
 ```bash
-([App]
-	├──MainLayOut
+└──([App]
+	└── MainLayOut
 			├── Header
-			├── Nav
+			├── Nav (user: role=student/teacher | main)
 			├── Side
 			├── Outlet
-						├── HomePage
-									├── Searchbar (검색창)
-									├── LectureItem (mode=box)
-						├── LectureDetailPage (강의상세조회) (role=student | role=teacher | role=manager)									├── LectureItem (mode=detail | mode=myDetail)
-						├── MyLecturePage (내 강의) (role=student | role=teacher)
-									├── LectureItem (mode=list)
-						├── PortfolioManagePage (프로젝트관리) (role=student | role=teacher)
-									├── LectureItem (mode=project | mode=interview)
-						├── ProjectTotalPage (프로젝트 전체 조회) (role=student | role=teacher)
-									├── ProjectItem (mode=list)
-						├── ProjectDetailPage (프로젝트 상세 조회) (role=manager | ) ( currentUser )
-									├── ProjectItem (mode=detail)
-						├── InterviewDetailPage (모의면접 상세 조회) (role=manager | ) ( currentUser )
-									├── interviewItem (mode=detail)
-						
-						├── CartPage (수강생-장바구니)
-									├── CartItem
-						├── ProjectPage (수강생-프로젝트 제출)
-									├── Template
-									├── ProjectItem (mode=myproj)
-						├── ProjectRegistPage (수강생-프로젝트 작성)
-									├── ProjectForm (mode=regist)
-						├── ProjectEditPage (수강생-프로젝트 수정)
-									├── ProjectForm (mode=edit)
-						├── InterviewNoticePage (수강생-모의면접안내)
-						├── InterVIewPracticePage (수강생-모의면접진행)
-									├── InterviewQuestion
-											
-						├── LectureRegistPage (강사-강의등록)
-									├── LectureForm (mode=regist)
-						├── LectureEditPage (강의수정)
-									├── LectureForm (mode=edit)
-						├── TemplateRegistPage (강사-프로젝트템플릿등록)
-									├── TemplateForm (mode=regist)
-						├── TemplateEditPage (강사-프로젝트템플릿수정)
-									├── TemplateForm (mode=edit)
-						├── InterviewRegistPage (강사-모의면접등록)
-									├── InterviewForm
-						├── InterviewTotalPage (강사-모의면접 전체 조회)
-									├── interviewItem (mode=list)
-						
-						
-						├── ManagerDashboardPage (관리자-대시보드)
-									├── userItem(mode=latest)
-						├── UserManagePage (관리자-회원관리)
-									├── SearchBar (검색창)
-									├── userItem(mode=list)
-						├── LectureManagePage (관리자-강의관리)
-									├── SearchBar (검색창)
-									├──LectureItem (mode=list)
-						├── DataManagePage (관리자-자료관리)
-									├── SearchBar (검색창)
-									├── PotfolioItem
-						
-						├── LoginPage
-						
-						├── SignPage
-									├── SignForm
-									
-			├── Footer
+			│			├── HomePage
+			│			│			├── Searchbar (검색창)
+			│			│			└── LectureItem (mode=box)
+			│			├── LectureDetailPage (강의상세조회) (role= null/student/teacher/manager)
+			│			│			└── LectureItem (mode=detail)
+			│			├── MyLecturePage (내 강의) (role=student/teacher)
+			│			│			└── LectureItem (mode=list)
+			│			├── PortfolioPage (포트폴리오) (role=student/teacher)
+			│			│			└── LectureItem (mode=list) ( currentUser )
+			│			├── ProjectTotalPage (프로젝트 전체 조회) (role=student | role=teacher)
+			│			│			└── ProjectItem (mode=list)
+			│			├── ProjectDetailPage (프로젝트 상세 조회) (role=student/teacher/manager)) ( currentUser )
+			│			│			└── ProjectItem (mode=detail)
+			│			├── InterviewDetailPage (모의면접 상세 조회) (role=student/teacher/manager) ( currentUser )
+			│			│			└── InterviewItem (mode=detail)
+			│			│
+			│			├── CartPage (수강생-장바구니)
+			│			│			└── CartItem
+			│			├── ProjectPage (수강생-프로젝트 제출)
+			│			├── ProjectRegistPage (수강생-프로젝트 작성)
+			│			│			└── ProjectForm (mode=regist)
+			│			├── ProjectEditPage (수강생-프로젝트 수정)
+			│			│			└── ProjectForm (mode=edit)
+			│			├── InterviewNoticePage (수강생-모의면접안내)
+			│			├── IntervIewPracticePage (수강생-모의면접진행)
+			│			│
+			│			├── LectureRegistPage (강사-강의등록)
+			│			│			└── LectureForm (mode=regist)
+			│			├── LectureEditPage (강의수정)
+			│			│			└── LectureForm (mode=edit)
+			│			├── TemplateRegistPage (강사-프로젝트템플릿등록)
+			│			│			└── TemplateForm
+			│			├── TemplateEditPage (강사-프로젝트템플릿수정)
+			│			│			└── TemplateForm ( currentTemplate )
+			│			├── InterviewRegistPage (강사-모의면접등록)
+			│			│			└── InterviewForm
+			│			├── InterviewTotalPage (강사-모의면접 전체 조회)
+			│			│			└── InterviewItem (mode=list)
+			│			│
+			│			│
+			│			├── ManagerDashboardPage (관리자-대시보드)
+			│			├── UserManagePage (관리자-회원관리)
+			│			│			├── SearchBar (검색창)
+			│			│			└── UserItem
+			│			├── LectureManagePage (관리자-강의관리)
+			│			│			├── SearchBar (검색창)
+			│			│			└── LectureItem (mode=list)
+			│			├── DataManagePage (관리자-자료관리)
+			│			│			└── SearchBar (검색창)
+			│			│
+			│			├── LoginPage
+			│			└── SignupPage
+			│						└── SignupForm
+			│
+			└── Footer
+
 
 ```
 
@@ -193,102 +189,110 @@ Label: feature / fix
 [main]
 [src]
 	├──[assets]
-				├──[img]
-				├──[font]
+	│			├──[img]
+	│			└──[font]
+	│
 	├──[components]
-				├──[manager]
-							├── userItem.jsx
-							├── PortfolioItem.jsx
-				├──[signup]
-							├── SignupForm.jsx
-				├──[lecture]
-							├── LectureItem.jsx
-				├──[project]
-							├── ProjectItem.jsx
-							├── TemplateForm.jsx
-							├── Template.jsx
-							├── ProjectForm.jsx
-				├──[interview]
-							├── InterviewItem.jsx
-							├── InterviewForm.jsx
-							├── InterviewQuestion.jsx
-				├── [layout]
-							├── MainHeader.jsx
-							├── UserHeader.jsx
-							├── MainNavbar.jsx
-							├── StudentNavbar.jsx
-							├── TeacherNavbar.jsx
-							├── StudentSidebar.jsx
-							├── TeacherSidebar.jsx
-							├── ManagerSidebar.jsx
-							├── Footer.jsx
-				├──[common]
-							├── TwoButtonModal.jsx
-							├── OneButtonModal.jsx
-							├── DeleteModal.jsx
-							├── Searchbar.jsx
+	│			├──[manager]
+	│			│			├── userItem.jsx
+	│			│			└── PortfolioItem.jsx
+	│			├──[lecture]
+	│			│			├── CartItem.jsx
+	│			│			├── LectureForm.jsx
+	│			│			└── LectureItem.jsx
+	│			├──[project]
+	│			│			├── ProjectItem.jsx
+	│			│			├── TemplateForm.jsx
+	│			│			└── ProjectForm.jsx
+	│			├──[interview]
+	│			│			├── InterviewItem.jsx
+	│			│			├── InterviewForm.jsx
+	│			│			└── InterviewQuestion.jsx
+	│			├──[layout]
+	│			│			├── MainHeader.jsx
+	│			│			├── UserHeader.jsx
+	│			│			├── MainNavbar.jsx
+	│			│			├── StudentNavbar.jsx
+	│			│			├── TeacherNavbar.jsx
+	│			│			├── StudentSidebar.jsx
+	│			│			├── TeacherSidebar.jsx
+	│			│			├── ManagerSidebar.jsx
+	│			│			└── Footer.jsx
+	│			├──[common]
+	│			│			├── TwoButtonModal.jsx
+	│			│			├── OneButtonModal.jsx
+	│			│			├── DeleteModal.jsx
+	│			│		  ├── WarningModal.jsx
+	│			│		  └── Searchbar.jsx
+	│     └── AuthInitializer.jsx
+	│
 	├──[firebase]
-				├── config.js
+	│			└── config.js
+	│
 	├──[hooks]
-				├── useModal.jsx
+	│			└── useModal.jsx
+	│
 	├──[layouts]
-				├── MainLayout.jsx
-				├── StudentLayout.jsx
-				├── StudentPortfolioLayout.jsx
-				├── TeacherLayout.jsx
-				├── TeacherPortfolioLayout.jsx
-				├── ManagerLayout.jsx
+	│			├── MainLayout.jsx
+	│			├── StudentLayout.jsx
+	│			├── StudentPortfolioLayout.jsx
+	│			├── TeacherLayout.jsx
+	│			├── TeacherPortfolioLayout.jsx
+	│			└── ManagerLayout.jsx
+	│
 	├──[pages]
-				├──[common]
-							├── HomePage.jsx
-							├── LectureDetailPage.jsx 
-							├── MyLecturePage.jsx
-							├── PortfolioPage.jsx /홍근
-							├── ProjectTotalPage.jsx
-							├── ProjectDetailPage.jsx 
-							├── InterviewDetailPage.jsx 
-				├──[student]
-							├── CartPage.jsx
-							├── ProjectPage.jsx
-							├── ProjectRegistPage.jsx
-							├── ProjectEditPage.jsx 
-							├── InterviewNoticePage.jsx
-							├── InterviewPracticePage.jsx
-				├──[teacher]
-							├── LectureRegistPage.jsx 
-							├── LectureEditPage.jsx  
-							├── TemplateRegistPage.jsx 
-							├── TemplateEditPage.jsx 
-							├── InterviewRegistPage.jsx 
-							├── InterviewTotalPage.jsx 
-				├──[manager]
-              ├── ManagerDashboardPage.jsx
-              ├── UserManagePage.jsx
-              ├── LectureManagePage.jsx
-              ├── DataManagePage.jsx
-        ├──[auth]
-              ├── LoginPage.jsx
-              ├── SignupPage.jsx
+	│			├──[common]
+	│			│			├── HomePage.jsx
+	│			│			├── LectureDetailPage.jsx
+	│			│			├── MyLecturePage.jsx
+	│			│			├── PortfolioPage.jsx
+	│			│			├── ProjectTotalPage.jsx
+	│			│			├── ProjectDetailPage.jsx
+	│			│			└── InterviewDetailPage.jsx
+	│			├──[student]
+	│			│			├── CartPage.jsx
+	│			│			├── ProjectPage.jsx
+	│			│			├── ProjectRegistPage.jsx
+	│			│			├── ProjectEditPage.jsx
+	│			│			├── InterviewNoticePage.jsx
+	│			│			└── InterviewPracticePage.jsx
+	│			├──[teacher]
+	│			│			├── LectureRegistPage.jsx
+	│			│			├── LectureEditPage.jsx
+	│			│			├── TemplateRegistPage.jsx
+	│			│			├── TemplateEditPage.jsx
+	│			│			├── InterviewRegistPage.jsx
+	│			│			└── InterviewTotalPage.jsx
+	│			├──[manager]
+  │     │     ├── ManagerDashboardPage.jsx
+  │     │     ├── UserManagePage.jsx
+  │     │     ├── LectureManagePage.jsx
+  │     │     └── DataManagePage.jsx
+  │     └──[auth]
+  │           ├── LoginPage.jsx
+  │           └── SignupPage.jsx
+  │
 	├──[services]
-				├── cartService.js
-				├── attendingService.js
-				├── videoService.js
-				├── templateService.js
-				├── lectureService.js
-				├── projectService.js
-				├── interviewQuestionService.js
-				├── interviewAnswerService.js
-				├── authService.js
-				├── userService.js
-				├── commentService.js
+	│			├── cartService.js
+	│			├── attendingService.js
+	│			├── videoService.js
+	│			├── templateService.js
+	│			├── lectureService.js
+	│			├── projectService.js
+	│			├── questionService.js
+	│			├── answerService.js
+	│			├── authService.js
+	│			├── userService.js
+	│			├── getIdService.js
+	│			└── commentService.js
+	│
 	├──[store]
 				├── store.js
 				├── cartSlice.js
-				├── lectureSlice.js
 				├── projectSlice.js
 				├── interviewSlice.js
-				├── authSlice.js
-				├── userSlice.js
-				├── commentSlice.js
+				├── searchbarSlice.js
+				└── userSlice.js
+
 
 ```
