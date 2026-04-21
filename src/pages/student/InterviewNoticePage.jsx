@@ -1,14 +1,59 @@
+import { useNavigate, useParams } from "react-router-dom";
 import "./InterviewNoticePage.css";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { getProjectByUserAndLecture } from "../../services/projectService";
+import useModal from "../../hooks/useModal";
 
 function InterviewNoticePage() {
-  const projectTitle = "React를 활용한 앱 구축";
+  const { lectureId } = useParams();
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const [projectTitle, setProjectTitle] = useState("");
+  const { modal, openModal } = useModal();
+
+  useEffect(() => {
+    const fetchProjectTitle = async () => {
+      if (!currentUser?.userId || !lectureId) return;
+      try {
+        setLoading(true);
+        const currentProject = await getProjectByUserAndLecture(
+          currentUser.userId,
+          lectureId,
+        );
+        setProjectTitle(currentProject.title);
+      } catch (error) {
+        console.error("데이터 불러오기 실패:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProjectTitle();
+    return;
+  }, [currentUser, lectureId]);
+
+  const handleMovePractice = () => {
+    openModal("CONFIRM", {
+      mainMsg : "모의 면접을 시작하시겠습니까?",
+      subMsg : "확인 버튼을 누르면 면접이 바로 시작됩니다.",
+      onConfirm : () => {
+        navigate(`/student/portfolio/interview/${lectureId}/practice`);
+      }
+    })
+  }
 
   return (
     <div className="interview-notice-container">
+      {modal}
       <div className="interview-notice-card">
-        <h1 className="interview-project-title">
-          프로젝트 명 : {projectTitle}
-        </h1>
+        {loading ? (
+          <h1 className="interview-project-title">불러오는 중...</h1>
+        ) : (
+          <h1 className="interview-project-title">
+            프로젝트 명 : {projectTitle}
+          </h1>
+        )}
 
         <div className="interview-guide-box">
           <p>
@@ -21,10 +66,10 @@ function InterviewNoticePage() {
           </p>
           <p>
             3. 해당 모의 면접은 구두가 아닌 텍스트로 진행되는 점을 고려하여,
-            설정된 제한시간에 30초가 추가됩니다.
+            설정된 제한시간에 30초정도의 여유시간이 주어집니다.
           </p>
           <p>
-            4. 시작 버튼을 누르면 첫 번째 질문이 나타남과 동시에 제한 시간이
+            4. 시작 하자마자 첫 번째 질문이 나타남과 동시에 제한 시간이
             시작됩니다.
           </p>
           <p>
@@ -43,7 +88,7 @@ function InterviewNoticePage() {
         </div>
 
         <div className="interview-action-area">
-          <button className="interview-start-btn">시작</button>
+          <button className="interview-start-btn" onClick={handleMovePractice}>시작</button>
         </div>
       </div>
     </div>

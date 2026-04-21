@@ -7,6 +7,13 @@
   position: relative;
 }
 
+.question-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
 .question-header {
   display: flex;
   justify-content: space-between;
@@ -67,4 +74,8 @@
 
 .next-action-btn:hover {
   background-color: #3e5f44;
+}
+
+.timer-warning {
+  color: red;
 }
