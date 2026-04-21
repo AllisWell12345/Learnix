@@ -1,4 +1,5 @@
 import "./InterviewPracticePage.css";
+import timer from "../../assets/img/TimerIcon.svg";
 
 function InterviewPracticePage() {
   return (
@@ -9,7 +10,10 @@ function InterviewPracticePage() {
             <span className="question-text">
               1. 1분 자기소개를 시작해주세요.
             </span>
-            <span className="timer">1 : 29</span>
+            <span className="timer">
+              <img src={timer} alt="타이머" className="timer-icon" />
+              <div className="timer-time">1 : 29</div>
+            </span>
           </div>
 
           <textarea className="answer-input" placeholder="답변을 입력하세요" />
