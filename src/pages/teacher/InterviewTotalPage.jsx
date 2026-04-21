@@ -1,39 +1,70 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { getUserByUid } from "../../services/userService";
-import { getQuestionsByLectureId } from "../../services/questionService";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProjectsAll } from "../../store/projectSlice";
+import { getUserByUserId } from "../../services/userService";
+import { getQuestionsByLectureAndProject } from "../../services/questionService";
 import InterviewItem from "../../components/interview/InterviewItem";
 import "./InterviewTotalPage.css";
 
 function InterviewTotalPage() {
+  const location = useLocation();
   const navigate = useNavigate();
   const { lectureId } = useParams();
-  const [projects, setProjects] = useState([]);
+  const dispatch = useDispatch();
+
+  const { projects, status } = useSelector((state) => state.project);
+  const [projectsWithUser, setProjectsWithUser] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    dispatch(fetchProjectsAll());
+  }, [dispatch, location.key]);
+
+  useEffect(() => {
+    if (status !== "succeeded") return;
+    setLoading(true);
+
+    const completedProjects = projects.filter(
+      (p) =>
+        String(p.lectureId) === String(lectureId) && p.status === "completed",
+    );
+
     const fetchData = async () => {
       try {
-        // 해당 강의의 질문만 조회
-        const questions = await getQuestionsByLectureId(Number(lectureId));
-
-        const projectsWithUser = await Promise.all(
-          questions.map(async (q) => {
-            const student = q.studentUid
-              ? await getUserByUid(q.studentUid)
+        const merged = await Promise.all(
+          completedProjects.map(async (project) => {
+            const student = project.userId
+              ? await getUserByUserId(project.userId)
               : null;
-            return { ...q, student };
+
+            const questions = await getQuestionsByLectureAndProject(
+              String(lectureId),
+              project.projectId,
+            );
+
+            if (questions.length === 0) {
+              return { ...project, student, interviewStatus: "before" };
+            }
+
+            return {
+              ...project,
+              student,
+              questions,
+              interviewStatus: "completed",
+            };
           }),
         );
-        setProjects(projectsWithUser);
+        setProjectsWithUser(merged);
       } catch (err) {
         console.error("데이터 불러오기 실패:", err);
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
-  }, [lectureId]);
+  }, [projects, status, lectureId, location.key]);
 
   const handleRegist = (interview) => {
     navigate(
@@ -41,13 +72,17 @@ function InterviewTotalPage() {
       {
         state: {
           projectInfo: {
-            projectTitle: interview.projectTitle,
-            lectureTitle: interview.lectureTitle,
-            submitDate: interview.submitDate,
-            projectDesc: interview.projectDesc,
+            projectTitle: interview.title,
             lectureId: interview.lectureId,
             projectId: interview.projectId,
-            studentUid: interview.studentUid,
+            className: interview.className,
+            requireDetail: interview.requireDetail,
+            feature: interview.feature,
+            problem: interview.problem,
+            solution: interview.solution,
+            projectLink: interview.projectLink,
+            createdAt: interview.createdAt?.split("T")[0],
+            student: interview.student,
           },
         },
       },
@@ -57,8 +92,16 @@ function InterviewTotalPage() {
   const handleDetail = (interview) => {
     navigate(
       `/teacher/portfolio/interview/${interview.lectureId}/${interview.projectId}/detail`,
+      { state: { interview } },
     );
   };
+
+  const beforeProjects = projectsWithUser.filter(
+    (it) => it.interviewStatus === "before",
+  );
+  const completedInterviews = projectsWithUser.filter(
+    (it) => it.interviewStatus === "completed",
+  );
 
   if (loading) return <div className="it-page">불러오는 중...</div>;
 
@@ -71,64 +114,47 @@ function InterviewTotalPage() {
       <main className="it-sections-container">
         <section className="it-section">
           <div className="it-section-title-wrapper">
-            <p className="it-sub-title">질문생성중</p>
+            <p className="it-sub-title">모의 면접 진행 전</p>
             <span className="it-count-badge badge-waiting">
-              {projects.filter((it) => it.status === "waiting").length}개
+              {beforeProjects.length}개
             </span>
           </div>
           <div className="it-list">
-            {projects
-              .filter((it) => it.status === "waiting")
-              .map((it) => (
+            {beforeProjects.length > 0 ? (
+              beforeProjects.map((it) => (
                 <InterviewItem
-                  key={it.questionId}
+                  key={it.projectId}
                   interview={it}
                   mode="list"
                   onRegist={handleRegist}
                 />
-              ))}
+              ))
+            ) : (
+              <p className="it-empty-msg">해당하는 프로젝트가 없습니다.</p>
+            )}
           </div>
         </section>
 
         <section className="it-section">
           <div className="it-section-title-wrapper">
-            <p className="it-sub-title">리뷰중</p>
+            <p className="it-sub-title">모의 면접 완료</p>
             <span className="it-count-badge badge-reviewing">
-              {projects.filter((it) => it.status === "reviewing").length}개
+              {completedInterviews.length}개
             </span>
           </div>
           <div className="it-list-detail">
-            {projects
-              .filter((it) => it.status === "reviewing")
-              .map((it) => (
+            {completedInterviews.length > 0 ? (
+              completedInterviews.map((it) => (
                 <InterviewItem
-                  key={it.interviewId}
+                  key={it.projectId}
                   interview={it}
                   mode="list"
                   onDetail={handleDetail}
                 />
-              ))}
-          </div>
-        </section>
-
-        <section className="it-section">
-          <div className="it-section-title-wrapper">
-            <p className="it-sub-title">면접완료</p>
-            <span className="it-count-badge badge-completed">
-              {projects.filter((it) => it.status === "completed").length}개
-            </span>
-          </div>
-          <div className="it-list-detail">
-            {projects
-              .filter((it) => it.status === "completed")
-              .map((it) => (
-                <InterviewItem
-                  key={it.interviewId}
-                  interview={it}
-                  mode="list"
-                  onDetail={handleDetail}
-                />
-              ))}
+              ))
+            ) : (
+              <p className="it-empty-msg">해당하는 프로젝트가 없습니다.</p>
+            )}
           </div>
         </section>
       </main>

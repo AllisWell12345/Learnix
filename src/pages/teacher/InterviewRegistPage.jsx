@@ -1,4 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { db } from "../../firebase/config.js";
+import { doc, getDoc } from "firebase/firestore";
 import { createQuestion } from "../../services/questionService";
 import InterviewForm from "../../components/interview/InterviewForm";
 import useModal from "../../hooks/useModal";
@@ -9,24 +12,34 @@ function InterviewRegistPage() {
   const { modal, openModal } = useModal();
 
   const projectInfo = location.state?.projectInfo || null;
+  const [lectureName, setLectureName] = useState("");
+
+  useEffect(() => {
+    const fetchLectureName = async () => {
+      if (!projectInfo?.lectureId) return;
+      try {
+        const lecDoc = await getDoc(
+          doc(db, "lectures", String(projectInfo.lectureId)),
+        );
+        if (lecDoc.exists()) {
+          setLectureName(lecDoc.data().title);
+        }
+      } catch (error) {
+        console.error("강의명 로드 실패:", error);
+      }
+    };
+    fetchLectureName();
+  }, [projectInfo?.lectureId]);
 
   const handleSubmit = async (data) => {
     try {
-      await Promise.all(
-        data.questions.map((q) =>
-          createQuestion({
-            lectureId: projectInfo.lectureId,
-            projectId: projectInfo.projectId,
-            projectTitle: projectInfo.projectTitle,
-            lectureTitle: projectInfo.lectureTitle,
-            submitDate: projectInfo.submitDate,
-            projectDesc: projectInfo.projectDesc,
-            studentUid: projectInfo.studentUid,
-            question: q,
-            status: "waiting",
-          }),
-        ),
-      );
+      for (const questionText of data.questions) {
+        await createQuestion({
+          lectureId: projectInfo.lectureId,
+          projectId: projectInfo.projectId,
+          content: questionText,
+        });
+      }
       openModal("CHECK", {
         mainMsg: "등록 완료",
         subMsg: "모의면접이 등록되었습니다!",
@@ -61,6 +74,7 @@ function InterviewRegistPage() {
             projectInfo={projectInfo}
             onSubmit={handleSubmit}
             onCancel={handleCancel}
+            lectureName={lectureName}
           />
         </form>
       </div>
