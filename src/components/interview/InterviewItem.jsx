@@ -23,7 +23,7 @@ function InterviewItem({ interview, projectInfo, mode, currentUser, onRegist, on
     const fetchLectureName = async () => {
       if (lectureId) {
         try {
-          const lecDoc = await getDoc(doc(db, "lectures", String(lectureId)));
+          const lecDoc = await getDoc(doc(db, "lectures", Number(lectureId)));
 
           if (lecDoc.exists()) {
             setLectureName(lecDoc.data().title);

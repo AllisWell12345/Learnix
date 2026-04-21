@@ -20,7 +20,7 @@ function InterviewDetailPage() {
       const fetchQuestions = async () => {
         try {
           const questions = await getQuestionsByLectureAndProject(
-            String(lectureId),
+            Number(lectureId),
             Number(projectId),
           );
 

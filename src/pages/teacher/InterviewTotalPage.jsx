@@ -27,7 +27,7 @@ function InterviewTotalPage() {
 
     const completedProjects = projects.filter(
       (p) =>
-        String(p.lectureId) === String(lectureId) && p.status === "completed",
+        Number(p.lectureId) === Number(lectureId) && p.status === "completed",
     );
 
     const fetchData = async () => {
@@ -39,7 +39,7 @@ function InterviewTotalPage() {
               : null;
 
             const questions = await getQuestionsByLectureAndProject(
-              String(lectureId),
+              Number(lectureId),
               project.projectId,
             );
 
@@ -103,7 +103,7 @@ function InterviewTotalPage() {
     (it) => it.interviewStatus === "completed",
   );
 
-  if (loading) return <div className="it-page">불러오는 중...</div>;
+  if (loading) return <div className="it-page"><div className="loading">불러오는 중...</div></div>;
 
   return (
     <div className="it-page">

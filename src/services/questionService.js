@@ -25,7 +25,7 @@ export const createQuestion = async (questionData) => {
       questionId,
     };
 
-    await setDoc(doc(db, COLLECTION_NAME, String(questionId)), newQuestion);
+    await setDoc(doc(db, COLLECTION_NAME, Number(questionId)), newQuestion);
 
     return newQuestion;
   } catch (error) {
@@ -36,7 +36,7 @@ export const createQuestion = async (questionData) => {
 // 개별조회
 export const getQuestionById = async (questionId) => {
   try {
-    const questionRef = doc(db, COLLECTION_NAME, String(questionId));
+    const questionRef = doc(db, COLLECTION_NAME, Number(questionId));
     const questionSnap = await getDoc(questionRef);
 
     if (!questionSnap.exists()) return null;
@@ -105,7 +105,7 @@ export const getQuestionsByLectureId = async (lectureId) => {
 // 수정
 export const updateQuestion = async (questionId, updateData) => {
   try {
-    const questionRef = doc(db, COLLECTION_NAME, String(questionId));
+    const questionRef = doc(db, COLLECTION_NAME, Number(questionId));
     await updateDoc(questionRef, updateData);
   } catch (error) {
     throw error;
@@ -115,7 +115,7 @@ export const updateQuestion = async (questionId, updateData) => {
 // 삭제
 export const deleteQuestion = async (questionId) => {
   try {
-    const questionRef = doc(db, COLLECTION_NAME, String(questionId));
+    const questionRef = doc(db, COLLECTION_NAME, Number(questionId));
     await deleteDoc(questionRef);
   } catch (error) {
     throw error;
