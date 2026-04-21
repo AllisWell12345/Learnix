@@ -227,7 +227,7 @@ function InterviewItem({ interview, projectInfo, mode, currentUser, onRegist, on
               <img src={review} alt="댓글" className="interviewitem-icon" />
               <p className="interviewitem-card-title">댓글</p>
               <span className="interviewitem-comment-count">
-                ({interview.comments || []}.length)
+                ({interview.comments.length || 0}개)
               </span>
             </div>
 
