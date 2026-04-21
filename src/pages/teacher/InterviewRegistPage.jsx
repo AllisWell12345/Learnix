@@ -19,7 +19,7 @@ function InterviewRegistPage() {
       if (!projectInfo?.lectureId) return;
       try {
         const lecDoc = await getDoc(
-          doc(db, "lectures", String(projectInfo.lectureId)),
+          doc(db, "lectures", Number(projectInfo.lectureId)),
         );
         if (lecDoc.exists()) {
           setLectureName(lecDoc.data().title);
