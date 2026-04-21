@@ -12,6 +12,7 @@ export const getDataId = async (DataName) => {
     attending: 0,
     template: 0,
     project: 0,
+    interview: 0,
     question: 0,
     answer: 0,
     comment: 0,

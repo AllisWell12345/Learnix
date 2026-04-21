@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { db } from "../../firebase/config.js";
+import { doc, getDoc } from "firebase/firestore";
 import "./InterviewItem.css";
 import review from "../../assets/img/common/reviewIcon.svg";
 import send from "../../assets/img/Icon/SendIcon.svg";
@@ -6,13 +9,36 @@ import calendar from "../../assets/img/Icon/CalendarIcon.png";
 import student from "../../assets/img/Icon/StudentIcon.png";
 import useModal from "../../hooks/useModal";
 
-function InterviewItem({ interview, mode, currentUser, onRegist, onDetail }) {
+function InterviewItem({ interview, projectInfo, mode, currentUser, onRegist, onDetail }) {
+  const { lectureId } = useParams();
+  const [lectureName, setLectureName] = useState("");
   const [commentText, setCommentText] = useState("");
   const [editId, setEditId] = useState(null);
   const [editText, setEditText] = useState("");
   const { modal, openModal } = useModal();
 
   const isTeacher = currentUser?.role === "teacher";
+
+  useEffect(() => {
+    const fetchLectureName = async () => {
+      if (lectureId) {
+        try {
+          const lecDoc = await getDoc(doc(db, "lectures", String(lectureId)));
+
+          if (lecDoc.exists()) {
+            setLectureName(lecDoc.data().title);
+          } else {
+            setLectureName("강의명 로드실패");
+          }
+        } catch (error) {
+          console.error("강의명 로드 실패:", error);
+          setLectureName("강의명 로드실패");
+        }
+      }
+    };
+
+    fetchLectureName();
+  }, [lectureId]);
 
   // 댓글 등록
   const handleAddComment = () => {
@@ -55,25 +81,27 @@ function InterviewItem({ interview, mode, currentUser, onRegist, onDetail }) {
   if (mode === "list") {
     return (
       <div
-        className={`ii-list-card ${interview.status !== "waiting" ? "ii-list-card-clickable" : ""}`}
-        onClick={() => interview.status !== "waiting" && onDetail?.(interview)}
+        className={`ii-list-card ${interview.interviewStatus !== "before" ? "ii-list-card-clickable" : ""}`}
+        onClick={() =>
+          interview.interviewStatus !== "before" && onDetail?.(interview)
+        }
       >
         <div className="ii-list-info">
-          <h4 className="ii-list-title">{interview.projectTitle}</h4>
-          <p className="ii-list-lecture">{interview.lectureTitle}</p>
+          <h4 className="ii-list-title">{interview.title}</h4>
+          <p className="ii-list-lecture">{lectureName}</p>
           <div className="ii-list-meta">
             <span className="ii-list-meta-item">
               <img src={student} className="ii-icon" alt="수강생" />
-              수강생: {interview.student?.name}
+              수강생: {interview.student?.name || "이름 정보 없음"}
             </span>
             <span className="ii-list-meta-item">
               <img src={calendar} className="ii-icon" alt="제출일" />
-              제출일: {interview.submitDate}
+              제출일: {interview.createdAt?.split("T")[0] || "날짜 정보 없음"}
             </span>
           </div>
         </div>
 
-        {interview.status === "waiting" && (
+        {interview.interviewStatus === "before" && (
           <button
             className="ii-regist-btn"
             onClick={(e) => {
@@ -105,15 +133,20 @@ function InterviewItem({ interview, mode, currentUser, onRegist, onDetail }) {
                 <div className="interviewitem-info-field">
                   <span className="interviewitem-info-label">프로젝트명</span>
                   <p className="interviewitem-info-val interviewitem-info-bold">
-                    {interview.projectTitle}
+                    {interview.title}
                   </p>
                 </div>
                 <div className="interviewitem-info-field">
                   <span className="interviewitem-info-label">강의명</span>
-                  <p className="interviewitem-info-val">
-                    {interview.lectureTitle}
-                  </p>
+                  <p className="interviewitem-info-val">{lectureName}</p>
                 </div>
+                <p className="interviewform-info-val interviewform-info-desc">
+                  요구사항: <br />
+                  {interview.requireDetail || "-"} <br />
+                  <br />
+                  주요 기능: <br />
+                  {interview.feature || "-"} <br />
+                </p>
               </div>
 
               <div className="interviewitem-card interviewitem-student-card">
@@ -121,13 +154,13 @@ function InterviewItem({ interview, mode, currentUser, onRegist, onDetail }) {
                 <div className="interviewitem-info-field">
                   <span className="interviewitem-info-label">이름</span>
                   <p className="interviewitem-info-val interviewitem-info-bold">
-                    {interview.student?.name}
+                    {interview.student?.name || "이름 정보 없음"}
                   </p>
                 </div>
                 <div className="interviewitem-info-field">
                   <span className="interviewitem-info-label">이메일</span>
                   <p className="interviewitem-info-val">
-                    {interview.student?.email}
+                    {interview.student?.email || "이메일 정보 없음"}
                   </p>
                 </div>
                 <div className="interviewitem-info-field">
@@ -140,7 +173,7 @@ function InterviewItem({ interview, mode, currentUser, onRegist, onDetail }) {
                     제출일
                   </div>
                   <p className="interviewitem-info-val">
-                    {interview.submitDate}
+                    {interview.createdAt?.split("T")[0] || "날짜 정보 없음"}
                   </p>
                 </div>
               </div>
@@ -152,29 +185,34 @@ function InterviewItem({ interview, mode, currentUser, onRegist, onDetail }) {
               <div className="interviewitem-info-field">
                 <span className="interviewitem-info-label">프로젝트명</span>
                 <p className="interviewitem-info-val interviewitem-info-bold">
-                  {interview.projectTitle}
+                  {interview.title}
                 </p>
               </div>
               <div className="interviewitem-info-field">
                 <span className="interviewitem-info-label">강의명</span>
-                <p className="interviewitem-info-val">
-                  {interview.lectureTitle}
-                </p>
+                <p className="interviewitem-info-val">{lectureName}</p>
               </div>
+              <p className="interviewform-info-val interviewform-info-desc">
+                요구사항: <br />
+                {interview?.requireDetail || "-"} <br />
+                <br />
+                주요 기능: <br />
+                {interview?.feature || "-"} <br />
+              </p>
             </div>
           )}
 
           {/* 면접 질문 + 답변 - 텍스트로만 표시 */}
-          <div className="interviewitem-card">
+          <div className="interviewitem-card interviewitem-interview">
             <p className="interviewitem-card-title">면접 질문</p>
             <div className="interviewitem-qa-list">
               {interview.questions.map((qa, index) => (
                 <div className="interviewitem-qa-item" key={index}>
                   <p className="interviewitem-question">
-                    질문 {index + 1}. {qa.question}
+                    질문 {index + 1}. {qa.content}
                   </p>
                   <p className="interviewitem-answer-label">답변 :</p>
-                  {/* ← textarea 대신 텍스트로 표시 */}
+
                   <p className="interviewitem-answer-text">
                     {qa.answer || "답변이 없습니다."}
                   </p>
@@ -189,7 +227,7 @@ function InterviewItem({ interview, mode, currentUser, onRegist, onDetail }) {
               <img src={review} alt="댓글" className="interviewitem-icon" />
               <p className="interviewitem-card-title">댓글</p>
               <span className="interviewitem-comment-count">
-                ({interview.comments.length})
+                ({interview.comments.length || 0}개)
               </span>
             </div>
 
@@ -213,7 +251,7 @@ function InterviewItem({ interview, mode, currentUser, onRegist, onDetail }) {
 
             {/* 댓글 목록 */}
             <div className="interviewitem-comment-list">
-              {interview.comments.map((comment) => (
+              {(interview.comments || []).map((comment) => (
                 <div
                   className={`interviewitem-comment-item ${comment.role === "teacher" ? "interviewitem-comment-teacher" : ""}`}
                   key={comment.commentId}

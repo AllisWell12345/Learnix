@@ -8,7 +8,7 @@ const initialQuestions = [
   { value: "", error: "" },
 ];
 
-function InterviewForm({ projectInfo, onSubmit, onCancel }) {
+function InterviewForm({ projectInfo, onSubmit, onCancel, lectureName }) {
   const [questions, setQuestions] = useState(initialQuestions);
 
   // 질문 변경
@@ -68,18 +68,31 @@ function InterviewForm({ projectInfo, onSubmit, onCancel }) {
         <div className="interviewform-info-row">
           <div className="interviewform-info-field">
             <span className="interviewform-info-label">강의명</span>
-            <p className="interviewform-info-val">{projectInfo?.lectureTitle || "-"}</p>
+            <p className="interviewform-info-val">{lectureName || "-"}</p>
           </div>
           <div className="interviewform-info-field">
             <span className="interviewform-info-label">제출일</span>
-            <p className="interviewform-info-val">{projectInfo?.submitDate || "-"}</p>
+            <p className="interviewform-info-val">{projectInfo?.createdAt || "-"}</p>
           </div>
         </div>
 
         <div className="interviewform-info-field">
           <span className="interviewform-info-label">프로젝트 설명</span>
           <p className="interviewform-info-val interviewform-info-desc">
-            {projectInfo?.projectDesc || "-"}
+            요구사항: <br/>
+            {projectInfo?.requireDetail || "-"} <br/>
+            <br/>
+            주요 기능: <br/>
+            {projectInfo?.feature || "-"} <br/>
+            <br/>
+            문제사항: <br/>
+            {projectInfo?.problem || "-"} <br/>
+            <br/>
+            해결방법: <br/>
+            {projectInfo?.solution || "-"} <br/>
+            <br/>
+            프로젝트 링크: <br/>
+            {projectInfo?.projectLink || "-"} <br/>
           </p>
         </div>
       </div>
