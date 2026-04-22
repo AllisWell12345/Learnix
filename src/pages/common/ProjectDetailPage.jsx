@@ -112,8 +112,8 @@ function ProjectDetailPage() {
                     )}
                   </span>
                   <span className="interviewitem-comment-date">
-                    여러 핸들러에서 모달창의 유무가 통일되지 않았네요. 항상
-                    사용자의 편의성을 고려해주는 것이 좋습니다.
+                    인증 미들웨어에서 토큰 검증 로직은 잘 작성하셨는데, 에러 응답 형식이 일부 컨트롤러와 다르게 처리되고 있습니다. 
+                    응답 포맷을 통일하면 유지보수성이 더 좋아질 것 같습니다.
                   </span>
                 </div>
                 <div className="interviewitem-comment-actions">
@@ -138,7 +138,7 @@ function ProjectDetailPage() {
               <div className="interviewitem-comment-author-area">
                 <span className="interviewitem-comment-author">김유리</span>
                 <span className="interviewitem-comment-date">
-                  저도 같은 문제가 있었는데 useMemo를 사용하는 방법도 있었군요!
+                  저도 처음에 컨트롤러에 로직을 다 넣었는데, 나중에 보니까 너무 복잡해져서 service로 분리했습니다. 확실히 관리하기 편해지더라고요.
                 </span>
               </div>
               <div className="interviewitem-comment-actions">
