@@ -171,7 +171,7 @@ function DataManagePage() {
                   />
                 </div>
                 <p className="datamanage-user-name">
-                  {item.user?.name || "이름 정보 없음"}
+                  {item.user?.name || "이름 정보 없음"} ({item.user?.email || "이메일 정보 없음"})
                 </p>
               </div>
 
