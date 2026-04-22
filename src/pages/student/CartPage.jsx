@@ -156,7 +156,7 @@ function CartPage() {
   // ===================== 전체 신청 =====================
   const handleApplyAll = () => {
     openModal("CONFIRM", {
-      mainMsg: "강의를 신청하시겠습니까?",
+      mainMsg: "신청하시겠습니까?",
       subMsg: "장바구니의 모든 강의를 신청합니다.",
       onConfirm: async () => {
         try {
@@ -201,7 +201,7 @@ function CartPage() {
   };
 
   // ===================== UI =====================
-  if (loading) return <div className="loading">불러오는 중...</div>;
+  if (loading) return <div className="content"><div className="loading">불러오는 중...</div></div>;
 
   return (
     <>

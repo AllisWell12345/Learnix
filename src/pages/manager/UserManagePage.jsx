@@ -73,7 +73,7 @@ function UserManagePage() {
       mainMsg: user.active
         ? "회원 상태를 비활성으로 변경하시겠습니까?"
         : "회원 상태를 활성으로 변경하시겠습니까?",
-      subMsg: "확인 버튼을 누르면 회원 상태가 변경됩니다.",
+      subMsg: "확인 버튼을 누르면\n 회원 상태가 변경됩니다.",
       onConfirm: async () => {
         try {
           await updateUserActive(user.id, !user.active);

@@ -42,7 +42,7 @@ function ProjectPage() {
 
     openModal("CONFIRM", {
       mainMsg: "제출하시겠습니까?",
-      subMsg: "제출한 프로젝트는 더 이상 수정 및 삭제가 불가능합니다.",
+      subMsg: "제출한 프로젝트는\n 수정 및 삭제가 불가능합니다.",
       onConfirm: async () => {
         try {
           setIsSubmitting(true);

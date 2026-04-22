@@ -212,7 +212,7 @@ function InterviewPracticePage() {
     // 마지막 문제라면 제출 확인 모달 표시
     openModal("CONFIRM", {
       mainMsg: "면접 답변을 제출하시겠습니까?",
-      subMsg: "제출한 답변은 수정이 불가능합니다.",
+      subMsg: "제출한 답변은\n 수정이 불가능합니다.",
       onConfirm: async () => {
         try {
           setSubmitting(true);

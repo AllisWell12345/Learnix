@@ -80,7 +80,7 @@ function ProjectForm({ mode = "regist" }) {
   const handleCancel = () => {
     openModal("WARNING", {
       mainMsg: "작성을 취소하시겠습니까?",
-      subMsg: "작성 중인 내용은 저장되지 않습니다.",
+      subMsg: "작성 중인 내용은\n 저장되지 않습니다.",
       onConfirm: () => navigate(-1),
     });
   };
