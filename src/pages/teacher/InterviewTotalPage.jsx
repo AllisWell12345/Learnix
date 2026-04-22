@@ -138,7 +138,7 @@ function InterviewTotalPage() {
         <section className="it-section">
           <div className="it-section-title-wrapper">
             <p className="it-sub-title">모의 면접 완료</p>
-            <span className="it-count-badge badge-reviewing">
+            <span className="it-count-badge badge-completed">
               {completedInterviews.length}개
             </span>
           </div>

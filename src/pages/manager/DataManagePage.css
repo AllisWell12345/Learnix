@@ -184,13 +184,14 @@
 
 /* 빈 상태 */
 .datamanage-empty {
-  font-size: 13px;
-  color: #e5e7eb;
-  flex: 1;
+  width: 100%;
+  height: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 12px 0;
+  align-items: center;
+  font-size: 20px;
+  color: #4a5565;
+  margin-top: 40px;
 }
 
 /* 삭제 버튼 */
@@ -208,7 +209,9 @@
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  transition: background-color 0.15s, color 0.15s;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
 }
 
 .datamanage-delete-btn svg {
