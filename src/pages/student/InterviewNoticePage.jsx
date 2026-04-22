@@ -6,7 +6,7 @@ import { getProjectByUserAndLecture } from "../../services/projectService";
 import useModal from "../../hooks/useModal";
 
 function InterviewNoticePage() {
-  const { lectureId } = useParams();
+  const { lectureId, projectId } = useParams();
   const currentUser = useSelector((state) => state.user.currentUser);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ function InterviewNoticePage() {
       mainMsg : "모의 면접을 시작하시겠습니까?",
       subMsg : "확인 버튼을 누르면\n 면접이 바로 시작됩니다.",
       onConfirm : () => {
-        navigate(`/student/portfolio/interview/${lectureId}/practice`);
+        navigate(`/student/portfolio/interview/${lectureId}/${projectId}/practice`);
       }
     })
   }

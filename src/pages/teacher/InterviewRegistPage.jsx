@@ -13,6 +13,7 @@ function InterviewRegistPage() {
 
   const projectInfo = location.state?.projectInfo || null;
   const [lectureName, setLectureName] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchLectureName = async () => {
@@ -32,26 +33,36 @@ function InterviewRegistPage() {
   }, [projectInfo?.lectureId]);
 
   const handleSubmit = async (data) => {
-    try {
-      for (const questionText of data.questions) {
-        await createQuestion({
-          lectureId: projectInfo.lectureId,
-          projectId: projectInfo.projectId,
-          question: questionText,
-        });
+    
+    openModal("CONFIRM", {
+      mainMsg: "모의 면접을\n등록하시겠습니까?",
+      onConfirm: async () => {
+        try {
+          setLoading(true);
+          for (const questionText of data.questions) {
+            await createQuestion({
+              lectureId: projectInfo.lectureId,
+              projectId: projectInfo.projectId,
+              question: questionText,
+            });
+          }
+
+          openModal("CHECK", {
+            mainMsg: "등록되었습니다.",
+            onConfirm: () => navigate(-1),
+          });
+        } catch (err) {
+          console.error("모의면접 등록 실패:", err);
+
+          openModal("WARNING", {
+            mainMsg: "등록 실패",
+            subMsg: "모의면접 등록 중\n오류가 발생했습니다.",
+          });
+        } finally {
+          setLoading(false);
+        }
       }
-      openModal("CHECK", {
-        mainMsg: "등록 완료",
-        subMsg: "모의면접이 등록되었습니다!",
-        onConfirm: () => navigate(-1), // 확인 버튼 누르면 이동
-      });
-    } catch (err) {
-      console.error("모의면접 등록 실패:", err);
-      openModal("WARNING", {
-        mainMsg: "등록 실패",
-        subMsg: "모의면접 등록 중\n 오류가 발생했습니다.",
-      });
-    }
+    });
   };
 
   const handleCancel = () => {
@@ -75,6 +86,7 @@ function InterviewRegistPage() {
             onSubmit={handleSubmit}
             onCancel={handleCancel}
             lectureName={lectureName}
+            loading = {loading}
           />
         </form>
       </div>
