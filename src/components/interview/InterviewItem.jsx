@@ -209,7 +209,7 @@ function InterviewItem({ interview, projectInfo, mode, currentUser, onRegist, on
               {interview.questions.map((qa, index) => (
                 <div className="interviewitem-qa-item" key={index}>
                   <p className="interviewitem-question">
-                    질문 {index + 1}. {qa.content}
+                    질문 {index + 1}. {qa.question}
                   </p>
                   <p className="interviewitem-answer-label">답변 :</p>
 

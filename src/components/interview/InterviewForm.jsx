@@ -8,7 +8,7 @@ const initialQuestions = [
   { value: "", error: "" },
 ];
 
-function InterviewForm({ projectInfo, onSubmit, onCancel, lectureName }) {
+function InterviewForm({ projectInfo, onSubmit, onCancel, lectureName, loading }) {
   const [questions, setQuestions] = useState(initialQuestions);
 
   // 질문 변경
@@ -110,7 +110,7 @@ function InterviewForm({ projectInfo, onSubmit, onCancel, lectureName }) {
           취소
         </button>
         <button className="interviewform-submit-btn" type="button" onClick={handleSubmit}>
-          면접 등록
+          {loading? "등록중..." : "면접 등록"}
         </button>
       </div>
     </div>

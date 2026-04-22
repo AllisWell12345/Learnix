@@ -5,14 +5,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useModal from "../../hooks/useModal";
 import { getQuestionsByLectureAndProject } from "../../services/questionService";
-import { getProjectByUserAndLecture } from "../../services/projectService";
 import { createAnswer } from "../../services/answerService";
 
 // 문제당 제한 시간: 2분(120초)
-const QUESTION_TIME = 120;
+const QUESTION_TIME = 20;
 
 function InterviewPracticePage() {
-  const { lectureId } = useParams();
+  console.log("InterviewPracticePage 진입");
+  const { lectureId, projectId } = useParams();
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.user.currentUser);
   const { modal, openModal } = useModal();
@@ -58,43 +58,32 @@ function InterviewPracticePage() {
 
   // 페이지 진입 시 lectureId에 해당하는 질문 목록을 불러옴
   useEffect(() => {
+    console.log("useEffect 실행됨");
     const fetchQuestions = async () => {
+      console.log("fetchQuestions 시작");
       try {
         setLoading(true);
 
-        if (!currentUser?.userId || !lectureId) {
+        if (!currentUser?.userId || !lectureId || !projectId) {
           setQuestions([]);
           setAnswers([]);
           return;
         }
 
-        // 1. 현재 학생의 해당 강의 프로젝트 조회
-        const currentProject = await getProjectByUserAndLecture(
-          currentUser.userId,
-          lectureId,
-        );
-
-        // 프로젝트가 없으면 질문도 없음
-        if (!currentProject?.projectId) {
-          setQuestions([]);
-          setAnswers([]);
-          return;
-        }
-
-        // 2. lectureId + projectId를 모두 만족하는 질문만 조회
+        // 1. lectureId + projectId를 모두 만족하는 질문만 조회
         const questionList = await getQuestionsByLectureAndProject(
           Number(lectureId),
-          Number(currentProject.projectId),
+          Number(projectId),
         );
 
-        // 3. 순서 정렬
+        // 2. 순서 정렬
         const sortedQuestions = [...(questionList || [])].sort(
-          (a, b) => Number(a.order) - Number(b.order),
+          (a, b) => Number(a.questionId) - Number(b.questionId),
         );
 
         setQuestions(sortedQuestions);
 
-        // 4. 답변 상태 초기화
+        // 3. 답변 상태 초기화
         setAnswers(
           sortedQuestions.map((question, index) => ({
             questionId: Number(question.questionId),
@@ -114,7 +103,7 @@ function InterviewPracticePage() {
     };
 
     fetchQuestions();
-  }, [lectureId, currentUser]);
+  }, [lectureId, projectId, currentUser]);
 
   // 현재 활성 질문이 바뀔 때마다 2분 타이머를 새로 시작
   useEffect(() => {
@@ -180,7 +169,6 @@ function InterviewPracticePage() {
     const currentAnswer = answers[activeIndex];
     const isAnswerEmpty = !currentAnswer?.answerText?.trim();
 
-    // 아직 시간이 남아 있는데 답변을 하나도 입력하지 않았다면 경고 모달
     if (timeLeft > 0 && isAnswerEmpty) {
       openModal("WARNING", {
         mainMsg: "답변을 입력해주세요.",
@@ -188,28 +176,23 @@ function InterviewPracticePage() {
       return;
     }
 
-    // 현재 문제를 잠금 처리
-    setAnswers((prev) =>
-      prev.map((item, index) =>
-        index === activeIndex
-          ? {
-              ...item,
-              isLocked: true,
-            }
-          : item,
-      ),
+    const lockedAnswers = answers.map((item, index) =>
+      index === activeIndex
+        ? {
+            ...item,
+            isLocked: true,
+          }
+        : item,
     );
 
-    // 현재 문제 타이머 종료
+    setAnswers(lockedAnswers);
     clearInterval(timerRef.current);
 
-    // 마지막 문제가 아니면 다음 문제로 이동
     if (!isLastQuestion) {
       setActiveIndex((prev) => prev + 1);
       return;
     }
 
-    // 마지막 문제라면 제출 확인 모달 표시
     openModal("CONFIRM", {
       mainMsg: "면접 답변을 제출하시겠습니까?",
       subMsg: "제출한 답변은\n 수정이 불가능합니다.",
@@ -217,11 +200,12 @@ function InterviewPracticePage() {
         try {
           setSubmitting(true);
 
-          for (const item of answers) {
+          for (const item of lockedAnswers) {
             await createAnswer({
               lectureId: Number(lectureId),
+              projectId: Number(projectId),
               questionId: Number(item.questionId),
-              answer: item.answerText,
+              answer: item.answerText.trim(),
             });
           }
 
