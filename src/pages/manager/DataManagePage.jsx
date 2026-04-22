@@ -100,7 +100,7 @@ function DataManagePage() {
   const handleDelete = (project) => {
     openModal("DELETE", {
       mainMsg: "자료를 삭제하시겠습니까?",
-      subMsg: "해당 프로젝트와 관련된 면접 질문/답변도 함께 삭제됩니다.",
+      subMsg: "해당 프로젝트와 관련된\n 면접 자료도 함께 삭제됩니다.",
       onDelete: async () => {
         try {
           const questions = await getQuestionsByProjectId(

@@ -61,7 +61,7 @@ function TemplateEditPage() {
     }
   };
 
-  if (status === "loading") return <div className="content">로딩 중...</div>;
+  if (status === "loading") return <div className="content"><div className="loading">불러오는 중...</div></div>;
 
   return (
     <div className="content">

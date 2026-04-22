@@ -69,7 +69,7 @@ function LectureDetailPage() {
   const handleDeleteLecture = (targetLecture) => {
     openModal("DELETE", {
       mainMsg: "강의를 삭제하시겠습니까?",
-      subMsg: "확인 버튼을 누르면 해당 강의와 관련된 데이터도 함께 삭제됩니다.",
+      subMsg: "확인 버튼을 누르면\n 해당 강의와 관련된 데이터도 함께 삭제됩니다.",
       onDelete: async () => {
         try {
           const lectureId = targetLecture.lectureId;
@@ -119,7 +119,7 @@ function LectureDetailPage() {
 
     openModal("CONFIRM", {
       mainMsg: "장바구니에 추가하시겠습니까?",
-      subMsg: "확인 버튼을 누르면 해당 강의가 장바구니에 추가됩니다.",
+      subMsg: "확인 버튼을 누르면\n 해당 강의가 장바구니에 추가됩니다.",
       onConfirm: async () => {
         try {
           setCartLoading(true);
@@ -166,7 +166,7 @@ function LectureDetailPage() {
 
           openModal("CHECK", {
             mainMsg: "장바구니에 추가되었습니다.",
-            subMsg: "확인 버튼을 누르면 장바구니 페이지로 이동합니다.",
+            subMsg: "확인 버튼을 누르면\n 장바구니 페이지로 이동합니다.",
             onConfirm: () => {
               navigate(`/${currentUser.role}/cart`);
             },
@@ -185,7 +185,7 @@ function LectureDetailPage() {
   };
 
   if (loading || cartLoading) {
-    return <div className="loading">불러오는 중...</div>;
+    return <div className="content"><div className="loading">불러오는 중...</div></div>;
   }
 
   if (!lecture) {

@@ -366,8 +366,8 @@ function LectureForm({ mode = "regist", lectureId = null, onCancel }) {
           : "강의를 등록하시겠습니까?",
       subMsg:
         mode === "edit"
-          ? "확인 버튼을 누르면 강의 수정이 진행됩니다."
-          : "확인 버튼을 누르면 강의 등록이 진행됩니다.",
+          ? "확인 버튼을 누르면\n 강의 수정이 진행됩니다."
+          : "확인 버튼을 누르면\n 강의 등록이 진행됩니다.",
       onConfirm: submitLecture,
     });
   };
@@ -377,7 +377,7 @@ function LectureForm({ mode = "regist", lectureId = null, onCancel }) {
   if (loading) {
     return (
       <div className="lectureform-wrap">
-        <div className="lectureform-loading">불러오는 중...</div>
+        <div className="loading">불러오는 중...</div>
       </div>
     );
   }

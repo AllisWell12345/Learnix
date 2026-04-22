@@ -36,7 +36,7 @@ function InterviewNoticePage() {
   const handleMovePractice = () => {
     openModal("CONFIRM", {
       mainMsg : "모의 면접을 시작하시겠습니까?",
-      subMsg : "확인 버튼을 누르면 면접이 바로 시작됩니다.",
+      subMsg : "확인 버튼을 누르면\n 면접이 바로 시작됩니다.",
       onConfirm : () => {
         navigate(`/student/portfolio/interview/${lectureId}/practice`);
       }

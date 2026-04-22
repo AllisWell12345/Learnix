@@ -74,7 +74,7 @@ function LoginPage() {
         await updateLastLogin(authUser.uid);
         openModal("CHECK", {
           mainMsg: "로그인 성공!",
-          subMsg: "확인 버튼을 클릭하면 홈페이지로 이동합니다!",
+          subMsg: "확인 버튼을 클릭하면\n 홈페이지로 이동합니다!",
           onConfirm: async () => navigate(`/${loginUser.role}`),
         });
       }

@@ -49,7 +49,7 @@ function InterviewRegistPage() {
       console.error("모의면접 등록 실패:", err);
       openModal("WARNING", {
         mainMsg: "등록 실패",
-        subMsg: "모의면접 등록 중 오류가 발생했습니다.",
+        subMsg: "모의면접 등록 중\n 오류가 발생했습니다.",
       });
     }
   };
@@ -57,7 +57,7 @@ function InterviewRegistPage() {
   const handleCancel = () => {
     openModal("CONFIRM", {
       mainMsg: "등록 취소",
-      subMsg: "모의면접 등록을 취소하시겠습니까?",
+      subMsg: "모의면접 등록을\n 취소하시겠습니까?",
       onConfirm: () => navigate(-1),
     });
   };

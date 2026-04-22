@@ -26,7 +26,7 @@ function TemplateProjectRegistPage() {
 
   const handleRegist = () => {
     openModal("CONFIRM", {
-      mainMsg: "템플릿을 등록하시겠습니까?",
+      mainMsg: "프로젝트 템플릿을\n 등록하시겠습니까?",
       onConfirm: () => {
         dispatch(registTemplate({ ...formData, lectureId:Number(lectureId) })).then(() =>
           navigate(-1),
