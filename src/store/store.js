@@ -10,7 +10,6 @@ const store = configureStore({
     cart: cartReducer,
     user: userReducer,
     searchbar: searchbarReducer,
-    interview: interviewReducer,
     project: projectReducer,
   },
 });
